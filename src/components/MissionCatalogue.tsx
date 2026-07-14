@@ -1,8 +1,10 @@
-import { ArrowRight, CheckCircle2, RotateCcw, Search } from "lucide-react";
-import { useMemo, useState } from "react";
+import { ArrowRight, CheckCircle2, Cloud, RotateCcw, Search } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { awsCustomerMissions, type AwsCustomerMission } from "../data/awsCustomerMissions";
 import type { AttemptState, MissionMode } from "../domain/types";
+import { loadNotes, saveNotes } from "../domain/notes";
 import { CaseStudyBuildLab } from "./CaseStudyBuildLab";
+import { ConfirmDialog } from "./ConfirmDialog";
 
 interface MissionCatalogueProps {
   attempt: AttemptState;
@@ -24,7 +26,9 @@ export function MissionCatalogue({ attempt, recovered, onModeChange, onOpen, onR
   const [stage, setStage] = useState(0);
   const [query, setQuery] = useState("");
   const [industry, setIndustry] = useState("All industries");
-  const [notes, setNotes] = useState<Record<string, string>>({});
+  const [notes, setNotes] = useState<Record<string, string>>(() => loadNotes());
+  const [notesSaveStatus, setNotesSaveStatus] = useState<"saved" | "saving">("saved");
+  const [confirmReset, setConfirmReset] = useState(false);
   const industries = useMemo(() => ["All industries", ...new Set(awsCustomerMissions.map((mission) => mission.industry))], []);
   const visible = useMemo(() => awsCustomerMissions.filter((mission) => {
     const matchesIndustry = industry === "All industries" || mission.industry === industry;
@@ -33,6 +37,15 @@ export function MissionCatalogue({ attempt, recovered, onModeChange, onOpen, onR
   }), [industry, query]);
   const selected = awsCustomerMissions.find((mission) => mission.id === missionId) ?? visible[0] ?? awsCustomerMissions[0];
   const noteKey = `${selected.id}-${attempt.mode}-${stage}`;
+
+  useEffect(() => {
+    setNotesSaveStatus("saving");
+    const timer = window.setTimeout(() => {
+      saveNotes(notes);
+      setNotesSaveStatus("saved");
+    }, 450);
+    return () => window.clearTimeout(timer);
+  }, [notes]);
 
   const openMission = (mission: AwsCustomerMission) => {
     setMissionId(mission.id);
@@ -53,7 +66,7 @@ export function MissionCatalogue({ attempt, recovered, onModeChange, onOpen, onR
       </section>
 
       <div className="mission-library-layout">
-        <aside className="mission-library-list" aria-label="Customer mission library">{visible.length ? visible.map((mission) => <button key={mission.id} className={mission.id === selected.id ? "active" : ""} onClick={() => openMission(mission)} aria-current={mission.id === selected.id ? "page" : undefined}><span>Case {String(awsCustomerMissions.indexOf(mission) + 1).padStart(3, "0")} · {mission.industry}</span>{mission.customer}<small>{mission.title}</small></button>) : <p className="mission-empty">No customer cases match these filters.</p>}</aside>
+        <aside className="mission-library-list" aria-label="Customer mission library">{visible.length ? visible.map((mission) => <button key={mission.id} className={mission.id === selected.id ? "active" : ""} onClick={() => openMission(mission)} aria-current={mission.id === selected.id ? "page" : undefined}><span>Case {String(awsCustomerMissions.indexOf(mission) + 1).padStart(3, "0")} · {mission.industry}</span>{mission.customer}<small title={mission.title}>{mission.title}</small></button>) : <p className="mission-empty">No customer cases match these filters.</p>}</aside>
         <main className="mission-brief" aria-label="Mission brief">
           <header><span>Customer case · {selected.archetype}</span><h2>{selected.title}</h2><p>Design the complete production system for {selected.customer}’s implementation.</p></header>
 
@@ -65,11 +78,21 @@ export function MissionCatalogue({ attempt, recovered, onModeChange, onOpen, onR
           {stage === 3 ? <DossierSection title="Stress event" intro={selected.stressEvent} groups={[{ title: "Failure risks", items: selected.risks }, { title: "Evidence to monitor", items: selected.metrics }]} /> : null}
           {stage === 4 ? <DossierSection title="Design review" intro="Defend the architecture using requirements and evidence. Identify the largest unresolved risk, rejected alternatives, launch gates, rollback triggers, and the next experiment." groups={[{ title: "Review measures", items: selected.metrics }, { title: "Required evidence", items: ["A traceable requirement-to-component map", "Capacity arithmetic and unit-cost estimate", "Offline and online evaluation plan", "Failure containment and rollback runbook", "Ownership and post-launch review cadence"] }]} /> : null}
 
-          {stage !== 2 ? <section className="mission-notes"><label>Design notes<textarea value={notes[noteKey] ?? ""} onChange={(event) => setNotes((value) => ({ ...value, [noteKey]: event.target.value }))} placeholder={notePrompt(attempt.mode, stage)} /></label><footer><button className="button ghost" disabled={stage === 0} onClick={() => setStage((value) => value - 1)}>Previous</button><button className="button primary" disabled={stage === stages.length - 1} onClick={() => setStage((value) => value + 1)}>Next stage <ArrowRight /></button></footer></section> : null}
+          {stage !== 2 ? <section className="mission-notes"><label>Design notes<textarea value={notes[noteKey] ?? ""} onChange={(event) => setNotes((value) => ({ ...value, [noteKey]: event.target.value }))} placeholder={notePrompt(attempt.mode, stage)} /></label><span className={`save-indicator ${notesSaveStatus}`}><Cloud /> {notesSaveStatus === "saving" ? "Saving" : "Saved"}</span><footer><button className="button ghost" disabled={stage === 0} onClick={() => setStage((value) => value - 1)}>Previous</button><button className="button primary" disabled={stage === stages.length - 1} onClick={() => setStage((value) => value + 1)}>Next stage <ArrowRight /></button></footer></section> : null}
 
-          {recovered ? <div className="enterprise-workspace-link"><span>Your versioned Enterprise RAG workspace is still available.</span><div><button className="button text" onClick={onReset}>Start over</button><button className="button ghost" onClick={onOpen}>Resume workspace</button></div></div> : null}
+          {recovered ? <div className="enterprise-workspace-link"><span>Your versioned Enterprise RAG workspace is still available.</span><div><button className="button text" onClick={() => setConfirmReset(true)}>Start over</button><button className="button ghost" onClick={onOpen}>Resume workspace</button></div></div> : null}
         </main>
       </div>
+
+      <ConfirmDialog
+        open={confirmReset}
+        title="Start over?"
+        body="This clears your saved Enterprise RAG workspace progress. This can't be undone."
+        confirmLabel="Start over"
+        tone="danger"
+        onConfirm={() => { setConfirmReset(false); onReset(); }}
+        onCancel={() => setConfirmReset(false)}
+      />
     </div>
   );
 }

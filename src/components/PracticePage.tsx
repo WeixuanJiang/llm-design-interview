@@ -33,6 +33,9 @@ export function PracticePage({ reviewed, correct, onReviewed }: PracticePageProp
     const first = catalogPracticeUnits.find((unit) => unit.chapter === next);
     if (first) openUnit(first.id);
   };
+  // A reveal-answer escape hatch (like LearnPage's) is intentionally not added here:
+  // this submit feeds graded practiceCorrect/practiceReviewed stats, so revealing
+  // would need a decision about whether it counts as reviewed/correct. Follow-up.
   const submit = () => {
     if (selected === null || submitted) return;
     setSubmitted(true);

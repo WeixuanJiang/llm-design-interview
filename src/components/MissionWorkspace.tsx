@@ -1,11 +1,18 @@
 import type { Dispatch } from "react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AlertTriangle, ArrowLeft, Bot, Check, ChevronRight, Cloud, Save, X } from "lucide-react";
 import type { AttemptAction } from "../domain/attempt";
 import type { AttemptState, MissionStage, ValidationResult } from "../domain/types";
 import { calculatePeakQps, calculateScore, validateArchitecture, validateEstimation, validateMitigation, validateRequirements } from "../domain/validation";
 import { enterpriseRagMission } from "../data/enterpriseRagMission";
 import { ArchitectureBuilder } from "./ArchitectureBuilder";
+
+const stageValidators: Partial<Record<MissionStage, (attempt: AttemptState) => ValidationResult>> = {
+  requirements: validateRequirements,
+  estimation: validateEstimation,
+  architecture: validateArchitecture,
+  stress: validateMitigation,
+};
 
 interface MissionWorkspaceProps {
   attempt: AttemptState;
@@ -23,15 +30,17 @@ const stages: Array<{ id: MissionStage; label: string }> = [
 ];
 
 export function MissionWorkspace({ attempt, dispatch, saveStatus, onExit }: MissionWorkspaceProps) {
-  const [errors, setErrors] = useState<string[]>([]);
+  const [stageErrors, setStageErrors] = useState<string[]>([]);
   const [decisionOpen, setDecisionOpen] = useState(false);
   const [decisionValue, setDecisionValue] = useState("");
+  const [decisionError, setDecisionError] = useState<string | null>(null);
   const [coachOpen, setCoachOpen] = useState(false);
+  const bannerRef = useRef<HTMLDivElement>(null);
   const selected = attempt.nodes.find((node) => node.id === attempt.selectedNodeId) ?? null;
   const stageIndex = stages.findIndex((stage) => stage.id === attempt.stage);
 
   const submit = (validation: ValidationResult, action: () => void) => {
-    setErrors(validation.errors);
+    setStageErrors(validation.errors);
     if (validation.valid) action();
   };
 
@@ -42,20 +51,34 @@ export function MissionWorkspace({ attempt, dispatch, saveStatus, onExit }: Miss
     if (attempt.stage === "stress") submit(validateMitigation(attempt), () => dispatch({ type: "complete-stage", stage: "stress", next: "review" }));
   };
 
+  // Only ever narrows stageErrors toward empty once the learner has attempted "Continue" -
+  // never introduces new errors outside the explicit submit() path.
+  useEffect(() => {
+    if (!stageErrors.length) return;
+    const validator = stageValidators[attempt.stage];
+    const result = validator?.(attempt);
+    if (result?.valid) setStageErrors([]);
+  }, [attempt, stageErrors.length]);
+
+  useEffect(() => {
+    if (stageErrors.length) bannerRef.current?.scrollIntoView?.({ behavior: "smooth", block: "start" });
+  }, [stageErrors]);
+
   const openDecision = () => {
     if (!selected) return;
     setDecisionValue(attempt.decisions[selected.id] ?? "");
+    setDecisionError(null);
     setDecisionOpen(true);
   };
 
   const saveDecision = () => {
     if (!selected || decisionValue.trim().length < 30) {
-      setErrors(["Decision reasoning must include at least 30 characters."]);
+      setDecisionError("Decision reasoning must include at least 30 characters.");
       return;
     }
     dispatch({ type: "save-decision", id: selected.id, value: decisionValue.trim() });
     setDecisionOpen(false);
-    setErrors([]);
+    setDecisionError(null);
   };
 
   return (
@@ -69,7 +92,13 @@ export function MissionWorkspace({ attempt, dispatch, saveStatus, onExit }: Miss
           </div>
         </div>
         <ol className="stage-stepper" aria-label="Mission stages">
-          {stages.map((stage, index) => <li key={stage.id} className={index < stageIndex ? "done" : index === stageIndex ? "active" : "future"} aria-current={index === stageIndex ? "step" : undefined}><span>{index < stageIndex ? <Check /> : index + 1}</span><strong>{stage.label}</strong></li>)}
+          {stages.map((stage, index) => {
+            const content = <><span>{index < stageIndex ? <Check /> : index + 1}</span><strong>{stage.label}</strong></>;
+            const stageHint = stage.id === "stress" ? " — includes a required revision step" : stage.id === "review" ? " — one revision is required to complete" : "";
+            return index < stageIndex
+              ? <li key={stage.id} className="done"><button type="button" onClick={() => dispatch({ type: "set-stage", stage: stage.id })} aria-label={`Review ${stage.label} (completed)`}>{content}</button></li>
+              : <li key={stage.id} className={index === stageIndex ? "active" : "future"} aria-current={index === stageIndex ? "step" : undefined} aria-label={`${stage.label}${stageHint}`}>{content}</li>;
+          })}
         </ol>
       </header>
 
@@ -78,7 +107,7 @@ export function MissionWorkspace({ attempt, dispatch, saveStatus, onExit }: Miss
         <button className="icon-button" onClick={() => setCoachOpen(true)} aria-label="Open contextual coach" title="Open contextual coach"><Bot /></button>
       </div>
 
-      {errors.length ? <div className="validation-banner" role="alert"><AlertTriangle /><div><strong>Resolve before continuing</strong>{errors.map((error) => <p key={error}>{error}</p>)}</div><button className="icon-button" onClick={() => setErrors([])} aria-label="Dismiss validation errors"><X /></button></div> : null}
+      {stageErrors.length ? <div className="validation-banner" role="alert" ref={bannerRef}><AlertTriangle /><div><strong>Resolve before continuing</strong>{stageErrors.map((error) => <p key={error}>{error}</p>)}</div><button className="icon-button" onClick={() => setStageErrors([])} aria-label="Dismiss validation errors"><X /></button></div> : null}
 
       <div className="stage-content">
         {attempt.stage === "requirements" ? <RequirementsStage attempt={attempt} dispatch={dispatch} /> : null}
@@ -90,9 +119,9 @@ export function MissionWorkspace({ attempt, dispatch, saveStatus, onExit }: Miss
 
       {attempt.stage !== "review" ? <footer className="workspace-footer"><div><span className="footer-label">Current evidence</span><p>{footerEvidence(attempt)}</p></div><button className="button primary" onClick={continueStage}>{attempt.stage === "architecture" && attempt.revisionBase ? "Submit revision" : nextLabel(attempt.stage)}<ChevronRight /></button></footer> : null}
 
-      {decisionOpen && selected ? <div className="modal-backdrop"><section className="decision-dialog" role="dialog" aria-modal="true" aria-labelledby="decision-title"><header><div><span>Architecture decision</span><h2 id="decision-title">Defend {selected.data.label}</h2></div><button className="icon-button" onClick={() => setDecisionOpen(false)} aria-label="Close decision editor"><X /></button></header><label>Reasoning<textarea autoFocus value={decisionValue} onChange={(event) => setDecisionValue(event.target.value)} maxLength={600} placeholder="State the requirement, trade-off, and condition that would change this decision." /></label><small>{decisionValue.length}/600 characters</small><footer><button className="button ghost" onClick={() => setDecisionOpen(false)}>Cancel</button><button className="button primary" onClick={saveDecision}><Save /> Save reasoning</button></footer></section></div> : null}
+      {decisionOpen && selected ? <div className="modal-backdrop"><section className="decision-dialog" role="dialog" aria-modal="true" aria-labelledby="decision-title"><header><div><span>Architecture decision</span><h2 id="decision-title">Defend {selected.data.label}</h2></div><button className="icon-button" onClick={() => setDecisionOpen(false)} aria-label="Close decision editor"><X /></button></header><label>Reasoning<textarea autoFocus value={decisionValue} onChange={(event) => { setDecisionValue(event.target.value); setDecisionError(null); }} maxLength={600} placeholder="State the requirement, trade-off, and condition that would change this decision." /></label><small className={decisionValue.trim().length >= 30 ? "char-counter ok" : "char-counter"}>{decisionValue.length}/600 characters{decisionValue.trim().length < 30 ? ` (${30 - decisionValue.trim().length} more needed)` : ""}</small>{decisionError ? <p className="field-error" role="alert">{decisionError}</p> : null}<footer><button className="button ghost" onClick={() => setDecisionOpen(false)}>Cancel</button><button className="button primary" onClick={saveDecision}><Save /> Save reasoning</button></footer></section></div> : null}
 
-      {coachOpen ? <aside className="coach-drawer" aria-label="Contextual coach"><header><div><span className="coach-icon"><Bot /></span><div><strong>AI Coach</strong><small>Grounded in the current stage</small></div></div><button className="icon-button" onClick={() => setCoachOpen(false)} aria-label="Close contextual coach"><X /></button></header><div className="coach-body"><span className="coach-label">Guided question</span><p>{coachPrompt(attempt)}</p><div className="coach-context">The production AI gateway will replace this deterministic prompt boundary in the backend slice.</div></div></aside> : null}
+      {coachOpen ? <aside className="coach-drawer" aria-label="Contextual coach"><header><div><span className="coach-icon"><Bot /></span><div><strong>AI Coach</strong><small>Grounded in the current stage</small></div></div><button className="icon-button" onClick={() => setCoachOpen(false)} aria-label="Close contextual coach"><X /></button></header><div className="coach-body"><span className="coach-label">Guided question</span><p>{coachPrompt(attempt)}</p><div className="coach-context">This is a scripted prompt tied to your current stage, not a live conversation — it won't respond to follow-ups.</div></div></aside> : null}
     </section>
   );
 }
@@ -120,12 +149,19 @@ function ReviewStage({ attempt, dispatch }: { attempt: AttemptState; dispatch: D
     const decisionDelta = Object.keys(attempt.decisions).length - Object.keys(attempt.revisionBase.decisions).length;
     return `${nodeDelta >= 0 ? "+" : ""}${nodeDelta} components and ${decisionDelta >= 0 ? "+" : ""}${decisionDelta} decisions since the initial submission.`;
   }, [attempt]);
-  return <div className="review-stage"><header><div><h2>{attempt.revisionCount ? "Revision evaluated" : "Initial feedback"}</h2><p>Evidence is linked to the architecture, decisions, and stress response.</p></div><strong className="score">{score}<small>/100</small></strong></header><div className="feedback-grid"><section><span>Strength</span><h3>Request and ingestion paths are separated</h3><p>The queue protects asynchronous document work from user-facing retrieval latency.</p></section><section><span>Risk</span><h3>Retrieval saturation needs a measured response</h3><p>{attempt.mitigation || "No mitigation evidence was submitted."}</p></section><section><span>Revision evidence</span><h3>{attempt.revisionCount ? "Design changed after feedback" : "One revision is required"}</h3><p>{comparison}</p></section></div><footer>{attempt.revisionCount === 0 ? <button className="button primary" onClick={() => dispatch({ type: "start-revision" })}>Revise architecture<ChevronRight /></button> : <div className="completion-message"><Check /> Mission loop complete. The attempt is saved and ready for competency processing.</div>}</footer></div>;
+  const strongestDecision = useMemo(() => {
+    const entries = Object.entries(attempt.decisions).sort((a, b) => b[1].length - a[1].length);
+    if (!entries.length) return null;
+    const [nodeId, text] = entries[0];
+    const node = attempt.nodes.find((candidate) => candidate.id === nodeId);
+    return { label: node?.data.label ?? "a component", text };
+  }, [attempt.decisions, attempt.nodes]);
+  return <div className="review-stage"><header><div><h2>{attempt.revisionCount ? "Revision evaluated" : "Initial feedback"}</h2><p>Evidence is linked to the architecture, decisions, and stress response.</p></div><strong className="score">{score}<small>/100</small></strong></header><div className="feedback-grid"><section><span>Strength</span>{strongestDecision ? <><h3>Your strongest recorded decision</h3><p>{`On ${strongestDecision.label}: "${strongestDecision.text}"`}</p></> : <><h3>No decisions recorded yet</h3><p>Record at least one decision on the architecture to see it reflected here.</p></>}</section><section><span>Risk</span><h3>Retrieval saturation needs a measured response</h3><p>{attempt.mitigation || "No mitigation evidence was submitted."}</p></section><section><span>Revision evidence</span><h3>{attempt.revisionCount ? "Design changed after feedback" : "One revision is required"}</h3><p>{comparison}</p></section></div><footer>{attempt.revisionCount === 0 ? <button className="button primary" onClick={() => dispatch({ type: "start-revision" })}>Revise architecture<ChevronRight /></button> : <div className="completion-message"><Check /> Mission loop complete. The attempt is saved and ready for competency processing.</div>}</footer></div>;
 }
 
 function stageInstruction(stage: MissionStage, mode: AttemptState["mode"]) {
   const guidance = mode === "beginner" ? "Guided" : mode === "interview" ? "Defend each choice" : "Use operational evidence";
-  const tasks = { requirements: "Clarify constraints", estimation: "Quantify scale", architecture: "Build and defend", stress: "Diagnose and mitigate", review: "Compare evidence" };
+  const tasks = { requirements: "Clarify constraints", estimation: "Quantify scale", architecture: "Build and defend, then respond to a stress event and one revision", stress: "Diagnose and mitigate", review: "Compare evidence" };
   return `${guidance} - ${tasks[stage]}`;
 }
 

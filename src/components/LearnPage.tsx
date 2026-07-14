@@ -14,6 +14,8 @@ export function LearnPage({ completedModules, completedLessons, onComplete }: Le
   const [questionIndex, setQuestionIndex] = useState(0);
   const [choice, setChoice] = useState<number | null>(null);
   const [checked, setChecked] = useState(false);
+  const [invalidated, setInvalidated] = useState(false);
+  const [attempts, setAttempts] = useState(0);
   const activeModule = useMemo(() => learningModules.find((module) => module.id === activeId) ?? learningModules[0], [activeId]);
   const activeLesson = activeModule.lessons[Math.min(lessonIndex, activeModule.lessons.length - 1)];
   const course = lessonCourseContent[activeLesson.id] ?? fallbackCourse(activeLesson);
@@ -27,6 +29,13 @@ export function LearnPage({ completedModules, completedLessons, onComplete }: Le
     setQuestionIndex(0);
     setChoice(null);
     setChecked(false);
+    setInvalidated(false);
+    setAttempts(0);
+  };
+  const revealAnswer = () => {
+    setChoice(activeQuestion.correct);
+    setChecked(true);
+    setInvalidated(false);
   };
   const selectModule = (id: string) => {
     setActiveId(id);
@@ -121,15 +130,17 @@ export function LearnPage({ completedModules, completedLessons, onComplete }: Le
             <h2>{activeQuestion.prompt}</h2>
             <div className="lesson-options" role="group" aria-label="Decision options">
               {activeQuestion.options.map((option, index) => (
-                <button key={option} className={choice === index ? "lesson-option selected" : "lesson-option"} onClick={() => { setChoice(index); setChecked(false); }} aria-pressed={choice === index}>
+                <button key={option} className={choice === index ? "lesson-option selected" : "lesson-option"} onClick={() => { if (checked) setInvalidated(true); setChoice(index); setChecked(false); }} aria-pressed={choice === index}>
                   {option}{choice === index ? <Check /> : null}
                 </button>
               ))}
             </div>
+            {invalidated && !checked ? <p className="check-hint">Selection changed — check your answer again.</p> : null}
             {checked ? <div className={answerCorrect ? "inline-feedback success" : "inline-feedback warning"} role="status">{answerCorrect ? activeQuestion.feedback : "Not yet. Compare the options against the scenario's hardest constraint, failure behavior, and the evidence needed before rollout."}</div> : null}
+            {!answerCorrect && attempts >= 2 ? <div className="inline-feedback reveal" role="status"><span>Still stuck? </span><button className="button text" onClick={revealAnswer}>Reveal answer and continue</button></div> : null}
             <div className="lesson-actions">
-              <button className="button secondary" disabled={choice === null} onClick={() => setChecked(true)}>Check answer</button>
-              {questionIndex < knowledgeChecks.length - 1 ? <button className="button primary" disabled={!answerCorrect} onClick={() => { setQuestionIndex((value) => value + 1); setChoice(null); setChecked(false); }}>Next question <ChevronRight /></button> : <button className="button primary" disabled={!answerCorrect || lessonDone} onClick={() => onComplete(activeModule.id, activeLesson.id, activeModule.lessons.map((lesson) => lesson.id))}>{lessonDone ? <><CircleCheck /> Completed</> : activeModule.lessons.length === 1 ? "Complete module" : "Complete lesson"}</button>}
+              <button className="button secondary" disabled={choice === null} onClick={() => { setChecked(true); setInvalidated(false); if (choice !== activeQuestion.correct) setAttempts((value) => value + 1); }}>Check answer</button>
+              {questionIndex < knowledgeChecks.length - 1 ? <button className="button primary" disabled={!answerCorrect} onClick={() => { setQuestionIndex((value) => value + 1); setChoice(null); setChecked(false); setInvalidated(false); setAttempts(0); }}>Next question <ChevronRight /></button> : <button className="button primary" disabled={!answerCorrect || lessonDone} onClick={() => onComplete(activeModule.id, activeLesson.id, activeModule.lessons.map((lesson) => lesson.id))}>{lessonDone ? <><CircleCheck /> Completed</> : activeModule.lessons.length === 1 ? "Complete module" : "Complete lesson"}</button>}
             </div>
           </section>
 

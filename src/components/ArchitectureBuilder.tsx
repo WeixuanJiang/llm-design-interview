@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState, type DragEvent } from "react";
 import { AWS_SERVICE_GROUPS, awsServiceLibrary, type AwsServiceGroup } from "../data/awsServiceLibrary";
 import { enterpriseRagMission } from "../data/enterpriseRagMission";
 import type { ArchitectureEdge, ArchitectureNode, AttemptState, ComponentCategory } from "../domain/types";
+import { ConfirmDialog } from "./ConfirmDialog";
 import { SystemNode } from "./SystemNode";
 
 interface ArchitectureBuilderProps {
@@ -33,6 +34,7 @@ export function ArchitectureBuilder(props: ArchitectureBuilderProps) {
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [componentQuery, setComponentQuery] = useState("");
   const [componentGroup, setComponentGroup] = useState<"All" | "Recommended" | AwsServiceGroup>("Recommended");
+  const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null);
   const nodeTypes = useMemo(() => ({ systemNode: SystemNode }), []);
   const selected = props.attempt.nodes.find((node) => node.id === props.attempt.selectedNodeId) ?? null;
   const onSelectionChange = useCallback(({ nodes }: { nodes: ArchitectureNode[] }) => props.onSelectNode(nodes[0]?.id ?? null), [props.onSelectNode]);
@@ -67,7 +69,7 @@ export function ArchitectureBuilder(props: ArchitectureBuilderProps) {
       id,
       type: "systemNode",
       position: position ?? { x: 120 + (props.attempt.nodes.length % 4) * 220, y: 120 + Math.floor(props.attempt.nodes.length / 4) * 190 },
-      data: { label: component.label, service: component.service, category: component.category as ComponentCategory, description: component.description, metric: "Unconfigured" },
+      data: { label: component.label, service: component.service, category: component.category as ComponentCategory, description: component.description },
     });
     setPaletteOpen(false);
   };
@@ -117,8 +119,18 @@ export function ArchitectureBuilder(props: ArchitectureBuilderProps) {
         </div>
       </div>
       <footer className="node-inspector">
-        {selected ? <><div><span className="inspector-label">Selected component</span><strong>{selected.data.label}</strong><p>{props.attempt.decisions[selected.id] || "No decision recorded. Explain the requirement, trade-off, and revisit condition."}</p></div><div className="inspector-actions"><button className="button secondary" onClick={props.onEditDecision}>Edit reasoning</button><button className="icon-button danger" onClick={() => props.onRemoveNode(selected.id)} aria-label={`Remove ${selected.data.label}`} title={`Remove ${selected.data.label}`}><Trash2 /></button></div></> : <p>Select a component to inspect its decision.</p>}
+        {selected ? <><div><span className="inspector-label">Selected component</span><strong>{selected.data.label}</strong><p title={props.attempt.decisions[selected.id] || undefined}>{props.attempt.decisions[selected.id] || "No decision recorded. Explain the requirement, trade-off, and revisit condition."}</p></div><div className="inspector-actions"><button className="button secondary" onClick={props.onEditDecision}>Edit reasoning</button><button className="icon-button danger" onClick={() => setConfirmRemoveId(selected.id)} aria-label={`Remove ${selected.data.label}`} title={`Remove ${selected.data.label}`}><Trash2 /></button></div></> : <p>Select a component to inspect its decision.</p>}
       </footer>
+
+      <ConfirmDialog
+        open={confirmRemoveId !== null}
+        title="Remove component?"
+        body={confirmRemoveId ? `Remove ${props.attempt.nodes.find((node) => node.id === confirmRemoveId)?.data.label ?? "this component"}? Its recorded decision and connections will be deleted.` : ""}
+        confirmLabel="Remove"
+        tone="danger"
+        onConfirm={() => { if (confirmRemoveId) props.onRemoveNode(confirmRemoveId); setConfirmRemoveId(null); }}
+        onCancel={() => setConfirmRemoveId(null)}
+      />
     </div>
   );
 }

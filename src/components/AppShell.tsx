@@ -1,4 +1,4 @@
-import { BookOpen, Boxes, ChartNoAxesColumnIncreasing, GraduationCap, House, Target } from "lucide-react";
+import { BookOpen, Boxes, ChartNoAxesColumnIncreasing, GraduationCap, House, Laptop, Moon, Sun, Target } from "lucide-react";
 import type { ReactNode } from "react";
 
 export type AppSection = "home" | "learn" | "missions" | "practice" | "progress";
@@ -8,6 +8,8 @@ interface AppShellProps {
   context: string;
   section: AppSection;
   onNavigate: (section: AppSection) => void;
+  theme: "light" | "dark";
+  onToggleTheme: () => void;
 }
 
 const navigation = [
@@ -18,7 +20,7 @@ const navigation = [
   { id: "progress" as const, label: "Progress", icon: ChartNoAxesColumnIncreasing },
 ];
 
-export function AppShell({ children, context, section, onNavigate }: AppShellProps) {
+export function AppShell({ children, context, section, onNavigate, theme, onToggleTheme }: AppShellProps) {
   return (
     <div className="app-shell">
       <aside className="sidebar" aria-label="Primary navigation">
@@ -34,9 +36,12 @@ export function AppShell({ children, context, section, onNavigate }: AppShellPro
             </button>
           ))}
         </nav>
+        <button className="theme-toggle" onClick={onToggleTheme} aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}>
+          {theme === "dark" ? <Sun /> : <Moon />}<span>{theme === "dark" ? "Light mode" : "Dark mode"}</span>
+        </button>
         <div className="profile">
-          <span className="avatar">JD</span>
-          <span><strong>Jordan Lee</strong><small>AI engineer</small></span>
+          <span className="avatar"><Laptop /></span>
+          <span><strong>Local session</strong><small>Saved only on this device</small></span>
         </div>
       </aside>
       <main className="main-shell">

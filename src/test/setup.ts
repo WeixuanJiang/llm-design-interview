@@ -15,6 +15,20 @@ class TestResizeObserver {
 }
 
 globalThis.ResizeObserver = TestResizeObserver;
+
+if (!window.matchMedia) {
+  window.matchMedia = (query: string) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: () => {},
+    removeListener: () => {},
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    dispatchEvent: () => false,
+  }) as MediaQueryList;
+}
+
 import { cleanup } from "@testing-library/react";
 import { afterEach } from "vitest";
 
