@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-14T10:50:57.1568525+10:00",
+  "title": "Design System: AI System Design Gym",
+  "extensions": {
+    "colorMeta": {
+      "workshop-indigo": { "role": "primary", "displayName": "Workshop Indigo", "canonical": "#4f46e5", "tonalRamp": ["#17133f", "#26206f", "#3730a3", "#4f46e5", "#6d64ea", "#938df1", "#c8c5f8", "#f1f0ff"] },
+      "workshop-indigo-deep": { "role": "primary", "displayName": "Workshop Indigo Deep", "canonical": "#4338ca", "tonalRamp": ["#151139", "#241c68", "#342a98", "#4338ca", "#665ddd", "#8f88e9", "#c4c0f5", "#efedff"] },
+      "workshop-indigo-soft": { "role": "primary", "displayName": "Workshop Indigo Soft", "canonical": "#eef0ff", "tonalRamp": ["#1b1d42", "#30336c", "#4a4e92", "#686dac", "#8b8fc8", "#b0b4df", "#d4d7f0", "#eef0ff"] },
+      "deep-ink": { "role": "neutral", "displayName": "Deep Ink", "canonical": "#17191d", "tonalRamp": ["#17191d", "#2c3037", "#444952", "#5e646e", "#7b818b", "#9ca1a9", "#c6c9ce", "#f1f2f4"] },
+      "workbench-canvas": { "role": "neutral", "displayName": "Workbench Canvas", "canonical": "#f7f8fa", "tonalRamp": ["#1b1c20", "#34363b", "#50535a", "#70737b", "#92969e", "#b8bbc2", "#dcdee3", "#f7f8fa"] },
+      "clear-surface": { "role": "neutral", "displayName": "Clear Surface", "canonical": "#ffffff", "tonalRamp": ["#191a1d", "#343539", "#525357", "#737478", "#96979a", "#babbbd", "#dedfe0", "#ffffff"] },
+      "soft-surface": { "role": "neutral", "displayName": "Soft Surface", "canonical": "#f1f3f7", "tonalRamp": ["#191b20", "#30343c", "#4b505a", "#6a707b", "#8d939e", "#b3b8c1", "#d8dce3", "#f1f3f7"] },
+      "hover-surface": { "role": "neutral", "displayName": "Hover Surface", "canonical": "#f8f9fc", "tonalRamp": ["#1a1b20", "#33353c", "#50525b", "#70727b", "#92959e", "#b8bac2", "#dddfe5", "#f8f9fc"] },
+      "supporting-text": { "role": "neutral", "displayName": "Supporting Text", "canonical": "#667085", "tonalRamp": ["#181c26", "#2a3242", "#404b61", "#56647c", "#718099", "#96a0b1", "#c2c8d2", "#eef0f4"] },
+      "quiet-text": { "role": "neutral", "displayName": "Quiet Text", "canonical": "#98a2b3", "tonalRamp": ["#1b1e24", "#333944", "#4e5664", "#6d7686", "#8d97a8", "#adb5c2", "#cfd4dc", "#f1f3f6"] },
+      "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "#e4e7ec", "tonalRamp": ["#1b1c1f", "#35373b", "#52555a", "#73767c", "#96999f", "#b9bcc1", "#d9dce1", "#f4f5f7"] },
+      "strong-hairline": { "role": "neutral", "displayName": "Strong Hairline", "canonical": "#d0d5dd", "tonalRamp": ["#1b1c20", "#35383e", "#52565e", "#737881", "#969ba5", "#b8bdc6", "#d7dbe1", "#f3f4f6"] },
+      "interview-violet": { "role": "secondary", "displayName": "Interview Violet", "canonical": "#7c3aed", "tonalRamp": ["#25103f", "#421770", "#5d239f", "#7c3aed", "#965eea", "#b188f0", "#d0bef8", "#f4efff"] },
+      "success-green": { "role": "tertiary", "displayName": "Success Green", "canonical": "#15803d", "tonalRamp": ["#082919", "#0b4a27", "#106731", "#15803d", "#3d9b60", "#6fb784", "#a9d5b5", "#ebf8ee"] },
+      "caution-amber": { "role": "tertiary", "displayName": "Caution Amber", "canonical": "#b45309", "tonalRamp": ["#351904", "#602b05", "#8a3e06", "#b45309", "#ce742d", "#df9a61", "#efc8a1", "#fff5e9"] },
+      "risk-red": { "role": "tertiary", "displayName": "Risk Red", "canonical": "#b42318", "tonalRamp": ["#390b08", "#64120d", "#8c1b13", "#b42318", "#cc4c42", "#df7c74", "#efb4af", "#fdeeed"] },
+      "guidance-blue": { "role": "secondary", "displayName": "Guidance Blue", "canonical": "#175cd3", "tonalRamp": ["#071d45", "#0a3474", "#104aa6", "#175cd3", "#477dda", "#7ca3e7", "#b5caf2", "#edf4ff"] },
+      "evidence-cyan": { "role": "secondary", "displayName": "Evidence Cyan", "canonical": "#0e7490", "tonalRamp": ["#05262f", "#084454", "#0a6177", "#0e7490", "#388fa6", "#70afbf", "#afd3dc", "#eaf8fa"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Home introduction only; never inside task panels." },
+      "headline": { "displayName": "Headline", "purpose": "Page titles and major task prompts." },
+      "title": { "displayName": "Title", "purpose": "Sections, missions, and panel anchors." },
+      "body": { "displayName": "Body", "purpose": "Prompts, explanations, decisions, and feedback." },
+      "label": { "displayName": "Label", "purpose": "Controls, navigation, metadata, and compact titles." },
+      "data": { "displayName": "Data", "purpose": "Timers, metrics, calculations, scores, and identifiers." }
+    },
+    "shadows": [
+      { "name": "resting-hairline", "value": "0 1px 2px rgba(16, 24, 40, 0.04)", "purpose": "Minimal separation for panels that need it." },
+      { "name": "interactive-lift", "value": "0 12px 32px rgba(16, 24, 40, 0.08)", "purpose": "Hovered cards, floating feedback, and interactive nodes." },
+      { "name": "drawer-depth", "value": "-14px 0 28px rgba(16, 24, 40, 0.05)", "purpose": "Directional separation for the AI interviewer drawer." },
+      { "name": "focused-ring", "value": "0 0 0 3px rgba(79, 70, 229, 0.12)", "purpose": "Visible focus and selected architecture state." }
+    ],
+    "motion": [
+      { "name": "state-fast", "value": "150ms ease", "purpose": "Buttons, navigation, filters, and compact control states." },
+      { "name": "surface-response", "value": "160ms ease", "purpose": "Cards and architecture nodes responding to hover or selection." },
+      { "name": "drawer", "value": "220ms ease", "purpose": "AI drawer and workspace-width transitions." },
+      { "name": "progress", "value": "300ms ease", "purpose": "Progress bars and measured state changes." }
+    ],
+    "breakpoints": [
+      { "name": "rail-collapse", "value": "1180px" },
+      { "name": "single-column", "value": "900px" },
+      { "name": "mobile-shell", "value": "720px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The dominant command in a task region.",
+      "html": "<button class=\"ds-btn-primary\">Continue</button>",
+      "css": ".ds-btn-primary{min-height:36px;border:1px solid var(--primary,#4f46e5);border-radius:9px;padding:0 14px;background:var(--primary,#4f46e5);color:#fff;font:680 12px Inter,ui-sans-serif,system-ui,sans-serif;transition:background 150ms ease,transform 150ms ease}.ds-btn-primary:hover{background:var(--primary-dark,#4338ca);transform:translateY(-1px)}.ds-btn-primary:focus-visible{outline:3px solid rgba(79,70,229,.22);outline-offset:2px}.ds-btn-primary:active{transform:none}.ds-btn-primary:disabled{cursor:not-allowed;opacity:.55;transform:none}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "A supporting action with clear indigo context.",
+      "html": "<button class=\"ds-btn-secondary\">Use beginner mode</button>",
+      "css": ".ds-btn-secondary{min-height:36px;border:1px solid #d8d5ff;border-radius:9px;padding:0 13px;background:var(--primary-soft,#eef0ff);color:var(--primary-dark,#4338ca);font:680 12px Inter,ui-sans-serif,system-ui,sans-serif;transition:background 150ms ease,border-color 150ms ease}.ds-btn-secondary:hover{border-color:#b7b4ff;background:#e7e9ff}.ds-btn-secondary:focus-visible{outline:3px solid rgba(79,70,229,.18);outline-offset:2px}.ds-btn-secondary:active{background:#dedfff}.ds-btn-secondary:disabled{cursor:not-allowed;opacity:.55}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "A familiar low-emphasis command for utility actions.",
+      "html": "<button class=\"ds-btn-ghost\">View rubric</button>",
+      "css": ".ds-btn-ghost{min-height:36px;border:1px solid var(--border-strong,#d0d5dd);border-radius:9px;padding:0 12px;background:var(--surface,#fff);color:#344054;font:680 12px Inter,ui-sans-serif,system-ui,sans-serif;transition:background 150ms ease,border-color 150ms ease}.ds-btn-ghost:hover{background:var(--surface-hover,#f8f9fc)}.ds-btn-ghost:focus-visible{outline:3px solid rgba(79,70,229,.18);outline-offset:2px}.ds-btn-ghost:active{background:var(--surface-soft,#f1f3f7)}.ds-btn-ghost:disabled{cursor:not-allowed;opacity:.55}"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "input-search",
+      "description": "Compact search for missions, components, and evidence.",
+      "html": "<label class=\"ds-search\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-4-4\"/></svg><input type=\"search\" placeholder=\"Search components\" aria-label=\"Search components\"></label>",
+      "css": ".ds-search{display:flex;align-items:center;gap:8px;height:34px;padding:0 10px;border:1px solid transparent;border-radius:8px;background:var(--surface-soft,#f1f3f7);color:var(--subtle,#667085);transition:border-color 150ms ease,background 150ms ease}.ds-search:focus-within{border-color:var(--primary,#4f46e5);background:var(--surface,#fff);box-shadow:0 0 0 3px rgba(79,70,229,.12)}.ds-search svg{width:15px;height:15px}.ds-search input{min-width:0;width:100%;border:0;outline:0;background:transparent;color:var(--text,#17191d);font:400 11px Inter,ui-sans-serif,system-ui,sans-serif}.ds-search input::placeholder{color:#667085;opacity:1}.ds-search:has(input:disabled){cursor:not-allowed;opacity:.6}"
+    },
+    {
+      "name": "Metadata Chip",
+      "kind": "chip",
+      "refersTo": "chip-metadata",
+      "description": "Compact, non-promotional context such as duration, skills, and mode.",
+      "html": "<span class=\"ds-chip\">7 skills</span>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;min-height:24px;border:1px solid var(--border,#e4e7ec);border-radius:7px;padding:5px 7px;background:var(--surface,#fff);color:#475467;font:650 9.5px Inter,ui-sans-serif,system-ui,sans-serif}"
+    },
+    {
+      "name": "Active Navigation Item",
+      "kind": "nav",
+      "refersTo": "navigation-active",
+      "description": "Current location in the desktop product shell.",
+      "html": "<button class=\"ds-nav-active\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" aria-hidden=\"true\"><path d=\"m12 3 2.7 5.5L21 9.4l-4.5 4.4 1.1 6.2-5.6-2.9L6.4 20l1.1-6.2L3 9.4l6.3-.9z\"/></svg><span>Missions</span></button>",
+      "css": ".ds-nav-active{display:flex;align-items:center;gap:10px;width:100%;border:0;border-radius:9px;padding:10px 11px;background:var(--primary-soft,#eef0ff);color:var(--primary-dark,#4338ca);font:580 13px Inter,ui-sans-serif,system-ui,sans-serif;text-align:left;transition:background 150ms ease}.ds-nav-active:hover{background:#e7e9ff}.ds-nav-active:focus-visible{outline:3px solid rgba(79,70,229,.18);outline-offset:2px}.ds-nav-active svg{width:17px;height:17px}"
+    },
+    {
+      "name": "Architecture Node",
+      "kind": "custom",
+      "description": "The signature structured component for system design work.",
+      "html": "<button class=\"ds-node\"><span class=\"ds-node-top\"><span class=\"ds-node-icon\">ECS</span><strong>Retrieval Service</strong></span><span class=\"ds-node-desc\">Container compute for the query path</span><span class=\"ds-node-metric\">450 peak QPS</span></button>",
+      "css": ".ds-node{display:block;width:170px;min-height:82px;border:1px solid var(--border-strong,#d0d5dd);border-radius:11px;padding:11px 12px;background:var(--surface,#fff);color:var(--text,#17191d);text-align:left;box-shadow:0 4px 12px rgba(16,24,40,.06);transition:border-color 160ms ease,box-shadow 160ms ease,transform 160ms ease}.ds-node:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(16,24,40,.10)}.ds-node:focus-visible{outline:0;border-color:var(--primary,#4f46e5);box-shadow:0 0 0 3px rgba(79,70,229,.12),0 8px 18px rgba(16,24,40,.08)}.ds-node-top{display:flex;align-items:center;gap:8px}.ds-node-icon{display:grid;place-items:center;width:27px;height:27px;border-radius:7px;background:#eff8ff;color:#175cd3;font:800 9px Inter,ui-sans-serif,system-ui,sans-serif}.ds-node strong{font:740 11.5px Inter,ui-sans-serif,system-ui,sans-serif}.ds-node-desc{display:block;margin-top:7px;color:#667085;font:400 10px/1.35 Inter,ui-sans-serif,system-ui,sans-serif}.ds-node-metric{display:block;margin-top:7px;color:#475467;font:600 9.5px ui-monospace,SFMono-Regular,Menlo,monospace}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Interactive Engineering Workbench",
+    "overview": "The interface should feel like a capable work surface where learners inspect, assemble, explain, and revise systems. Its visual character is restrained and precise so the architecture, evidence, decisions, and feedback remain the focus. Engagement comes from responsive state changes and meaningful consequences, not decorative spectacle.\n\nThe system uses dense but legible controls, cool neutral working surfaces, and one disciplined indigo action color. It explicitly rejects the feel of a passive video course, a generic chatbot, an exam portal, and an overloaded enterprise dashboard. Progressive disclosure must keep one primary task dominant while contextual tools remain close at hand.",
+    "keyCharacteristics": [
+      "Compact, precise, and responsive controls.",
+      "Clear hierarchy built from typography, spacing, and tonal layers.",
+      "Indigo reserved for action, selection, and progress.",
+      "Semantic colors used only when they carry operational meaning.",
+      "Familiar product patterns that disappear into the engineering task."
+    ],
+    "rules": [
+      { "name": "The One Action Voice Rule", "body": "Workshop Indigo is reserved for primary actions, current selection, focus, and progress. It is never background decoration.", "section": "colors" },
+      { "name": "The Semantic Evidence Rule", "body": "Green, amber, red, blue, violet, and cyan must communicate a named mode, state, category, or consequence. Never scatter them for visual variety.", "section": "colors" },
+      { "name": "The Contrast Before Quiet Rule", "body": "Supporting copy must remain readable at WCAG 2.2 AA. If text feels faint, darken it before adding weight or size.", "section": "colors" },
+      { "name": "The Product Scale Rule", "body": "Mission workspaces use a fixed, compact type scale. Large display typography belongs only to the Home introduction, never inside panels or task cards.", "section": "typography" },
+      { "name": "The Evidence Mono Rule", "body": "Monospace means measured or structured data. Do not use it as a general technical aesthetic.", "section": "typography" },
+      { "name": "The Rare Uppercase Rule", "body": "Uppercase tracked labels identify a small number of system categories. Do not place an eyebrow above every section.", "section": "typography" },
+      { "name": "The Flat-at-Rest Rule", "body": "A surface that already has a visible border does not receive a broad decorative shadow. Elevation appears because state or stacking changed.", "section": "elevation" },
+      { "name": "The Quiet Depth Rule", "body": "Shadow color is tinted Deep Ink at low opacity. Pure black and hard-edged shadows are prohibited.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep one primary task dominant and reveal contextual tools progressively.",
+      "Do reserve Workshop Indigo for actions, selection, progress, and focus.",
+      "Do use borders and tonal layers before introducing elevation.",
+      "Do provide default, hover, focus, active, disabled, loading, and error states for every interactive component.",
+      "Do preserve stable dimensions for nodes, toolbars, buttons, counters, and timers.",
+      "Do pair every semantic color with text, iconography, shape, or position.",
+      "Do honor reduced motion and remove mandatory timers when accessibility settings require it."
+    ],
+    "donts": [
+      "Don't make the product feel like a passive video course; every learning surface must lead to an attempt or decision.",
+      "Don't make the product feel like a generic chatbot; conversation is always grounded in a mission stage and learner evidence.",
+      "Don't make the product feel like an exam portal; pressure belongs only to explicitly selected Interview mode.",
+      "Don't make the product feel like an overloaded enterprise dashboard; never expose every tool, metric, and panel simultaneously.",
+      "Don't nest cards, use colored side-stripe borders, apply gradient text, or add decorative glass effects.",
+      "Don't combine a visible one-pixel card border with a broad decorative shadow at rest.",
+      "Don't use tiny uppercase tracked eyebrows as default section scaffolding.",
+      "Don't exceed the surface radius for cards, panels, or inputs, and never use pill shapes for ordinary containers.",
+      "Don't animate decoration. Motion must communicate state, feedback, navigation, or stacking."
+    ]
+  }
+}

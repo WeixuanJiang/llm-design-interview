@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>AI System Design Gym — Interactive Product Prototype</title>
+  <style>
+    :root {
+      --bg: #f7f8fa;
+      --surface: #ffffff;
+      --surface-soft: #f1f3f7;
+      --surface-hover: #f8f9fc;
+      --text: #17191d;
+      --muted: #667085;
+      --subtle: #98a2b3;
+      --border: #e4e7ec;
+      --border-strong: #d0d5dd;
+      --primary: #4f46e5;
+      --primary-dark: #4338ca;
+      --primary-soft: #eef0ff;
+      --violet: #7c3aed;
+      --violet-soft: #f4f0ff;
+      --green: #15803d;
+      --green-soft: #ecfdf3;
+      --amber: #b45309;
+      --amber-soft: #fffaeb;
+      --red: #b42318;
+      --red-soft: #fef3f2;
+      --blue: #175cd3;
+      --blue-soft: #eff8ff;
+      --cyan: #0e7490;
+      --cyan-soft: #ecfeff;
+      --ink: #101828;
+      --text-strong: #344054;
+      --text-secondary: #475467;
+      --surface-raised: #fcfcfd;
+      --surface-canvas: #fafbfc;
+      --surface-primary-hover: #fafaff;
+      --primary-border: #d9dcff;
+      --primary-border-strong: #b7b9ef;
+      --primary-highlight: #bcb8ff;
+      --primary-highlight-soft: #cbc9ff;
+      --primary-copy: #5b57a5;
+      --success-strong: #027a48;
+      --warning-strong: #b54708;
+      --warning-text: #7a2e0e;
+      --warning-copy: #93370d;
+      --warning-border: #fdb022;
+      --warning-emphasis: #f79009;
+      --warning-surface: #fff8ed;
+      --warning-icon-surface: #ffead5;
+      --connector: #aeb4bf;
+      --connector-strong: #8f96a3;
+      --connector-soft: #d9dde5;
+      --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04);
+      --shadow-md: 0 12px 32px rgba(16, 24, 40, 0.08);
+      --shadow-lg: 0 24px 60px rgba(16, 24, 40, 0.12);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --sidebar-width: 236px;
+      --interviewer-width: 340px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; min-height: 100vh; overflow: hidden; background: var(--bg); }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    svg { stroke-linecap: round; stroke-linejoin: round; }
+    [hidden] { display: none !important; }
+
+    .app {
+      display: grid;
+      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+      height: 100vh;
+    }
+
+    .sidebar {
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+      padding: 18px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      z-index: 30;
+    }
+
+    .brand { display: flex; align-items: center; gap: 10px; padding: 4px 8px 12px; }
+    .brand-mark {
+      width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center;
+      color: var(--surface); background: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+    .brand-mark svg { width: 20px; height: 20px; }
+    .brand-name { font-weight: 760; font-size: 14px; letter-spacing: 0; line-height: 1.2; }
+    .brand-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .nav-label { padding: 0 10px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--subtle); font-weight: 750; }
+    .nav-list { display: grid; gap: 4px; }
+    .nav-item {
+      border: 0; width: 100%; background: transparent; color: var(--text-secondary); border-radius: 9px;
+      padding: 10px 11px; display: flex; align-items: center; gap: 10px; text-align: left;
+      font-size: 13px; font-weight: 580; transition: background 150ms ease, color 150ms ease;
+    }
+    .nav-item:hover { background: var(--surface-hover); color: var(--text); }
+    .nav-item.active { background: var(--primary-soft); color: var(--primary-dark); }
+    .nav-item svg { width: 17px; height: 17px; stroke-width: 1.8; }
+    .nav-item .nav-count { margin-left: auto; min-width: 20px; height: 20px; border-radius: 6px; display: grid; place-items: center; background: var(--surface-soft); color: var(--muted); font-size: 9px; font-weight: 750; }
+    .nav-item.active .nav-count { background: rgba(79,70,229,.1); color: var(--primary-dark); }
+    .sidebar-spacer { flex: 1; }
+    .mini-profile { border-top: 1px solid var(--border); padding: 14px 8px 0; display: flex; align-items: center; gap: 10px; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; color: var(--primary-dark); background: var(--primary-soft); font-weight: 780; font-size: 12px; }
+    .profile-name { font-size: 12px; font-weight: 680; }
+    .profile-level { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    .main-shell { min-width: 0; display: flex; flex-direction: column; height: 100vh; }
+    .topbar {
+      height: 66px; flex: 0 0 auto; background: rgba(255,255,255,0.92); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; padding: 0 22px; backdrop-filter: blur(12px); z-index: 20;
+    }
+    .breadcrumbs { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+    .breadcrumbs strong { color: var(--text); font-weight: 680; }
+    .breadcrumbs svg { width: 14px; height: 14px; }
+    .top-actions { display: flex; align-items: center; gap: 10px; }
+    .mode-switch { background: var(--surface-soft); border: 1px solid var(--border); border-radius: 9px; padding: 3px; display: flex; gap: 2px; }
+    .mode-btn { border: 0; background: transparent; color: var(--muted); border-radius: 6px; padding: 7px 10px; font-size: 11px; font-weight: 680; transition: 150ms ease; }
+    .mode-btn:hover { color: var(--text); }
+    .mode-btn.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow-sm); }
+    .ghost-btn, .primary-btn, .secondary-btn, .icon-btn {
+      border-radius: 9px; min-height: 36px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      font-size: 12px; font-weight: 680; transition: 150ms ease; white-space: nowrap;
+    }
+    .ghost-btn { border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-strong); padding: 0 12px; }
+    .ghost-btn:hover { background: var(--surface-hover); }
+    .primary-btn { border: 1px solid var(--primary); background: var(--primary); color: var(--surface); padding: 0 14px; }
+    .primary-btn:hover { background: var(--primary-dark); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+    .primary-btn:active, .secondary-btn:active, .ghost-btn:active { transform: translateY(0); }
+    .secondary-btn { border: 1px solid var(--primary-border); background: var(--primary-soft); color: var(--primary-dark); padding: 0 13px; }
+    .secondary-btn:hover { border-color: var(--primary-highlight); background: var(--primary-soft); }
+    .icon-btn { border: 1px solid var(--border); background: var(--surface); color: var(--muted); width: 36px; padding: 0; }
+    .icon-btn:hover { color: var(--text); background: var(--surface-hover); }
+    .icon-btn svg, .ghost-btn svg, .primary-btn svg, .secondary-btn svg { width: 16px; height: 16px; }
+
+    .page-container { flex: 1; min-height: 0; overflow: auto; }
+    .page { display: none; min-height: 100%; animation: pageIn 180ms ease-out; }
+    .page.active { display: block; }
+    @keyframes pageIn { from { opacity: .25; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .page-pad { padding: 28px 30px 44px; max-width: 1440px; margin: 0 auto; }
+
+    .page-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 22px; margin-bottom: 24px; }
+    .page-title h1 { margin: 0; font-size: 28px; line-height: 1.15; letter-spacing: 0; }
+    .page-title p { margin: 8px 0 0; color: var(--muted); font-size: 13px; line-height: 1.55; max-width: 720px; }
+    .page-actions { display: flex; gap: 8px; align-items: center; }
+    .eyebrow { color: var(--primary); text-transform: uppercase; letter-spacing: .11em; font-size: 10px; font-weight: 780; margin-bottom: 9px; }
+
+    .hero {
+      min-height: 300px; border: 1px solid var(--border); background: var(--surface); border-radius: 18px;
+      display: grid; grid-template-columns: minmax(0,1.15fr) minmax(380px,.85fr); overflow: hidden; box-shadow: var(--shadow-sm);
+    }
+    .hero-copy { padding: 42px 44px; display: flex; flex-direction: column; justify-content: center; }
+    .hero-copy h1 { margin: 0; font-size: clamp(34px, 4vw, 52px); letter-spacing: 0; line-height: 1.03; max-width: 760px; }
+    .hero-copy p { font-size: 15px; line-height: 1.65; color: var(--muted); max-width: 680px; margin: 18px 0 24px; }
+    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .hero-visual { position: relative; min-height: 300px; background: var(--surface-canvas); overflow: hidden; border-left: 1px solid var(--border); }
+    .orbit { display: none; }
+    .orbit.one { width: 430px; height: 430px; left: 9%; top: -22%; }
+    .orbit.two { width: 290px; height: 290px; left: 26%; top: 2%; }
+    .orbit.three { width: 170px; height: 170px; left: 43%; top: 19%; }
+    .hero-core { position: absolute; width: 88px; height: 88px; border-radius: 24px; left: 50%; top: 50%; transform: translate(-50%,-50%); display: grid; place-items: center; color: var(--surface); background: var(--primary); box-shadow: var(--shadow-md); }
+    .hero-core svg { width: 42px; height: 42px; }
+    .floating-node { position: absolute; min-width: 118px; border: 1px solid var(--border-strong); background: var(--surface); border-radius: 11px; padding: 10px 12px; box-shadow: var(--shadow-sm); }
+    .floating-node strong { display: block; font-size: 11px; }
+    .floating-node span { display: block; font-size: 9px; color: var(--muted); margin-top: 3px; }
+    .floating-node.n1 { left: 8%; top: 17%; }
+    .floating-node.n2 { right: 7%; top: 23%; }
+    .floating-node.n3 { left: 12%; bottom: 16%; }
+    .floating-node.n4 { right: 10%; bottom: 14%; }
+
+    .section { margin-top: 28px; }
+    .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 14px; }
+    .section-head h2 { margin: 0; font-size: 18px; letter-spacing: 0; }
+    .section-head p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+    .text-link { border: 0; background: transparent; color: var(--primary); font-size: 11px; font-weight: 700; padding: 4px; }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 0; border-block: 1px solid var(--border); }
+    .stat-card { border: 0; border-right: 1px solid var(--border); background: transparent; border-radius: 0; padding: 16px; box-shadow: none; }
+    .stat-card:last-child { border-right: 0; }
+    .stat-label { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .07em; font-weight: 730; }
+    .stat-value { margin-top: 9px; font-size: 26px; letter-spacing: 0; font-weight: 760; }
+    #statSkill, #currentLevel { font-size: 18px; }
+    .stat-note { margin-top: 5px; color: var(--muted); font-size: 10px; line-height: 1.45; }
+    .delta { color: var(--green); font-weight: 700; }
+
+    .mode-paths { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
+    .mode-card { border: 1px solid var(--border); background: var(--surface); border-radius: 15px; padding: 20px; position: relative; overflow: hidden; transition: 170ms ease; }
+    .mode-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .mode-card.active { border-color: var(--primary-highlight); box-shadow: 0 0 0 3px rgba(79,70,229,.08); }
+    .mode-card-icon { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; margin-bottom: 15px; }
+    .mode-card-icon svg { width: 20px; height: 20px; }
+    .mode-card h3 { margin: 0; font-size: 15px; }
+    .mode-card p { min-height: 56px; margin: 8px 0 14px; color: var(--muted); font-size: 11.5px; line-height: 1.55; }
+    .mode-card ul { margin: 0 0 16px; padding: 0; list-style: none; display: grid; gap: 7px; }
+    .mode-card li { font-size: 10.5px; color: var(--text-secondary); display: flex; gap: 7px; align-items: center; }
+    .mode-card li::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--primary); }
+    .beginner-accent { background: var(--blue-soft); color: var(--blue); }
+    .interview-accent { background: var(--violet-soft); color: var(--violet); }
+    .production-accent { background: var(--amber-soft); color: var(--amber); }
+
+    .resume-card { border: 1px solid var(--border); border-radius: 16px; background: var(--surface); padding: 18px; display: grid; grid-template-columns: minmax(0,1fr) 330px; gap: 22px; align-items: center; }
+    .resume-main { display: flex; gap: 15px; align-items: flex-start; }
+    .resume-icon { width: 44px; height: 44px; flex: 0 0 auto; border-radius: 12px; display: grid; place-items: center; color: var(--primary); background: var(--primary-soft); }
+    .resume-icon svg { width: 22px; height: 22px; }
+    .resume-copy h3 { margin: 0; font-size: 14px; }
+    .resume-copy p { margin: 6px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .resume-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 11px; }
+    .small-chip { border: 1px solid var(--border); border-radius: 7px; padding: 5px 7px; color: var(--text-secondary); background: var(--surface); font-size: 9.5px; font-weight: 650; }
+    .resume-progress { display: grid; gap: 10px; }
+    .progress-row { display: flex; align-items: center; justify-content: space-between; font-size: 10px; color: var(--muted); }
+    .progress-row strong { color: var(--text); }
+    .progress-track { height: 7px; border-radius: 999px; background: var(--surface-soft); overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--primary); border-radius: inherit; transition: width 300ms ease-out; }
+
+    .content-grid { display: grid; grid-template-columns: minmax(0,1fr) 330px; gap: 18px; }
+    .panel { border: 1px solid var(--border); background: var(--surface); border-radius: 15px; overflow: hidden; }
+    .panel-head { min-height: 54px; padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .panel-head h2, .panel-head h3 { margin: 0; font-size: 13px; letter-spacing: 0; }
+    .panel-head p { margin: 4px 0 0; font-size: 10px; color: var(--muted); }
+    .panel-body { padding: 16px; }
+
+    .module-list { display: grid; gap: 8px; }
+    .module-row { border: 1px solid var(--border); border-radius: 11px; padding: 13px; display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 12px; align-items: center; transition: 150ms ease; }
+    .module-row:hover { border-color: var(--primary-highlight-soft); background: var(--surface-raised); }
+    .module-row.active { border-color: var(--primary-highlight); background: var(--primary-soft); }
+    .module-number { width: 31px; height: 31px; border-radius: 9px; display: grid; place-items: center; background: var(--surface-soft); color: var(--text-secondary); font: 700 10px ui-monospace, monospace; }
+    .module-row.active .module-number { background: var(--surface); color: var(--primary); }
+    .module-title { font-size: 11.5px; font-weight: 700; }
+    .module-desc { font-size: 10px; color: var(--muted); margin-top: 3px; }
+    .module-status { font-size: 9.5px; color: var(--muted); white-space: nowrap; }
+    .module-status.done { color: var(--green); }
+
+    .lesson-preview { min-height: 300px; border-radius: 13px; padding: 20px; color: var(--surface); background: var(--ink); position: relative; overflow: hidden; }
+    .lesson-preview::after { content: none; }
+    .lesson-preview > * { position: relative; z-index: 1; }
+    .lesson-kind { color: var(--primary-highlight); text-transform: uppercase; letter-spacing: .1em; font-size: 9px; font-weight: 780; }
+    .lesson-preview h2 { margin: 10px 0 8px; font-size: 26px; letter-spacing: 0; }
+    .lesson-preview p { margin: 0; max-width: 580px; color: var(--border-strong); font-size: 12px; line-height: 1.6; }
+    .lesson-diagram { margin-top: 25px; display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+    .lesson-node { border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.07); border-radius: 9px; padding: 10px 12px; min-width: 108px; text-align: center; font-size: 10px; font-weight: 700; }
+    .lesson-arrow { color: var(--subtle); }
+
+    .checklist { display: grid; gap: 9px; }
+    .check-item { display: flex; gap: 10px; align-items: flex-start; color: var(--text-secondary); font-size: 10.5px; line-height: 1.5; }
+    .check-icon { width: 18px; height: 18px; border-radius: 6px; display: grid; place-items: center; color: var(--green); background: var(--green-soft); flex: 0 0 auto; font-size: 10px; font-weight: 800; }
+
+    .filter-bar { border: 1px solid var(--border); background: var(--surface); border-radius: 12px; padding: 9px; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+    .filter-btn { border: 0; background: transparent; color: var(--muted); border-radius: 8px; padding: 8px 10px; font-size: 10.5px; font-weight: 670; }
+    .filter-btn.active { color: var(--primary-dark); background: var(--primary-soft); }
+    .filter-spacer { flex: 1; }
+    .search-inline { height: 34px; width: 230px; border: 1px solid var(--border); border-radius: 8px; padding: 0 10px; outline: none; font-size: 10.5px; }
+
+    .mission-grid, .practice-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
+    .mission-card, .practice-card { border: 1px solid var(--border); background: var(--surface); border-radius: 14px; overflow: hidden; transition: 160ms ease; display: flex; flex-direction: column; }
+    .mission-card:hover, .practice-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--primary-highlight-soft); }
+    .mission-cover { height: 125px; position: relative; padding: 16px; background: var(--primary-soft); overflow: hidden; }
+    .mission-cover.production { background: var(--warning-surface); }
+    .mission-cover.interview { background: var(--violet-soft); }
+    .mission-cover::after { content: none; }
+    .mission-topline { position: relative; z-index: 1; display: flex; justify-content: space-between; gap: 8px; }
+    .mission-category { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; font-weight: 800; color: var(--primary); }
+    .difficulty { font-size: 9px; color: var(--text-secondary); border: 1px solid rgba(208,213,221,.9); background: rgba(255,255,255,.7); padding: 4px 6px; border-radius: 6px; }
+    .mini-architecture { position: absolute; left: 16px; bottom: 17px; right: 16px; display: flex; align-items: center; gap: 7px; z-index: 1; }
+    .mini-node { padding: 7px 8px; border-radius: 7px; background: rgba(255,255,255,.82); border: 1px solid rgba(208,213,221,.8); font-size: 8px; font-weight: 700; }
+    .mini-line { height: 1px; flex: 1; background: var(--border-strong); }
+    .mission-body, .practice-body { padding: 16px; display: flex; flex-direction: column; flex: 1; }
+    .mission-body h3, .practice-body h3 { margin: 0; font-size: 13px; letter-spacing: 0; }
+    .mission-body p, .practice-body p { margin: 7px 0 13px; color: var(--muted); font-size: 10.5px; line-height: 1.55; }
+    .card-meta { display: flex; gap: 7px; flex-wrap: wrap; margin-top: auto; }
+    .card-foot { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 9px; }
+    .card-progress { color: var(--muted); font-size: 9.5px; }
+
+    .practice-icon { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; margin-bottom: 14px; }
+    .practice-icon svg { width: 19px; height: 19px; }
+    .practice-type { margin-top: auto; padding-top: 12px; display: flex; justify-content: space-between; font-size: 9.5px; color: var(--muted); }
+
+    .challenge-stage { border: 1px solid var(--border); border-radius: 16px; background: var(--surface); overflow: hidden; display: grid; grid-template-columns: minmax(0,1fr) 320px; }
+    .challenge-main { padding: 25px; }
+    .challenge-main h2 { margin: 0; font-size: 22px; letter-spacing: 0; }
+    .challenge-main > p { margin: 10px 0 20px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .challenge-question { border: 1px solid var(--border); border-radius: 12px; background: var(--surface-raised); padding: 17px; }
+    .question-label { font-size: 9px; text-transform: uppercase; letter-spacing: .09em; font-weight: 800; color: var(--primary); }
+    .challenge-question h3 { margin: 9px 0 12px; font-size: 15px; line-height: 1.45; }
+    .option-list { display: grid; gap: 8px; }
+    .option { border: 1px solid var(--border); background: var(--surface); border-radius: 9px; padding: 11px 12px; text-align: left; color: var(--text-strong); font-size: 10.5px; transition: 150ms ease; }
+    .option:hover { border-color: var(--primary-highlight); }
+    .option.selected { border-color: var(--primary); background: var(--primary-soft); color: var(--primary-dark); }
+    .challenge-side { border-left: 1px solid var(--border); background: var(--surface-raised); padding: 20px; }
+    .challenge-side h3 { margin: 0 0 12px; font-size: 12px; }
+    .timer { font: 740 30px ui-monospace, SFMono-Regular, monospace; letter-spacing: 0; margin-bottom: 14px; }
+    .context-list { display: grid; gap: 9px; }
+    .context-row { border-bottom: 1px solid var(--border); padding-bottom: 9px; }
+    .context-row:last-child { border-bottom: 0; }
+    .context-key { font-size: 9px; color: var(--muted); }
+    .context-value { font-size: 10.5px; font-weight: 680; margin-top: 3px; }
+
+    .progress-layout { display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: 18px; }
+    .competency-list { display: grid; gap: 15px; }
+    .competency-row { display: grid; grid-template-columns: 160px minmax(0,1fr) 48px; gap: 12px; align-items: center; }
+    .competency-name { font-size: 10.5px; font-weight: 680; }
+    .competency-track { height: 8px; border-radius: 999px; background: var(--surface-soft); overflow: hidden; }
+    .competency-fill { height: 100%; border-radius: inherit; background: var(--primary); }
+    .competency-score { text-align: right; font: 700 10px ui-monospace,monospace; color: var(--text-secondary); }
+    .activity-list { display: grid; }
+    .activity-row { display: grid; grid-template-columns: 34px minmax(0,1fr) auto; gap: 11px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .activity-row:last-child { border-bottom: 0; }
+    .activity-icon { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; background: var(--surface-soft); color: var(--primary); }
+    .activity-icon svg { width: 16px; height: 16px; }
+    .activity-title { font-size: 10.5px; font-weight: 680; }
+    .activity-sub { font-size: 9.5px; color: var(--muted); margin-top: 3px; }
+    .activity-score { font: 740 11px ui-monospace,monospace; color: var(--green); }
+    .recommendation { border: 1px solid var(--primary-border); border-radius: 13px; background: var(--primary-soft); padding: 15px; }
+    .recommendation h3 { margin: 0; color: var(--primary-dark); font-size: 12px; }
+    .recommendation p { margin: 7px 0 13px; color: var(--primary-copy); font-size: 10.5px; line-height: 1.55; }
+
+    .mission-page { height: 100%; min-height: 720px; display: none; flex-direction: column; }
+    .mission-page.active { display: flex; }
+    .mission-head { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 22px 14px; display: grid; gap: 14px; }
+    .mission-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
+    .mission-title h1 { margin: 0; font-size: 21px; letter-spacing: 0; line-height: 1.25; }
+    .mission-title p { margin: 5px 0 0; font-size: 12px; color: var(--muted); }
+    .mission-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .meta-item { display: inline-flex; align-items: center; gap: 6px; color: var(--text-secondary); font-size: 11px; font-weight: 630; padding: 6px 8px; border: 1px solid var(--border); border-radius: 7px; background: var(--surface); }
+    .meta-item svg { width: 14px; height: 14px; }
+    .stepper { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; }
+    .step { border: 0; background: transparent; padding: 0; text-align: left; min-width: 0; }
+    .step-track { height: 3px; border-radius: 999px; background: var(--border); margin-bottom: 8px; overflow: hidden; }
+    .step.done .step-track, .step.active .step-track { background: var(--primary); }
+    .step-label { font-size: 11px; color: var(--subtle); font-weight: 630; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .step.done .step-label { color: var(--text-secondary); }
+    .step.active .step-label { color: var(--primary-dark); font-weight: 760; }
+    .workspace { display: grid; grid-template-columns: 230px minmax(0,1fr); min-height: 0; flex: 1; position: relative; overflow: hidden; transition: padding-right 220ms ease; }
+    .workspace.ai-open { padding-right: var(--interviewer-width); }
+    .component-panel { background: var(--surface); border-right: 1px solid var(--border); min-height: 0; overflow: auto; padding: 16px 14px; }
+    .panel-title { font-size: 12px; font-weight: 760; margin: 0 0 4px; }
+    .panel-sub { font-size: 11px; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
+    .search-box { display: flex; align-items: center; gap: 8px; height: 34px; padding: 0 10px; background: var(--surface-soft); border: 1px solid transparent; border-radius: 8px; margin-bottom: 15px; }
+    .search-box svg { width: 15px; height: 15px; color: var(--subtle); }
+    .search-box input { border: 0; outline: 0; background: transparent; width: 100%; font-size: 11px; color: var(--text); }
+    .component-group { margin-bottom: 16px; }
+    .component-group-title { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; font-weight: 760; color: var(--subtle); margin: 0 0 8px 3px; }
+    .component-list { display: grid; gap: 6px; }
+    .component-item { border: 1px solid var(--border); background: var(--surface); border-radius: 8px; padding: 8px; display: flex; align-items: center; gap: 9px; text-align: left; transition: 150ms ease; color: var(--text-strong); }
+    .component-item:hover { border-color: var(--primary-border-strong); background: var(--surface-primary-hover); transform: translateY(-1px); }
+    .service-icon { width: 29px; height: 29px; flex: 0 0 auto; border-radius: 7px; display: grid; place-items: center; font-size: 10px; font-weight: 800; border: 1px solid currentColor; }
+    .service-icon.compute { color: var(--blue); background: var(--blue-soft); }
+    .service-icon.data { color: var(--success-strong); background: var(--green-soft); }
+    .service-icon.ai { color: var(--violet); background: var(--violet-soft); }
+    .service-icon.queue { color: var(--warning-strong); background: var(--amber-soft); }
+    .service-name { font-size: 11px; font-weight: 690; }
+    .service-desc { font-size: 9.5px; color: var(--muted); margin-top: 2px; }
+    .canvas-area { min-width: 0; min-height: 0; display: flex; flex-direction: column; background: var(--surface-canvas); }
+    .canvas-toolbar { height: 48px; flex: 0 0 auto; background: rgba(255,255,255,.85); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 14px; backdrop-filter: blur(8px); }
+    .toolbar-left, .toolbar-right { display: flex; align-items: center; gap: 8px; }
+    .tool-label { font-size: 11px; color: var(--muted); font-weight: 620; }
+    .toolbar-divider { width: 1px; height: 20px; background: var(--border); }
+    .zoom-control { display: flex; align-items: center; gap: 4px; padding: 3px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
+    .zoom-control button { width: 25px; height: 25px; border: 0; background: transparent; color: var(--muted); border-radius: 5px; }
+    .zoom-control button:hover { background: var(--surface-soft); color: var(--text); }
+    .zoom-value { font-size: 10px; color: var(--text-secondary); min-width: 34px; text-align: center; font-weight: 650; }
+    .canvas { flex: 1; position: relative; overflow: hidden; background-color: var(--surface-canvas); background-image: radial-gradient(var(--connector-soft) 0.7px,transparent 0.7px); background-size: 18px 18px; min-height: 360px; }
+    .canvas::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg,rgba(255,255,255,.52),rgba(250,251,252,.08) 22%,rgba(250,251,252,.1)); pointer-events: none; }
+    .flow-line { position: absolute; background: var(--connector); z-index: 0; }
+    .flow-line.h { height: 1.5px; }
+    .flow-line.v { width: 1.5px; }
+    .flow-line::after { content: ""; position: absolute; width: 6px; height: 6px; border-top: 1.5px solid var(--connector-strong); border-right: 1.5px solid var(--connector-strong); transform: rotate(45deg); }
+    .flow-line.h::after { right: -1px; top: -3px; }
+    .flow-line.v::after { bottom: -1px; left: -3px; transform: rotate(135deg); }
+    .node { position: absolute; width: 170px; min-height: 82px; border: 1px solid var(--border-strong); background: var(--surface); border-radius: 11px; padding: 11px 12px; box-shadow: var(--shadow-sm); z-index: 1; transition: border-color 160ms ease-out,box-shadow 160ms ease-out,transform 160ms ease-out; }
+    .node:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(16,24,40,.10); }
+    .node.selected { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79,70,229,.12),0 8px 18px rgba(16,24,40,.08); }
+    .node.warning { border-color: var(--warning-emphasis); box-shadow: 0 0 0 3px rgba(247,144,9,.12),0 8px 18px rgba(16,24,40,.08); }
+    .node-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .node-title-wrap { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .node-icon { width: 27px; height: 27px; border-radius: 7px; display: grid; place-items: center; font-size: 9px; font-weight: 800; flex: 0 0 auto; }
+    .node-title { font-size: 11.5px; font-weight: 740; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .node-menu { border: 0; background: transparent; color: var(--subtle); font-size: 15px; line-height: 1; padding: 0; }
+    .node-desc { font-size: 10px; color: var(--muted); margin-top: 7px; line-height: 1.35; }
+    .node-metric { font: 600 9.5px ui-monospace,SFMono-Regular,Menlo,monospace; color: var(--text-secondary); margin-top: 7px; }
+    .node-risk { display: none; align-items: center; gap: 5px; margin-top: 7px; font-size: 9.5px; color: var(--amber); font-weight: 650; }
+    .node.warning .node-risk { display: flex; }
+    .node-risk svg { width: 12px; height: 12px; }
+    .client-node { left: 6%; top: 19%; }
+    .gateway-node { left: 29%; top: 19%; }
+    .ecs-node { left: 52%; top: 19%; }
+    .queue-node { left: 29%; top: 59%; }
+    .search-node { left: 52%; top: 59%; }
+    .bedrock-node { left: 76%; top: 59%; }
+    .line-1 { left: calc(6% + 170px); top: calc(19% + 41px); width: calc(23% - 170px); }
+    .line-2 { left: calc(29% + 170px); top: calc(19% + 41px); width: calc(23% - 170px); }
+    .line-3 { left: calc(52% + 85px); top: calc(19% + 82px); height: calc(40% - 82px); }
+    .line-4 { left: calc(52% + 170px); top: calc(59% + 41px); width: calc(24% - 170px); }
+    .line-5 { left: calc(29% + 170px); top: calc(59% + 41px); width: calc(23% - 170px); }
+    .canvas-footer { min-height: 88px; border-top: 1px solid var(--border); background: var(--surface); display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 14px; align-items: center; padding: 12px 14px; }
+    .decision-copy { min-width: 0; }
+    .decision-label { font-size: 10px; color: var(--primary); font-weight: 760; text-transform: uppercase; letter-spacing: .08em; }
+    .decision-question { font-size: 12px; font-weight: 700; margin-top: 4px; }
+    .decision-answer { font-size: 11px; color: var(--muted); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .footer-actions { display: flex; gap: 8px; align-items: center; }
+    .ai-panel { position: absolute; right: 0; top: 0; bottom: 0; width: var(--interviewer-width); background: var(--surface); border-left: 1px solid var(--border); transform: translateX(100%); visibility: hidden; transition: transform 220ms ease-out, visibility 0s linear 220ms; z-index: 12; display: flex; flex-direction: column; box-shadow: -14px 0 28px rgba(16,24,40,.05); }
+    .workspace.ai-open .ai-panel { transform: translateX(0); visibility: visible; transition-delay: 0s; }
+    .ai-head { padding: 15px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .ai-title { display: flex; align-items: center; gap: 10px; }
+    .ai-orb { width: 30px; height: 30px; border-radius: 9px; background: var(--violet-soft); color: var(--violet); display: grid; place-items: center; }
+    .ai-orb svg { width: 17px; height: 17px; }
+    .ai-name { font-size: 12px; font-weight: 760; }
+    .ai-status { font-size: 10px; color: var(--green); margin-top: 2px; }
+    .ai-body { flex: 1; overflow: auto; padding: 16px; display: grid; align-content: start; gap: 13px; background: var(--surface-raised); }
+    .ai-message { border: 1px solid var(--border); background: var(--surface); border-radius: 11px; padding: 12px; box-shadow: var(--shadow-sm); }
+    .message-label { font-size: 9px; text-transform: uppercase; letter-spacing: .1em; font-weight: 800; color: var(--violet); margin-bottom: 7px; }
+    .message-text { font-size: 11.5px; line-height: 1.55; color: var(--text-strong); }
+    .message-context { margin-top: 9px; padding: 8px 9px; border-radius: 7px; background: var(--amber-soft); color: var(--warning-text); font-size: 10px; line-height: 1.45; }
+    .user-message { background: var(--primary-soft); border-color: var(--primary-border); }
+    .user-message .message-label { color: var(--primary-dark); }
+    .hint-link { border: 0; background: transparent; padding: 0; color: var(--primary); font-size: 10.5px; font-weight: 680; text-align: left; }
+    .ai-compose { border-top: 1px solid var(--border); padding: 12px; background: var(--surface); }
+    .compose-box { border: 1px solid var(--border-strong); border-radius: 10px; padding: 9px; background: var(--surface); }
+    .compose-box textarea { width: 100%; min-height: 62px; resize: none; border: 0; outline: 0; font-size: 11px; line-height: 1.5; color: var(--text); }
+    .compose-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 7px; }
+    .compose-note { font-size: 9px; color: var(--subtle); }
+    .stress-banner { position: absolute; left: 50%; top: 18px; transform: translateX(-50%) translateY(-8px); width: min(540px,calc(100% - 40px)); background: var(--warning-surface); border: 1px solid var(--warning-border); border-radius: 11px; padding: 11px 13px; box-shadow: var(--shadow-md); z-index: 15; display: none; align-items: center; gap: 11px; }
+    .stress-banner.show { display: flex; animation: pop .24s ease-out; }
+    @keyframes pop { from { opacity: 0; transform: translateX(-50%) translateY(-10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+    .stress-icon { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: var(--warning-icon-surface); color: var(--warning-strong); flex: 0 0 auto; }
+    .stress-icon svg { width: 17px; height: 17px; }
+    .stress-title { font-size: 11px; font-weight: 760; color: var(--warning-text); }
+    .stress-copy { font-size: 10px; color: var(--warning-copy); margin-top: 2px; }
+    .stress-close { margin-left: auto; border: 0; background: transparent; color: var(--warning-strong); font-size: 18px; }
+
+    .toast { position: fixed; left: 50%; bottom: 22px; transform: translate(-50%,18px); opacity: 0; pointer-events: none; transition: 200ms ease; background: var(--ink); color: var(--surface); border-radius: 9px; padding: 10px 14px; font-size: 11px; font-weight: 620; box-shadow: var(--shadow-md); z-index: 100; }
+    .toast.show { opacity: 1; transform: translate(-50%,0); }
+
+    .save-state { display: inline-flex; align-items: center; gap: 6px; min-width: 92px; color: var(--muted); font-size: 10px; font-weight: 650; }
+    .save-state::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+    .save-state.saving::before { background: var(--amber); }
+    .save-state.error { color: var(--red); }
+    .save-state.error::before { background: var(--red); }
+    .save-state.offline::before { background: var(--amber); }
+    .toolbar-error { color: var(--red); font-size: 10px; font-weight: 650; }
+    .component-empty { border: 1px dashed var(--border-strong); border-radius: 8px; padding: 12px; color: var(--muted); font-size: 10px; line-height: 1.45; }
+    .component-item[disabled] { cursor: not-allowed; opacity: .48; }
+    .node-menu { min-width: 28px; min-height: 28px; border-radius: 6px; }
+    .node-menu:hover, .node-menu:focus-visible { background: var(--red-soft); color: var(--red); outline: none; }
+    .node:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid rgba(79,70,229,.2); outline-offset: 2px; }
+    .review-panel { position: absolute; inset: 18px; z-index: 5; overflow: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); padding: 22px; }
+    .review-panel[hidden] { display: none; }
+    .review-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .review-head h2 { margin: 0; font-size: 20px; }
+    .review-head p { margin: 6px 0 0; max-width: 64ch; color: var(--muted); font-size: 11px; line-height: 1.55; }
+    .score-badge { min-width: 76px; text-align: right; font: 760 28px ui-monospace,monospace; color: var(--primary-dark); }
+    .review-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; margin-top: 18px; }
+    .review-section { min-width: 0; }
+    .review-section h3 { margin: 0 0 8px; font-size: 11px; }
+    .review-section p { margin: 0; color: var(--muted); font-size: 10.5px; line-height: 1.55; overflow-wrap: anywhere; }
+    .review-change { margin-top: 16px; border: 1px solid var(--primary-border); border-radius: 10px; background: var(--primary-soft); padding: 12px; color: var(--primary-dark); font-size: 10.5px; line-height: 1.5; }
+    .mission-dialog { width: min(560px,calc(100vw - 32px)); border: 1px solid var(--border); border-radius: 12px; padding: 0; color: var(--text); background: var(--surface); box-shadow: var(--shadow-lg); }
+    .mission-dialog::backdrop { background: rgba(16,24,40,.35); }
+    .dialog-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+    .dialog-head h2 { margin: 0; font-size: 14px; }
+    .dialog-body { padding: 16px; }
+    .dialog-body label { display: grid; gap: 6px; color: var(--text-strong); font-size: 11px; font-weight: 680; }
+    .dialog-body textarea { width: 100%; min-height: 130px; resize: vertical; border: 1px solid var(--border-strong); border-radius: 8px; padding: 10px; color: var(--text); line-height: 1.5; }
+    .field-help { color: var(--muted); font-size: 10px; font-weight: 400; }
+    .field-error { min-height: 16px; margin-top: 6px; color: var(--red); font-size: 10px; }
+    .dialog-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 0 16px 16px; }
+    .step[disabled] { cursor: not-allowed; opacity: .55; }
+    #architectureCanvas { --canvas-scale: 1; }
+    #architectureCanvas .node { scale: var(--canvas-scale); transform-origin: top left; }
+    .workspace.components-collapsed { grid-template-columns: 0 minmax(0,1fr); }
+    .workspace.components-collapsed .component-panel { overflow: hidden; padding-inline: 0; border-right: 0; visibility: hidden; }
+    .component-panel { transition: padding 180ms ease, visibility 180ms ease; }
+    .components-toggle[aria-expanded="true"] { border-color: var(--primary-border-strong); background: var(--primary-soft); color: var(--primary-dark); }
+
+    @media (max-width: 900px) {
+      .review-grid { grid-template-columns: 1fr; }
+    }
+
+    .mobile-nav { display: none; }
+
+    @media (max-width: 1180px) {
+      :root { --sidebar-width: 76px; }
+      .brand-copy, .nav-item span:not(.nav-count), .nav-label, .profile-copy { display: none; }
+      .brand { justify-content: center; padding-inline: 0; }
+      .nav-item { justify-content: center; padding: 10px; }
+      .nav-item .nav-count { display: none; }
+      .workspace { grid-template-columns: 1fr; }
+      .workspace.components-collapsed { grid-template-columns: minmax(0,1fr); }
+      .workspace .component-panel { display: block; position: absolute; inset: 0 auto 0 0; width: 230px; z-index: 18; box-shadow: 12px 0 24px rgba(16,24,40,.08); transform: translateX(0); transition: transform 180ms ease, visibility 180ms ease; }
+      .workspace.components-collapsed .component-panel { padding: 16px 14px; transform: translateX(-100%); border-right: 1px solid var(--border); visibility: hidden; }
+      .workspace.ai-open { padding-right: 320px; }
+      :root { --interviewer-width: 320px; }
+      .mission-grid, .practice-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .hero { grid-template-columns: 1fr 390px; }
+      .mode-paths { grid-template-columns: repeat(3,minmax(0,1fr)); }
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-visual { min-height: 240px; border-left: 0; border-top: 1px solid var(--border); }
+      .content-grid, .progress-layout { grid-template-columns: 1fr; }
+      .resume-card { grid-template-columns: 1fr; }
+      .stat-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .mode-paths { grid-template-columns: 1fr; }
+      .mode-card p { min-height: 0; }
+      .challenge-stage { grid-template-columns: 1fr; }
+      .challenge-side { border-left: 0; border-top: 1px solid var(--border); }
+      .stat-card:nth-child(even) { border-right: 0; }
+      .stat-card:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+    }
+
+    @media (min-width: 901px) {
+      .practice-grid { grid-template-columns: 1fr; gap: 0; border-block: 1px solid var(--border); }
+      .practice-card { display: grid; grid-template-columns: minmax(0,1fr) auto; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; }
+      .practice-card:last-child { border-bottom: 0; }
+      .practice-card:hover { transform: none; box-shadow: none; border-color: var(--border); background: var(--surface-hover); }
+      .practice-card .practice-body { display: grid; grid-template-columns: 42px minmax(160px,220px) minmax(0,1fr) auto; gap: 14px; align-items: center; padding: 14px 0; }
+      .practice-card .practice-icon { margin: 0; }
+      .practice-card .practice-body p { margin: 0; max-width: 62ch; }
+      .practice-card .practice-type { margin: 0; padding: 0; gap: 12px; }
+      .practice-card .card-foot { border-top: 0; padding: 14px 0 14px 18px; }
+    }
+
+    @media (max-width: 720px) {
+      html, body { max-width: 100%; overflow-x: hidden; }
+      body { overflow-y: auto; }
+      .app { min-height: 100vh; height: auto; grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .main-shell { height: auto; min-height: 100vh; padding-bottom: 64px; }
+      .topbar { height: auto; min-height: 62px; padding: 10px 12px; align-items: flex-start; }
+      .breadcrumbs { display: none; }
+      .top-actions { width: 100%; justify-content: space-between; }
+      .mode-switch { flex: 1; }
+      .mode-btn { flex: 1; padding-inline: 4px; }
+      .top-actions > .ghost-btn { display: none; }
+      .page-container { overflow: visible; }
+      .page-pad { padding: 20px 14px 34px; }
+      .page-header { display: block; }
+      .page-actions { margin-top: 14px; }
+      .page-title h1 { font-size: 24px; }
+      .hero-copy { padding: 30px 24px; }
+      .hero-copy h1 { font-size: 36px; }
+      .hero-visual { min-height: 230px; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      .mission-grid, .practice-grid { grid-template-columns: 1fr; }
+      .filter-bar { overflow-x: auto; }
+      .filter-spacer, .search-inline { display: none; }
+      .competency-row { grid-template-columns: 120px minmax(0,1fr) 40px; }
+      .mission-page { min-height: 760px; width: 100%; max-width: 100vw; }
+      .mission-head { padding: 14px; }
+      .mission-title-row { display: block; }
+      .mission-meta { margin-top: 10px; }
+      .stepper { gap: 4px; }
+      .step-label { font-size: 9px; }
+      .workspace, .workspace.ai-open { min-height: 760px; width: 100%; max-width: 100vw; padding-right: 0; overflow: visible; }
+      .canvas-area { width: 100%; min-width: 0; }
+      .canvas-toolbar { height: auto; min-height: 48px; padding: 8px 10px; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
+      .toolbar-left, .toolbar-right { min-width: 0; flex-wrap: wrap; }
+      .toolbar-right { margin-left: auto; justify-content: flex-end; }
+      .toolbar-divider { display: none; }
+      .canvas { display: grid; grid-template-columns: 1fr; align-content: start; gap: 10px; min-height: 0; padding: 14px; overflow: visible; background-image: none; }
+      #architectureCanvas .node { position: relative !important; inset: auto !important; width: 100%; min-height: 96px; scale: 1 !important; transform: none !important; }
+      #architectureCanvas .node:hover { transform: none; }
+      .node-menu { min-width: 44px; min-height: 44px; }
+      .canvas-footer { grid-template-columns: 1fr; }
+      .footer-actions { justify-content: flex-end; flex-wrap: wrap; }
+      .ai-panel { position: fixed; width: min(92vw,360px); top: 0; bottom: calc(62px + env(safe-area-inset-bottom)); z-index: 50; }
+      .workspace .component-panel { position: fixed; top: 0; bottom: calc(62px + env(safe-area-inset-bottom)); width: min(88vw,320px); }
+      .flow-line { display: none; }
+      .review-panel { position: relative; inset: auto; margin: 0; padding: 16px; }
+      .score-badge { font-size: 22px; }
+      .mobile-nav { display: grid; grid-template-columns: repeat(5,1fr); position: fixed; left: 0; right: 0; bottom: 0; height: calc(62px + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom); background: rgba(255,255,255,.96); border-top: 1px solid var(--border); backdrop-filter: blur(12px); z-index: 60; }
+      .mobile-nav button { border: 0; background: transparent; color: var(--muted); display: grid; place-items: center; align-content: center; gap: 3px; font-size: 8px; }
+      .mobile-nav button.active { color: var(--primary); }
+      .mobile-nav svg { width: 18px; height: 18px; }
+      button, [role="button"], input { min-height: 44px !important; }
+      .icon-btn, .zoom-control button, .node-menu { min-width: 44px !important; }
+      .search-box { height: 44px; }
+    }
+
+    @media (max-width: 1023px), (pointer: coarse) {
+      button, [role="button"], input { min-height: 44px !important; }
+      .icon-btn, .zoom-control button, .node-menu { min-width: 44px !important; }
+      .search-box { height: 44px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body data-mode="Beginner">
+  <div class="app">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 6.5 12 3l7 3.5v11L12 21l-7-3.5z"/><path d="m5 6.5 7 3.5 7-3.5M12 10v11"/></svg>
+        </div>
+        <div class="brand-copy"><div class="brand-name">AI System Design Gym</div><div class="brand-sub">Active engineering practice</div></div>
+      </div>
+      <div class="nav-label">Workspace</div>
+      <nav class="nav-list">
+        <button class="nav-item active" data-page="home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9h13v-9"/></svg><span>Home</span>
+        </button>
+        <button class="nav-item" data-page="learn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 5.5v16M8 7h8M8 11h8"/></svg><span>Learn</span><span class="nav-count">6</span>
+        </button>
+        <button class="nav-item" data-page="missions">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m12 3 2.7 5.5L21 9.4l-4.5 4.4 1.1 6.2-5.6-2.9L6.4 20l1.1-6.2L3 9.4l6.3-.9z"/></svg><span>Missions</span><span class="nav-count">4</span>
+        </button>
+        <button class="nav-item" data-page="practice">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z"/><path d="M17 14v6M14 17h6"/></svg><span>Practice</span>
+        </button>
+        <button class="nav-item" data-page="progress">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg><span>Progress</span>
+        </button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="mini-profile"><div class="avatar">JD</div><div class="profile-copy"><div class="profile-name">JD L</div><div class="profile-level" id="profileLevel">AI Engineer · Foundation</div></div></div>
+    </aside>
+
+    <main class="main-shell">
+      <header class="topbar">
+        <div class="breadcrumbs"><span id="breadcrumbParent">Workspace</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg><strong id="breadcrumbCurrent">Home</strong></div>
+        <div class="top-actions">
+          <div class="mode-switch" role="group" aria-label="Learning mode">
+            <button class="mode-btn active" data-mode="Beginner">Beginner</button>
+            <button class="mode-btn" data-mode="Interview">Interview</button>
+            <button class="mode-btn" data-mode="Production">Production</button>
+          </div>
+          <button class="ghost-btn" id="globalAction"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v18M3 12h18"/></svg><span>Start session</span></button>
+          <button class="icon-btn" id="globalHelp" aria-label="Open contextual help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12a8.5 8.5 0 0 1-9 8.5 9.7 9.7 0 0 1-3.5-.7L3 21l1.3-4.6A8.5 8.5 0 1 1 21 12Z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></svg></button>
+        </div>
+      </header>
+
+      <div class="page-container" id="pageContainer">
+        <!-- HOME -->
+        <section class="page active" id="page-home" data-title="Home">
+          <div class="page-pad">
+            <div class="hero">
+              <div class="hero-copy">
+                <div class="eyebrow" id="homeEyebrow">Your guided path</div>
+                <h1 id="homeHeadline">Learn AI system design by building real systems.</h1>
+                <p id="homeDescription">Move beyond passive reading. Make architecture decisions, explain trade-offs, observe failures, and improve your design with an AI engineering coach.</p>
+                <div class="hero-actions">
+                  <button class="primary-btn" data-go="missions">Start a mission <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg></button>
+                  <button class="ghost-btn" data-go="learn">Explore learning path</button>
+                </div>
+              </div>
+              <div class="hero-visual" aria-label="AI architecture illustration">
+                <div class="orbit one"></div><div class="orbit two"></div><div class="orbit three"></div>
+                <div class="hero-core"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3 9.8 8.8 4 11l5.8 2.2L12 19l2.2-5.8L20 11l-5.8-2.2z"/></svg></div>
+                <div class="floating-node n1"><strong>Requirements</strong><span>Clarify before designing</span></div>
+                <div class="floating-node n2"><strong>Architecture</strong><span>Choose and connect</span></div>
+                <div class="floating-node n3"><strong>Stress Test</strong><span>Observe consequences</span></div>
+                <div class="floating-node n4"><strong>Revision</strong><span>Improve the solution</span></div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="section-head"><div><h2>Your active learning dashboard</h2><p>Progress and recommendations change with the selected mode.</p></div></div>
+              <div class="stat-grid">
+                <div class="stat-card"><div class="stat-label">Weekly practice</div><div class="stat-value" id="statPractice">3.8h</div><div class="stat-note"><span class="delta">+42 min</span> from last week</div></div>
+                <div class="stat-card"><div class="stat-label">Current streak</div><div class="stat-value">6 days</div><div class="stat-note">One focused session per day</div></div>
+                <div class="stat-card"><div class="stat-label">Missions completed</div><div class="stat-value" id="statMissions">4</div><div class="stat-note" id="statMissionsNote">Two foundation missions remaining</div></div>
+                <div class="stat-card"><div class="stat-label">Strongest skill</div><div class="stat-value" id="statSkill">RAG Basics</div><div class="stat-note" id="statSkillNote">82% mastery across exercises</div></div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="section-head"><div><h2>Choose how you want to train</h2><p>One platform, three distinct learning experiences.</p></div></div>
+              <div class="mode-paths">
+                <article class="mode-card active" data-select-mode="Beginner">
+                  <div class="mode-card-icon beginner-accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 5.5v16M8 7h8M8 11h8"/></svg></div>
+                  <h3>Beginner</h3><p>Build foundations through guided explanations, constrained choices, and progressive hints.</p>
+                  <ul><li>Guided learning path</li><li>Architecture templates</li><li>Immediate feedback</li></ul>
+                  <button class="secondary-btn">Use beginner mode</button>
+                </article>
+                <article class="mode-card" data-select-mode="Interview">
+                  <div class="mode-card-icon interview-accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0M18 5l2 2-2 2"/></svg></div>
+                  <h3>Interview</h3><p>Practise timed system-design sessions and defend every decision under follow-up questions.</p>
+                  <ul><li>Timed mock interviews</li><li>Communication scoring</li><li>Transcript review</li></ul>
+                  <button class="secondary-btn">Use interview mode</button>
+                </article>
+                <article class="mode-card" data-select-mode="Production">
+                  <div class="mode-card-icon production-accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19V5h16v14z"/><path d="M7 15h2v2H7zM11 11h2v6h-2zM15 7h2v10h-2z"/></svg></div>
+                  <h3>Production</h3><p>Investigate incidents using logs, metrics, deployment changes, costs, and evaluation evidence.</p>
+                  <ul><li>Realistic incidents</li><li>Operational evidence</li><li>Remediation reviews</li></ul>
+                  <button class="secondary-btn">Use production mode</button>
+                </article>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="section-head"><div><h2>Continue where you left off</h2></div><button class="text-link" data-go="progress">View full progress</button></div>
+              <div class="resume-card">
+                <div class="resume-main">
+                  <div class="resume-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 6.5 12 3l7 3.5v11L12 21l-7-3.5z"/><path d="m5 6.5 7 3.5 7-3.5M12 10v11"/></svg></div>
+                  <div class="resume-copy"><h3 id="resumeTitle">Enterprise RAG Foundations</h3><p id="resumeDescription">You completed requirements and capacity estimation. The next step is to assemble the query architecture.</p><div class="resume-meta"><span class="small-chip" id="resumeChip">Guided mission</span><span class="small-chip">7 skills</span><span class="small-chip" id="resumeTime">~24 min left</span></div></div>
+                </div>
+                <div class="resume-progress"><div class="progress-row"><span>Mission progress</span><strong id="resumePercent">46%</strong></div><div class="progress-track"><div class="progress-fill" id="resumeFill" style="width:46%"></div></div><button class="primary-btn" data-open-workspace>Resume mission</button></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- LEARN -->
+        <section class="page" id="page-learn" data-title="Learn">
+          <div class="page-pad">
+            <div class="page-header"><div class="page-title"><div class="eyebrow" id="learnEyebrow">Structured curriculum</div><h1 id="learnTitle">Build your AI engineering foundation</h1><p id="learnDescription">Short concepts lead directly into decisions, calculations, and architecture exercises. You attempt first; explanations follow.</p></div><div class="page-actions"><button class="ghost-btn">Browse curriculum</button><button class="primary-btn" id="continueLearning">Continue learning</button></div></div>
+            <div class="content-grid">
+              <div>
+                <div class="lesson-preview">
+                  <div class="lesson-kind" id="lessonKind">Interactive concept · 12 minutes</div>
+                  <h2 id="lessonTitle">How a RAG query moves through the system</h2>
+                  <p id="lessonCopy">Predict the purpose and failure mode of each component before revealing the explanation.</p>
+                  <div class="lesson-diagram"><div class="lesson-node">User query</div><span class="lesson-arrow">→</span><div class="lesson-node">Embed</div><span class="lesson-arrow">→</span><div class="lesson-node">Retrieve</div><span class="lesson-arrow">→</span><div class="lesson-node">Rerank</div><span class="lesson-arrow">→</span><div class="lesson-node">Generate</div></div>
+                </div>
+                <div class="section">
+                  <div class="section-head"><div><h2 id="pathHeading">Foundation learning path</h2><p id="pathSubheading">Six modules that progress from concepts to complete systems.</p></div></div>
+                  <div class="module-list" id="moduleList">
+                    <div class="module-row active"><div class="module-number">01</div><div><div class="module-title">RAG query anatomy</div><div class="module-desc">Connect embeddings, retrieval, context, and generation.</div></div><div class="module-status">In progress</div></div>
+                    <div class="module-row"><div class="module-number">02</div><div><div class="module-title">Chunking and document ingestion</div><div class="module-desc">Choose parsing, chunking, and update strategies.</div></div><div class="module-status">18 min</div></div>
+                    <div class="module-row"><div class="module-number">03</div><div><div class="module-title">Vector search fundamentals</div><div class="module-desc">Understand similarity, HNSW, filtering, and hybrid retrieval.</div></div><div class="module-status">24 min</div></div>
+                    <div class="module-row"><div class="module-number">04</div><div><div class="module-title">Retrieval evaluation</div><div class="module-desc">Measure Recall@K, Precision@K, and nDCG.</div></div><div class="module-status">21 min</div></div>
+                    <div class="module-row"><div class="module-number">05</div><div><div class="module-title">LLM serving foundations</div><div class="module-desc">Latency budgets, rate limits, and model routing.</div></div><div class="module-status">28 min</div></div>
+                    <div class="module-row"><div class="module-number">06</div><div><div class="module-title">Your first complete design</div><div class="module-desc">Assemble and explain an enterprise RAG system.</div></div><div class="module-status">Mission</div></div>
+                  </div>
+                </div>
+              </div>
+              <aside>
+                <div class="panel"><div class="panel-head"><div><h3>Today’s objective</h3><p id="objectiveSub">Finish one concept and one decision exercise</p></div></div><div class="panel-body"><div class="checklist"><div class="check-item"><span class="check-icon">✓</span><span>Explain why retrieval is separated from generation.</span></div><div class="check-item"><span class="check-icon">✓</span><span>Identify one failure mode at each pipeline stage.</span></div><div class="check-item"><span class="check-icon">3</span><span id="objectiveThird">Choose a vector store for a small internal knowledge base.</span></div></div></div></div>
+                <div class="panel" style="margin-top:14px"><div class="panel-head"><div><h3>Knowledge confidence</h3><p>Based on recent attempts</p></div></div><div class="panel-body"><div class="competency-list"><div class="competency-row" style="grid-template-columns:110px minmax(0,1fr) 38px"><div class="competency-name">Embeddings</div><div class="competency-track"><div class="competency-fill" style="width:76%"></div></div><div class="competency-score">76</div></div><div class="competency-row" style="grid-template-columns:110px minmax(0,1fr) 38px"><div class="competency-name">Retrieval</div><div class="competency-track"><div class="competency-fill" style="width:68%"></div></div><div class="competency-score">68</div></div><div class="competency-row" style="grid-template-columns:110px minmax(0,1fr) 38px"><div class="competency-name">Evaluation</div><div class="competency-track"><div class="competency-fill" style="width:42%"></div></div><div class="competency-score">42</div></div></div></div></div>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        <!-- MISSIONS LIST -->
+        <section class="page" id="page-missions" data-title="Missions">
+          <div id="missionsLibrary">
+            <div class="page-pad">
+              <div class="page-header"><div class="page-title"><div class="eyebrow" id="missionsEyebrow">Scenario-based learning</div><h1 id="missionsTitle">Design systems. Defend decisions. Revise.</h1><p id="missionsDescription">Each mission gives you an engineering problem, changing constraints, and evidence to reason from.</p></div><div class="page-actions"><button class="ghost-btn">Saved missions</button><button class="primary-btn" data-open-workspace>Open current mission</button></div></div>
+              <div class="filter-bar"><button class="filter-btn active">Recommended</button><button class="filter-btn">RAG</button><button class="filter-btn">Inference</button><button class="filter-btn">Agents</button><button class="filter-btn">Evaluation</button><div class="filter-spacer"></div><input class="search-inline" placeholder="Search missions" /></div>
+              <div class="mission-grid" id="missionGrid">
+                <article class="mission-card"><div class="mission-cover"><div class="mission-topline"><span class="mission-category">RAG architecture</span><span class="difficulty">Recommended</span></div><div class="mini-architecture"><span class="mini-node">Client</span><span class="mini-line"></span><span class="mini-node">Search</span><span class="mini-line"></span><span class="mini-node">LLM</span></div></div><div class="mission-body"><h3>Design an Enterprise RAG Platform</h3><p>Build secure retrieval for 10,000 employees and 50 million document chunks.</p><div class="card-meta"><span class="small-chip">45–60 min</span><span class="small-chip">7 skills</span></div></div><div class="card-foot"><span class="card-progress">46% completed</span><button class="secondary-btn" data-open-workspace>Resume</button></div></article>
+                <article class="mission-card"><div class="mission-cover interview"><div class="mission-topline"><span class="mission-category">Vector systems</span><span class="difficulty">Advanced</span></div><div class="mini-architecture"><span class="mini-node">2B vectors</span><span class="mini-line"></span><span class="mini-node">Shards</span><span class="mini-line"></span><span class="mini-node">Rerank</span></div></div><div class="mission-body"><h3>Scale Search to Two Billion Embeddings</h3><p>Choose sharding, quantisation, candidate generation, and reranking strategies.</p><div class="card-meta"><span class="small-chip">60 min</span><span class="small-chip">Capacity</span></div></div><div class="card-foot"><span class="card-progress">Not started</span><button class="ghost-btn">Preview</button></div></article>
+                <article class="mission-card"><div class="mission-cover production"><div class="mission-topline"><span class="mission-category">Production incident</span><span class="difficulty">Intermediate</span></div><div class="mini-architecture"><span class="mini-node">P95 8.4s</span><span class="mini-line"></span><span class="mini-node">CPU 94%</span><span class="mini-line"></span><span class="mini-node">Fix</span></div></div><div class="mission-body"><h3>Diagnose a Slow RAG Application</h3><p>Use logs and metrics to find the bottleneck without reducing retrieval quality.</p><div class="card-meta"><span class="small-chip">35 min</span><span class="small-chip">Incident</span></div></div><div class="card-foot"><span class="card-progress">Available</span><button class="ghost-btn">Start</button></div></article>
+                <article class="mission-card"><div class="mission-cover"><div class="mission-topline"><span class="mission-category">Ingestion</span><span class="difficulty">Intermediate</span></div><div class="mini-architecture"><span class="mini-node">10M chunks</span><span class="mini-line"></span><span class="mini-node">Queue</span><span class="mini-line"></span><span class="mini-node">Embed</span></div></div><div class="mission-body"><h3>Ingest 10 Million Document Chunks</h3><p>Design a quota-aware, retry-safe embedding and indexing pipeline.</p><div class="card-meta"><span class="small-chip">40 min</span><span class="small-chip">AWS</span></div></div><div class="card-foot"><span class="card-progress">Locked by path</span><button class="ghost-btn">View skills</button></div></article>
+              </div>
+            </div>
+          </div>
+
+          <!-- MISSION WORKSPACE -->
+          <div class="mission-page" id="missionWorkspace">
+            <section class="mission-head">
+              <div class="mission-title-row"><div class="mission-title"><h1>Design an Enterprise RAG Platform</h1><p id="missionBrief">Build a secure, scalable retrieval system for 10,000 employees and 50 million document chunks.</p></div><div class="mission-meta"><span class="meta-item" id="modeMeta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Guided · No time limit</span></span><span class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3 4 7v5c0 5 3.3 8 8 9 4.7-1 8-4 8-9V7z"/><path d="m9 12 2 2 4-4"/></svg>7 skills assessed</span><button class="ghost-btn" id="backToMissions">Exit workspace</button></div></div>
+              <div class="stepper" id="stepper" aria-label="Mission progress"><button class="step done" data-step="0"><div class="step-track"></div><div class="step-label">Requirements</div></button><button class="step done" data-step="1"><div class="step-track"></div><div class="step-label">Estimation</div></button><button class="step active" data-step="2"><div class="step-track"></div><div class="step-label">Architecture</div></button><button class="step" data-step="3"><div class="step-track"></div><div class="step-label">Stress test</div></button><button class="step" data-step="4"><div class="step-track"></div><div class="step-label">Review</div></button></div>
+            </section>
+            <section class="workspace ai-open" id="workspace">
+              <aside class="component-panel"><h2 class="panel-title">Components</h2><div class="panel-sub" id="componentHelp">Add services to your architecture. Each choice becomes part of your design review.</div><label class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="componentSearch" type="search" placeholder="Search components" /></label>
+                <div class="component-group"><div class="component-group-title">Entry & Compute</div><div class="component-list"><button class="component-item" data-service="API Gateway"><span class="service-icon compute">API</span><span><div class="service-name">API Gateway</div><div class="service-desc">Managed API entry</div></span></button><button class="component-item" data-service="ECS Fargate"><span class="service-icon compute">ECS</span><span><div class="service-name">ECS Fargate</div><div class="service-desc">Container compute</div></span></button><button class="component-item" data-service="Lambda"><span class="service-icon compute">λ</span><span><div class="service-name">Lambda</div><div class="service-desc">Event compute</div></span></button></div></div>
+                <div class="component-group"><div class="component-group-title">Data & Retrieval</div><div class="component-list"><button class="component-item" data-service="OpenSearch"><span class="service-icon data">OS</span><span><div class="service-name">OpenSearch</div><div class="service-desc">Hybrid vector search</div></span></button><button class="component-item" data-service="Amazon S3"><span class="service-icon data">S3</span><span><div class="service-name">Amazon S3</div><div class="service-desc">Document source</div></span></button><button class="component-item" data-service="DynamoDB"><span class="service-icon data">DB</span><span><div class="service-name">DynamoDB</div><div class="service-desc">Metadata and state</div></span></button></div></div>
+                <div class="component-group"><div class="component-group-title">AI & Orchestration</div><div class="component-list"><button class="component-item" data-service="Amazon Bedrock"><span class="service-icon ai">AI</span><span><div class="service-name">Amazon Bedrock</div><div class="service-desc">Managed model access</div></span></button><button class="component-item" data-service="Amazon SQS"><span class="service-icon queue">Q</span><span><div class="service-name">Amazon SQS</div><div class="service-desc">Buffer and backpressure</div></span></button></div></div>
+              </aside>
+              <div class="canvas-area"><div class="canvas-toolbar"><div class="toolbar-left"><button class="icon-btn" id="openAiTop" aria-label="Open AI interviewer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12a8.5 8.5 0 0 1-9 8.5 9.7 9.7 0 0 1-3.5-.7L3 21l1.3-4.6A8.5 8.5 0 1 1 21 12Z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></svg></button><span class="tool-label">Query architecture</span><div class="toolbar-divider"></div><button class="ghost-btn" id="stressBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13 2 3 14h8l-1 8 10-12h-8z"/></svg>Run stress event</button></div><div class="toolbar-right"><button class="ghost-btn" id="saveBtn">Save draft</button><div class="zoom-control"><button>−</button><span class="zoom-value">100%</span><button>+</button></div></div></div>
+                <div class="canvas">
+                  <div class="stress-banner" id="stressBanner"><div class="stress-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v10M12 17v.01"/><path d="M10.3 4.4 2.7 18a2 2 0 0 0 1.8 3h15a2 2 0 0 0 1.8-3L13.7 4.4a2 2 0 0 0-3.4 0Z"/></svg></div><div><div class="stress-title">Traffic increased 20×</div><div class="stress-copy">P95 latency is now 8.4 seconds. OpenSearch CPU is 94% and Bedrock throttling is 17%.</div></div><button class="stress-close" id="closeStress">×</button></div>
+                  <div class="flow-line h line-1"></div><div class="flow-line h line-2"></div><div class="flow-line v line-3"></div><div class="flow-line h line-4"></div><div class="flow-line h line-5"></div>
+                  <article class="node client-node" data-node="Web client"><div class="node-top"><div class="node-title-wrap"><div class="node-icon compute">UI</div><div class="node-title">Web client</div></div><button class="node-menu">···</button></div><div class="node-desc">Employee chat and search interface</div><div class="node-metric">10,000 users</div></article>
+                  <article class="node gateway-node" data-node="API Gateway"><div class="node-top"><div class="node-title-wrap"><div class="node-icon compute">API</div><div class="node-title">API Gateway</div></div><button class="node-menu">···</button></div><div class="node-desc">Authentication, routing and quotas</div><div class="node-metric">Peak 450 QPS</div></article>
+                  <article class="node ecs-node selected" data-node="ECS retrieval service"><div class="node-top"><div class="node-title-wrap"><div class="node-icon compute">ECS</div><div class="node-title">ECS retrieval service</div></div><button class="node-menu">···</button></div><div class="node-desc">Query orchestration and context assembly</div><div class="node-metric" id="ecsMetric">P95: 160 ms · CPU 46%</div><div class="node-risk">CPU 91%</div></article>
+                  <article class="node queue-node" data-node="SQS ingestion queue"><div class="node-top"><div class="node-title-wrap"><div class="node-icon queue">Q</div><div class="node-title">SQS ingestion queue</div></div><button class="node-menu">···</button></div><div class="node-desc">Burst buffering and retry isolation</div><div class="node-metric">Backlog: 1,240</div></article>
+                  <article class="node search-node" data-node="OpenSearch"><div class="node-top"><div class="node-title-wrap"><div class="node-icon data">OS</div><div class="node-title">OpenSearch</div></div><button class="node-menu">···</button></div><div class="node-desc">Hybrid vector and keyword retrieval</div><div class="node-metric" id="searchMetric">P95: 118 ms · CPU 61%</div><div class="node-risk">CPU 94% · fan-out 32</div></article>
+                  <article class="node bedrock-node" data-node="Amazon Bedrock"><div class="node-top"><div class="node-title-wrap"><div class="node-icon ai">AI</div><div class="node-title">Amazon Bedrock</div></div><button class="node-menu">···</button></div><div class="node-desc">Answer generation with managed models</div><div class="node-metric" id="bedrockMetric">P95: 1.6 s · errors 0.4%</div><div class="node-risk">17% throttling</div></article>
+                </div>
+                <div class="canvas-footer"><div class="decision-copy"><div class="decision-label">Decision record · ECS retrieval service</div><div class="decision-question">Why did you choose containers instead of Lambda for the query path?</div><div class="decision-answer">Long-lived connections, predictable latency and finer control over concurrency and memory.</div></div><div class="footer-actions"><button class="ghost-btn" id="editDecision">Edit reasoning</button><button class="primary-btn" id="continueBtn">Continue to stress test <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+              </div>
+              <aside class="ai-panel" id="aiPanel"><div class="ai-head"><div class="ai-title"><div class="ai-orb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3 9.8 8.8 4 11l5.8 2.2L12 19l2.2-5.8L20 11l-5.8-2.2z"/></svg></div><div><div class="ai-name" id="aiName">AI Coach</div><div class="ai-status" id="aiStatus">Guiding your architecture</div></div></div><button class="icon-btn" id="closeAi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><div class="ai-body" id="aiBody"><div class="ai-message"><div class="message-label" id="aiInitialLabel">Guided question</div><div class="message-text" id="aiInitialText">You selected ECS Fargate for the retrieval service. What characteristics of the query workload make containers a good choice?</div><div class="message-context">Your estimate: 450 peak QPS and a P95 target below 3 seconds.</div></div><div class="ai-message user-message"><div class="message-label">Your answer</div><div class="message-text">I would use target-tracking autoscaling, keep warm minimum capacity, and reuse downstream connections.</div></div><div class="ai-message"><div class="message-label">Observation</div><div class="message-text">Good start. Your design still needs an explicit backpressure strategy for downstream model throttling.</div></div><button class="hint-link" id="hintBtn">Show a progressive hint</button></div><div class="ai-compose"><div class="compose-box"><textarea id="aiInput" placeholder="Explain your decision..."></textarea><div class="compose-actions"><span class="compose-note">Ctrl + Enter to submit</span><button class="primary-btn" id="sendAi">Send</button></div></div></div></aside>
+            </section>
+          </div>
+        </section>
+
+        <!-- PRACTICE -->
+        <section class="page" id="page-practice" data-title="Practice">
+          <div class="page-pad">
+            <div class="page-header"><div class="page-title"><div class="eyebrow" id="practiceEyebrow">Focused drills</div><h1 id="practiceTitle">Strengthen one engineering skill at a time</h1><p id="practiceDescription">Use short exercises when you do not have time for a full mission.</p></div><div class="page-actions"><button class="ghost-btn">Custom practice</button><button class="primary-btn" id="dailyPractice">Start daily practice</button></div></div>
+            <div class="challenge-stage">
+              <div class="challenge-main"><div class="eyebrow" id="dailyEyebrow">Daily challenge · architecture decision</div><h2 id="dailyTitle">Choose the ingestion pattern</h2><p id="dailyCopy">A tenant uploads 50,000 PDFs at once. The embedding provider has a strict requests-per-minute quota.</p><div class="challenge-question"><div class="question-label">Your decision</div><h3 id="questionText">Which design best protects the system while maintaining throughput?</h3><div class="option-list"><button class="option">Upload API calls the embedding model synchronously</button><button class="option selected">Object storage → queue → quota-aware embedding workers</button><button class="option">One large Lambda invocation processes the complete upload</button><button class="option">Send every chunk directly to the vector database</button></div><div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="primary-btn" id="submitPractice">Submit decision</button></div></div></div>
+              <aside class="challenge-side"><h3 id="sessionLabel">Guided session</h3><div class="timer" id="practiceTimer">Untimed</div><div class="context-list"><div class="context-row"><div class="context-key">Skills assessed</div><div class="context-value">Ingestion · Rate limiting · Reliability</div></div><div class="context-row"><div class="context-key">Feedback</div><div class="context-value" id="feedbackStyle">Immediate explanation and hints</div></div><div class="context-row"><div class="context-key">Current streak</div><div class="context-value">6 days</div></div></div></aside>
+            </div>
+            <div class="section"><div class="section-head"><div><h2>Practice library</h2><p id="practiceLibrarySub">Recommended from your current weak areas.</p></div></div><div class="practice-grid">
+              <article class="practice-card"><div class="practice-body"><div class="practice-icon beginner-accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19h16M7 16V8M12 16V4M17 16v-5"/></svg></div><h3>Capacity estimation</h3><p>Estimate QPS, embedding throughput, storage, and memory using editable assumptions.</p><div class="practice-type"><span>8 questions</span><span>15 min</span></div></div><div class="card-foot"><span class="card-progress">Last score 68%</span><button class="ghost-btn">Practice</button></div></article>
+              <article class="practice-card"><div class="practice-body"><div class="practice-icon interview-accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 5h12v14H6z"/><path d="M9 9h6M9 13h6"/></svg></div><h3>Architecture trade-offs</h3><p>Compare valid designs and explain what would make you change your decision.</p><div class="practice-type"><span>6 scenarios</span><span>18 min</span></div></div><div class="card-foot"><span class="card-progress">Recommended</span><button class="ghost-btn">Practice</button></div></article>
+              <article class="practice-card"><div class="practice-body"><div class="practice-icon production-accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 18 9 12l4 3 7-9"/><path d="M16 6h4v4"/></svg></div><h3>Metric diagnosis</h3><p>Identify bottlenecks from latency, CPU, throttling, cache, and retrieval metrics.</p><div class="practice-type"><span>5 incidents</span><span>20 min</span></div></div><div class="card-foot"><span class="card-progress">New</span><button class="ghost-btn">Practice</button></div></article>
+              <article class="practice-card"><div class="practice-body"><div class="practice-icon beginner-accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8"/><path d="M8 12h8M12 8v8"/></svg></div><h3>Retrieval metrics</h3><p>Distinguish Recall@K, Precision@K, MRR, and nDCG through concrete examples.</p><div class="practice-type"><span>10 questions</span><span>12 min</span></div></div><div class="card-foot"><span class="card-progress">42% mastery</span><button class="ghost-btn">Practice</button></div></article>
+              <article class="practice-card"><div class="practice-body"><div class="practice-icon interview-accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 4h14v12H8l-3 3z"/><path d="M9 8h6M9 12h4"/></svg></div><h3>System explanation</h3><p>Record a two-minute architecture explanation and receive communication feedback.</p><div class="practice-type"><span>Voice-ready</span><span>10 min</span></div></div><div class="card-foot"><span class="card-progress">Not attempted</span><button class="ghost-btn">Practice</button></div></article>
+              <article class="practice-card"><div class="practice-body"><div class="practice-icon production-accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5h16v14H4z"/><path d="m7 9 2 2-2 2M12 13h5"/></svg></div><h3>Log investigation</h3><p>Find the relevant signal in noisy logs and propose the next diagnostic query.</p><div class="practice-type"><span>3 incidents</span><span>17 min</span></div></div><div class="card-foot"><span class="card-progress">Available</span><button class="ghost-btn">Practice</button></div></article>
+            </div></div>
+          </div>
+        </section>
+
+        <!-- PROGRESS -->
+        <section class="page" id="page-progress" data-title="Progress">
+          <div class="page-pad">
+            <div class="page-header"><div class="page-title"><div class="eyebrow" id="progressEyebrow">Competency profile</div><h1 id="progressTitle">See what you can design independently</h1><p id="progressDescription">Scores are based on decisions, explanations, revisions, and performance across multiple scenarios.</p></div><div class="page-actions"><button class="ghost-btn">Export report</button><button class="primary-btn" data-go="practice">Practise weak skills</button></div></div>
+            <div class="stat-grid"><div class="stat-card"><div class="stat-label">Overall mastery</div><div class="stat-value" id="overallMastery">64%</div><div class="stat-note"><span class="delta">+6%</span> over 30 days</div></div><div class="stat-card"><div class="stat-label">Current level</div><div class="stat-value" id="currentLevel">Guided Builder</div><div class="stat-note" id="levelNote">Next: Independent Designer</div></div><div class="stat-card"><div class="stat-label">Decisions reviewed</div><div class="stat-value" id="decisionsReviewed">47</div><div class="stat-note">Across lessons and missions</div></div><div class="stat-card"><div class="stat-label">Revision impact</div><div class="stat-value">+18%</div><div class="stat-note">Average score gained after feedback</div></div></div>
+            <div class="section progress-layout">
+              <div class="panel"><div class="panel-head"><div><h2>Skill competency</h2><p id="competencySub">Your current beginner-mode profile</p></div><button class="text-link">View evidence</button></div><div class="panel-body"><div class="competency-list" id="competencyList"><div class="competency-row"><div class="competency-name">RAG architecture</div><div class="competency-track"><div class="competency-fill" data-base="82" style="width:82%"></div></div><div class="competency-score">82</div></div><div class="competency-row"><div class="competency-name">Vector search</div><div class="competency-track"><div class="competency-fill" data-base="74" style="width:74%"></div></div><div class="competency-score">74</div></div><div class="competency-row"><div class="competency-name">Capacity estimation</div><div class="competency-track"><div class="competency-fill" data-base="63" style="width:63%"></div></div><div class="competency-score">63</div></div><div class="competency-row"><div class="competency-name">Reliability</div><div class="competency-track"><div class="competency-fill" data-base="58" style="width:58%"></div></div><div class="competency-score">58</div></div><div class="competency-row"><div class="competency-name">LLM serving</div><div class="competency-track"><div class="competency-fill" data-base="51" style="width:51%"></div></div><div class="competency-score">51</div></div><div class="competency-row"><div class="competency-name">Evaluation</div><div class="competency-track"><div class="competency-fill" data-base="42" style="width:42%"></div></div><div class="competency-score">42</div></div><div class="competency-row"><div class="competency-name">Communication</div><div class="competency-track"><div class="competency-fill" data-base="77" style="width:77%"></div></div><div class="competency-score">77</div></div></div></div></div>
+              <aside><div class="recommendation"><h3 id="nextRecommendationTitle">Highest-impact next step</h3><p id="nextRecommendationCopy">Complete Retrieval Evaluation Basics, then retry the slow RAG incident. This targets your lowest skill while reinforcing an existing strength.</p><button class="primary-btn" data-go="learn">Start recommendation</button></div><div class="panel" style="margin-top:14px"><div class="panel-head"><div><h3>Recent activity</h3><p>Evidence behind your scores</p></div></div><div class="panel-body"><div class="activity-list"><div class="activity-row"><div class="activity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m12 3 2.7 5.5L21 9.4l-4.5 4.4 1.1 6.2-5.6-2.9L6.4 20l1.1-6.2L3 9.4l6.3-.9z"/></svg></div><div><div class="activity-title">Enterprise RAG mission</div><div class="activity-sub">Architecture stage revised</div></div><div class="activity-score">+8</div></div><div class="activity-row"><div class="activity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19h16M7 16V8M12 16V4M17 16v-5"/></svg></div><div><div class="activity-title">Capacity estimation drill</div><div class="activity-sub">6 of 8 correct</div></div><div class="activity-score">75%</div></div><div class="activity-row"><div class="activity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/></svg></div><div><div class="activity-title">Vector search module</div><div class="activity-sub">Completed 2 days ago</div></div><div class="activity-score">82%</div></div></div></div></div></aside>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <button class="active" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9h13v-9"/></svg>Home</button>
+    <button data-page="learn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/></svg>Learn</button>
+    <button data-page="missions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m12 3 2.7 5.5L21 9.4l-4.5 4.4 1.1 6.2-5.6-2.9L6.4 20l1.1-6.2L3 9.4l6.3-.9z"/></svg>Missions</button>
+    <button data-page="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z"/></svg>Practice</button>
+    <button data-page="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg>Progress</button>
+  </nav>
+
+  <div class="toast" id="toast">Updated</div>
+
+  <script>
+    const modeContent = {
+      Beginner: {
+        profile: 'AI Engineer · Foundation',
+        home: ['Your guided path','Learn AI system design by building real systems.','Move beyond passive reading. Make architecture decisions, explain trade-offs, observe failures, and improve your design with an AI engineering coach.'],
+        stats: ['3.8h','4','Two foundation missions remaining','RAG Basics','82% mastery across exercises'],
+        resume: ['Enterprise RAG Foundations','You completed requirements and capacity estimation. The next step is to assemble the query architecture.','Guided mission','~24 min left','46'],
+        learn: ['Structured curriculum','Build your AI engineering foundation','Short concepts lead directly into decisions, calculations, and architecture exercises. You attempt first; explanations follow.','Interactive concept · 12 minutes','How a RAG query moves through the system','Predict the purpose and failure mode of each component before revealing the explanation.','Foundation learning path','Six modules that progress from concepts to complete systems.','Finish one concept and one decision exercise','Choose a vector store for a small internal knowledge base.'],
+        missions: ['Scenario-based learning','Design systems. Defend decisions. Revise.','Each mission gives you an engineering problem, changing constraints, and evidence to reason from.'],
+        practice: ['Focused drills','Strengthen one engineering skill at a time','Use short exercises when you do not have time for a full mission.','Daily challenge · architecture decision','Choose the ingestion pattern','A tenant uploads 50,000 PDFs at once. The embedding provider has a strict requests-per-minute quota.','Which design best protects the system while maintaining throughput?','Guided session','Untimed','Immediate explanation and hints','Recommended from your current weak areas.'],
+        progress: ['Competency profile','See what you can design independently','Scores are based on decisions, explanations, revisions, and performance across multiple scenarios.','64%','Guided Builder','Next: Independent Designer','47','Your current beginner-mode profile','Complete Retrieval Evaluation Basics, then retry the slow RAG incident. This targets your lowest skill while reinforcing an existing strength.'],
+        mission: ['Build a secure, scalable retrieval system for 10,000 employees and 50 million document chunks.','Guided · No time limit','Add services to your architecture. Each choice becomes part of your design review.','AI Coach','Guiding your architecture','Guided question','You selected ECS Fargate for the retrieval service. What characteristics of the query workload make containers a good choice?']
+      },
+      Interview: {
+        profile: 'AI Engineer · Interview Ready',
+        home: ['Interview preparation','Practise explaining AI systems under pressure.','Run timed mock interviews, clarify ambiguous requirements, estimate capacity, defend architecture decisions, and review how clearly you communicated.'],
+        stats: ['4.6h','7','Three mock interviews this month','Communication','84% across recent interviews'],
+        resume: ['Mock Interview: Enterprise RAG','Requirements are complete. You have 32 minutes to finish architecture, scaling, reliability, and evaluation.','Timed interview','32:18 remaining','38'],
+        learn: ['Interview knowledge map','Learn the concepts interviewers expect you to defend','Prioritise trade-offs, capacity estimates, common follow-ups, and concise explanations rather than step-by-step tutorials.','Interview pattern · 8 minutes','Explain a RAG query path in two minutes','Practise a clear top-down explanation, then answer progressively deeper follow-up questions.','Interview readiness path','Modules mapped to common AI system-design interview dimensions.','Complete one concept and one spoken explanation','Explain when OpenSearch is preferable to a simpler vector store.'],
+        missions: ['Mock interview library','Clarify. Estimate. Design. Defend.','Timed AI system-design interviews with adaptive follow-up questions and communication scoring.'],
+        practice: ['Interview drills','Sharpen the skills that decide the interview','Use timed estimation, trade-off, and communication drills between full mock interviews.','Daily challenge · interviewer follow-up','Defend the ingestion pattern','The interviewer challenges your queue-based design: “Why not process uploads synchronously if users expect immediate availability?”','Give the strongest concise response.','Timed session','04:58','Feedback after submission','Selected from your latest interview transcript.'],
+        progress: ['Interview readiness','Track how convincingly you explain and defend systems','Readiness combines system correctness, prioritisation, communication, estimates, and follow-up performance.','72%','Interview Ready','Target: Strong Hire','63','Your current interview-mode profile','Complete the two-billion-vector mock interview. Your weakest interview dimension is capacity estimation under follow-up pressure.'],
+        mission: ['Design the platform in a 45-minute mock interview. Clarify assumptions and explain every major trade-off.','Timed · 42:00 remaining','The component library is available, but no architecture hints will be shown.','AI Interviewer','Evaluating your reasoning','Challenge','You selected ECS Fargate. Why is it better than Lambda here, and what data would make you reverse that decision?']
+      },
+      Production: {
+        profile: 'AI Engineer · Production Operator',
+        home: ['Production readiness','Learn by diagnosing realistic AI incidents.','Inspect logs, metrics, costs, evaluation results, and recent deployments. Form a hypothesis, choose evidence, remediate the system, and verify the outcome.'],
+        stats: ['5.2h','6','Two incidents need follow-up','Diagnosis','87% evidence selection score'],
+        resume: ['Incident: RAG Latency Regression','P95 latency rose from 1.9 to 8.4 seconds after a deployment. OpenSearch CPU and model throttling are both elevated.','Live incident','SLA breach 18 min','58'],
+        learn: ['Production playbooks','Learn the operational patterns behind reliable AI systems','Study failure modes, observability, rollout strategies, cost controls, and evaluation safeguards through short incident previews.','Incident walkthrough · 14 minutes','Trace latency through a production RAG request','Inspect service-level latency, queue delay, retrieval fan-out, and model throttling before revealing the root cause.','Production readiness path','Operational modules organised by failure domain.','Complete one playbook and one evidence drill','Choose the first metric to inspect after retrieval latency doubles.'],
+        missions: ['Incident simulation library','Investigate evidence. Mitigate. Verify.','Production scenarios begin with an existing architecture, noisy evidence, and an active reliability or quality problem.'],
+        practice: ['Operational drills','Build fast, evidence-based diagnostic habits','Use short log, metric, rollout, cost, and quality investigations between full incident simulations.','Daily challenge · incident triage','Prioritise the first mitigation','A bulk ingestion job coincides with search CPU at 94%, model throttling at 17%, and end-to-end P95 at 8.4 seconds.','Which action reduces user impact fastest while preserving evidence?','Incident clock','18:42','Feedback includes blast-radius analysis','Recommended from your production incident history.'],
+        progress: ['Production capability','See which systems you can operate safely','Scores reflect diagnosis quality, evidence use, mitigation safety, rollback planning, and post-change verification.','69%','Production Practitioner','Next: Reliable Operator','71','Your current production-mode profile','Run the latency regression incident again and verify retrieval quality after mitigation. Your diagnosis is strong, but post-change validation is inconsistent.'],
+        mission: ['A live enterprise RAG system is breaching its latency SLA. Diagnose the regression and restore service without reducing retrieval quality.','Incident simulation','Inspect the existing architecture. Components cannot be added until you establish an evidence-backed hypothesis.','AI Incident Commander','Tracking your investigation','Incident update','Traffic increased 20× after a client rollout. Which signal do you investigate first, and why is it more useful than the others?']
+      }
+    };
+
+    const toast = document.getElementById('toast');
+    const workspace = document.getElementById('workspace');
+    const missionWorkspace = document.getElementById('missionWorkspace');
+    const missionsLibrary = document.getElementById('missionsLibrary');
+    let currentPage = 'home';
+    let currentMode = 'Beginner';
+    let currentStep = 2;
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+    }
+
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    }
+
+    function navigate(page, updateHash = true) {
+      currentPage = page;
+      document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === `page-${page}`));
+      document.querySelectorAll('[data-page]').forEach(btn => btn.classList.toggle('active', btn.dataset.page === page));
+      const pageEl = document.getElementById(`page-${page}`);
+      setText('breadcrumbCurrent', pageEl?.dataset.title || page);
+      setText('breadcrumbParent', page === 'home' ? 'Workspace' : 'AI System Design Gym');
+      document.getElementById('pageContainer').scrollTop = 0;
+      if (page !== 'missions') closeWorkspace();
+      if (updateHash) history.replaceState(null, '', `#${page.toLowerCase()}-${currentMode.toLowerCase()}`);
+    }
+
+    function openWorkspace() {
+      navigate('missions');
+      missionsLibrary.hidden = true;
+      missionWorkspace.classList.add('active');
+      setText('breadcrumbCurrent', 'Enterprise RAG Workspace');
+      showToast(`${currentMode} mission opened`);
+    }
+
+    function closeWorkspace() {
+      missionsLibrary.hidden = false;
+      missionWorkspace.classList.remove('active');
+      workspace.classList.remove('ai-open');
+      if (currentPage === 'missions') setText('breadcrumbCurrent', 'Missions');
+    }
+
+    function applyMode(mode, announce = true) {
+      currentMode = mode;
+      document.body.dataset.mode = mode;
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+      document.querySelectorAll('.mode-card').forEach(c => c.classList.toggle('active', c.dataset.selectMode === mode));
+      const d = modeContent[mode];
+      setText('profileLevel', d.profile);
+      [ 'homeEyebrow','homeHeadline','homeDescription' ].forEach((id,i) => setText(id,d.home[i]));
+      setText('statPractice',d.stats[0]); setText('statMissions',d.stats[1]); setText('statMissionsNote',d.stats[2]); setText('statSkill',d.stats[3]); setText('statSkillNote',d.stats[4]);
+      setText('resumeTitle',d.resume[0]); setText('resumeDescription',d.resume[1]); setText('resumeChip',d.resume[2]); setText('resumeTime',d.resume[3]); setText('resumePercent',`${d.resume[4]}%`); document.getElementById('resumeFill').style.width = `${d.resume[4]}%`;
+      ['learnEyebrow','learnTitle','learnDescription','lessonKind','lessonTitle','lessonCopy','pathHeading','pathSubheading','objectiveSub','objectiveThird'].forEach((id,i) => setText(id,d.learn[i]));
+      ['missionsEyebrow','missionsTitle','missionsDescription'].forEach((id,i) => setText(id,d.missions[i]));
+      ['practiceEyebrow','practiceTitle','practiceDescription','dailyEyebrow','dailyTitle','dailyCopy','questionText','sessionLabel','practiceTimer','feedbackStyle','practiceLibrarySub'].forEach((id,i) => setText(id,d.practice[i]));
+      ['progressEyebrow','progressTitle','progressDescription','overallMastery','currentLevel','levelNote','decisionsReviewed','competencySub','nextRecommendationCopy'].forEach((id,i) => setText(id,d.progress[i]));
+      setText('missionBrief',d.mission[0]); document.querySelector('#modeMeta span').textContent = d.mission[1]; setText('componentHelp',d.mission[2]); setText('aiName',d.mission[3]); setText('aiStatus',d.mission[4]); setText('aiInitialLabel',d.mission[5]); setText('aiInitialText',d.mission[6]);
+      document.getElementById('globalAction').querySelector('span').textContent = mode === 'Beginner' ? 'Start session' : mode === 'Interview' ? 'Start mock interview' : 'Start incident';
+      document.querySelectorAll('.competency-fill[data-base]').forEach((bar,index) => {
+        const base = Number(bar.dataset.base);
+        const adjustment = mode === 'Interview' ? [0,2,-6,-2,-1,3,8][index] : mode === 'Production' ? [1,4,0,9,5,1,-4][index] : 0;
+        const value = Math.max(20, Math.min(96, base + adjustment));
+        bar.style.width = `${value}%`;
+        bar.closest('.competency-row').querySelector('.competency-score').textContent = value;
+      });
+      if (announce) showToast(`${mode} experience selected`);
+      history.replaceState(null, '', `#${currentPage.toLowerCase()}-${mode.toLowerCase()}`);
+    }
+
+    document.querySelectorAll('[data-page]').forEach(btn => btn.addEventListener('click', () => navigate(btn.dataset.page)));
+    document.querySelectorAll('[data-go]').forEach(btn => btn.addEventListener('click', () => navigate(btn.dataset.go)));
+    document.querySelectorAll('[data-open-workspace]').forEach(btn => btn.addEventListener('click', openWorkspace));
+    document.getElementById('backToMissions').addEventListener('click', closeWorkspace);
+    document.querySelectorAll('.mode-btn').forEach(btn => btn.addEventListener('click', () => applyMode(btn.dataset.mode)));
+    document.querySelectorAll('.mode-card > button').forEach(button => button.addEventListener('click', () => applyMode(button.closest('.mode-card').dataset.selectMode)));
+
+    document.getElementById('globalAction').addEventListener('click', () => {
+      if (currentMode === 'Beginner') navigate('learn'); else openWorkspace();
+    });
+    document.getElementById('globalHelp').addEventListener('click', () => {
+      if (missionWorkspace.classList.contains('active')) workspace.classList.add('ai-open');
+      else showToast(currentMode === 'Production' ? 'Incident guidance opened' : currentMode === 'Interview' ? 'Interview tips opened' : 'Learning coach opened');
+    });
+
+    document.querySelectorAll('.module-row').forEach(row => row.addEventListener('click', () => {
+      document.querySelectorAll('.module-row').forEach(r => r.classList.remove('active'));
+      row.classList.add('active');
+      setText('lessonTitle', row.querySelector('.module-title').textContent);
+      setText('lessonCopy', row.querySelector('.module-desc').textContent + ' Attempt the embedded decision before opening the explanation.');
+      showToast('Module preview updated');
+    }));
+
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      showToast(`${btn.textContent} missions selected`);
+    }));
+
+    document.querySelectorAll('.option').forEach(option => option.addEventListener('click', () => {
+      document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      option.classList.add('selected');
+    }));
+    document.getElementById('submitPractice').addEventListener('click', () => showToast(currentMode === 'Interview' ? 'Answer locked — feedback follows at session end' : currentMode === 'Production' ? 'Mitigation recorded — verify blast radius next' : 'Correct pattern — explanation unlocked'));
+    document.getElementById('continueLearning').addEventListener('click', () => showToast('Interactive lesson started'));
+    document.getElementById('dailyPractice').addEventListener('click', () => showToast(`${currentMode} daily practice started`));
+
+    const steps = [...document.querySelectorAll('.step')];
+    function setStep(index) {
+      currentStep = index;
+      steps.forEach((step,i) => { step.classList.toggle('done',i < index); step.classList.toggle('active',i === index); });
+      showToast(`Moved to ${steps[index].innerText}`);
+    }
+    steps.forEach(step => step.addEventListener('click', () => setStep(Number(step.dataset.step))));
+
+    document.getElementById('openAiTop').addEventListener('click', () => workspace.classList.add('ai-open'));
+    document.getElementById('closeAi').addEventListener('click', () => workspace.classList.remove('ai-open'));
+    document.getElementById('saveBtn').addEventListener('click', () => showToast('Draft saved · just now'));
+    document.getElementById('editDecision').addEventListener('click', () => showToast('Decision editor opened'));
+    document.getElementById('continueBtn').addEventListener('click', () => { setStep(3); runStressTest(); });
+
+    function runStressTest() {
+      document.getElementById('stressBanner').classList.add('show');
+      document.querySelector('.ecs-node').classList.add('warning');
+      document.querySelector('.search-node').classList.add('warning');
+      document.querySelector('.bedrock-node').classList.add('warning');
+      setText('ecsMetric','P95: 2.2 s · CPU 91%'); setText('searchMetric','P95: 2.4 s · CPU 94%'); setText('bedrockMetric','P95: 4.1 s · throttle 17%');
+      workspace.classList.add('ai-open');
+      const message = document.createElement('div');
+      message.className = 'ai-message';
+      message.innerHTML = `<div class="message-label">${currentMode === 'Production' ? 'Incident update' : 'Stress event'}</div><div class="message-text">Traffic increased 20×. Which bottleneck would you address first, and what evidence supports that choice?</div><div class="message-context">OpenSearch CPU: 94% · Bedrock throttling: 17% · End-to-end P95: 8.4 s</div>`;
+      document.getElementById('aiBody').appendChild(message);
+      message.scrollIntoView({behavior:'smooth',block:'end'});
+    }
+    document.getElementById('stressBtn').addEventListener('click', runStressTest);
+    document.getElementById('closeStress').addEventListener('click', () => document.getElementById('stressBanner').classList.remove('show'));
+
+    document.querySelectorAll('.node').forEach(node => node.addEventListener('click', () => {
+      document.querySelectorAll('.node').forEach(n => n.classList.remove('selected'));
+      node.classList.add('selected');
+      document.querySelector('.decision-label').textContent = `Decision record · ${node.dataset.node}`;
+      document.querySelector('.decision-question').textContent = `Explain the role and trade-offs of ${node.dataset.node} in this architecture.`;
+    }));
+
+    document.querySelectorAll('.component-item').forEach(item => item.addEventListener('click', () => showToast(currentMode === 'Production' ? `Inspecting ${item.dataset.service}` : `${item.dataset.service} added to the architecture`)));
+    document.getElementById('componentSearch').addEventListener('input', e => {
+      const value = e.target.value.toLowerCase();
+      document.querySelectorAll('.component-item').forEach(item => item.style.display = item.textContent.toLowerCase().includes(value) ? 'flex' : 'none');
+    });
+    document.getElementById('hintBtn').addEventListener('click', () => {
+      const hint = document.createElement('div'); hint.className = 'ai-message';
+      hint.innerHTML = `<div class="message-label">${currentMode === 'Interview' ? 'Limited hint' : currentMode === 'Production' ? 'Evidence prompt' : 'Hint 1 of 3'}</div><div class="message-text">Consider where bursts can be absorbed before requests reach the model, and how the retrieval service should react to quota errors.</div>`;
+      document.getElementById('aiBody').appendChild(hint); hint.scrollIntoView({behavior:'smooth',block:'end'});
+      document.getElementById('hintBtn').textContent = currentMode === 'Interview' ? 'No more hints in this stage' : 'Show next hint';
+    });
+    function sendMessage() {
+      const input = document.getElementById('aiInput'); const text = input.value.trim(); if (!text) return;
+      const user = document.createElement('div'); user.className = 'ai-message user-message'; user.innerHTML = '<div class="message-label">Your answer</div><div class="message-text"></div>'; user.querySelector('.message-text').textContent = text; document.getElementById('aiBody').appendChild(user); input.value = ''; user.scrollIntoView({behavior:'smooth',block:'end'});
+      setTimeout(() => { const response = document.createElement('div'); response.className = 'ai-message'; response.innerHTML = `<div class="message-label">${currentMode === 'Production' ? 'Verification request' : 'Follow-up'}</div><div class="message-text">That addresses the immediate bottleneck. How would you validate that the change did not reduce retrieval quality?</div>`; document.getElementById('aiBody').appendChild(response); response.scrollIntoView({behavior:'smooth',block:'end'}); }, 350);
+    }
+    document.getElementById('sendAi').addEventListener('click', sendMessage);
+    document.getElementById('aiInput').addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') sendMessage(); });
+
+    function loadFromHash() {
+      const match = location.hash.replace('#','').match(/^(home|learn|missions|practice|progress)-(beginner|interview|production)$/i);
+      if (match) {
+        const page = match[1].toLowerCase();
+        const mode = match[2][0].toUpperCase() + match[2].slice(1).toLowerCase();
+        applyMode(mode,false); navigate(page,false);
+      } else { applyMode('Beginner',false); navigate('home',false); }
+    }
+    window.addEventListener('hashchange', loadFromHash);
+    loadFromHash();
+  </script>
+  <script>
+    (() => {
+      const STORAGE_KEY = 'ai-system-design-gym.enterprise-rag.v3';
+      const uiWorkspace = document.getElementById('workspace');
+      const uiMission = document.getElementById('missionWorkspace');
+      const uiCanvas = uiWorkspace.querySelector('.canvas');
+      const uiSteps = [...uiWorkspace.closest('.mission-page').querySelectorAll('.step')];
+      const uiAiBody = document.getElementById('aiBody');
+      const uiAiPanel = document.getElementById('aiPanel');
+      uiWorkspace.classList.add('components-collapsed');
+
+      function syncAiAccessibility() {
+        const open = uiWorkspace.classList.contains('ai-open');
+        uiAiPanel.inert = !open;
+        uiAiPanel.setAttribute('aria-hidden',String(!open));
+      }
+      new MutationObserver(syncAiAccessibility).observe(uiWorkspace,{ attributes:true, attributeFilter:['class'] });
+      syncAiAccessibility();
+
+      const componentsToggle = document.createElement('button');
+      componentsToggle.type = 'button';
+      componentsToggle.className = 'ghost-btn components-toggle';
+      componentsToggle.setAttribute('aria-controls','componentPanel');
+      componentsToggle.setAttribute('aria-expanded','false');
+      componentsToggle.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Components</span>';
+      document.querySelector('.component-panel').id = 'componentPanel';
+      document.querySelector('.toolbar-left').prepend(componentsToggle);
+      const uiToast = document.getElementById('toast');
+      const maxHistory = 30;
+      let saveTimer;
+      let responseTimer;
+      let history = [];
+      let future = [];
+
+      function enhanceMarkup() {
+        uiToast.setAttribute('role','status');
+        uiToast.setAttribute('aria-live','polite');
+        uiCanvas.id = 'architectureCanvas';
+        uiCanvas.setAttribute('role','region');
+        uiCanvas.setAttribute('aria-label','Architecture canvas. Select a component to inspect it or use its remove button.');
+        uiWorkspace.querySelector('.tool-label').id = 'stageToolLabel';
+        document.getElementById('closeAi').setAttribute('aria-label','Close AI interviewer');
+        document.getElementById('stressBtn').insertAdjacentHTML('beforebegin','<button class="icon-btn" id="undoBtn" aria-label="Undo architecture change" title="Undo" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 7 4 12l5 5"/><path d="M5 12h8a6 6 0 0 1 6 6"/></svg></button><button class="icon-btn" id="redoBtn" aria-label="Redo architecture change" title="Redo" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m15 7 5 5-5 5"/><path d="M19 12h-8a6 6 0 0 0-6 6"/></svg></button>');
+        document.getElementById('saveBtn').insertAdjacentHTML('beforebegin','<span class="save-state" id="saveState" role="status" aria-live="polite">Saved</span><span class="toolbar-error" id="toolbarError" role="alert"></span>');
+        const zoomButtons = uiWorkspace.querySelectorAll('.zoom-control button');
+        zoomButtons[0].id = 'zoomOut'; zoomButtons[0].textContent = '-'; zoomButtons[0].setAttribute('aria-label','Zoom out');
+        zoomButtons[1].id = 'zoomIn'; zoomButtons[1].setAttribute('aria-label','Zoom in');
+        uiWorkspace.querySelector('.zoom-value').id = 'zoomValue';
+        uiCanvas.insertAdjacentHTML('beforeend','<section class="review-panel" id="reviewPanel" hidden aria-labelledby="reviewTitle"><div class="review-head"><div><h2 id="reviewTitle">Architecture review</h2><p id="reviewSummary">Your initial design is ready for review.</p></div><div class="score-badge" id="reviewScore">72/100</div></div><div class="review-grid"><div class="review-section"><h3>Strongest decision</h3><p id="reviewStrength"></p></div><div class="review-section"><h3>Biggest risk</h3><p id="reviewRisk"></p></div><div class="review-section"><h3>Required revision</h3><p id="reviewRevision"></p></div></div><div class="review-change" id="reviewChange"></div></section>');
+        uiMission.insertAdjacentHTML('beforeend','<dialog class="mission-dialog" id="decisionDialog"><form method="dialog" id="decisionForm"><div class="dialog-head"><h2>Edit decision reasoning</h2><button class="icon-btn" value="cancel" aria-label="Close decision editor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><div class="dialog-body"><label for="decisionInput">Reasoning for <span id="decisionNodeName">selected component</span><textarea id="decisionInput" maxlength="600" required aria-describedby="decisionHelp decisionError"></textarea><span class="field-help" id="decisionHelp">Explain the requirement, trade-off, and condition that would change this choice. Maximum 600 characters.</span></label><div class="field-error" id="decisionError" role="alert"></div></div><div class="dialog-actions"><button class="ghost-btn" value="cancel">Cancel</button><button class="primary-btn" value="default">Save reasoning</button></div></form></dialog>');
+        const empty = document.createElement('div');
+        empty.id = 'componentEmpty'; empty.className = 'component-empty'; empty.hidden = true;
+        empty.textContent = 'No components match this search. Clear the search or try a service category.';
+        uiWorkspace.querySelector('.component-panel').appendChild(empty);
+      }
+
+      enhanceMarkup();
+      const reviewPanel = document.getElementById('reviewPanel');
+      const initialDecision = uiWorkspace.querySelector('.decision-answer').textContent.trim();
+
+      function serializeNode(node) {
+        return { name: node.dataset.node, className: node.className.replace(/\b(selected|warning)\b/g,'').replace(/\s+/g,' ').trim(), html: node.innerHTML, style: node.getAttribute('style') || '' };
+      }
+
+      const defaults = {
+        version: 3,
+        nodes: [...uiCanvas.querySelectorAll('.node')].map(serializeNode),
+        decisions: { 'ECS retrieval service': initialDecision },
+        selected: 'ECS retrieval service', step: 2, maxStep: 2, stress: false,
+        mitigation: '', hypothesis: '', revisionBase: null, revisionCount: 0,
+        revising: false, completed: false, zoom: 100, savedAt: null
+      };
+
+      function clone(value) { return JSON.parse(JSON.stringify(value)); }
+      function loadState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          return saved?.version === 3 && Array.isArray(saved.nodes) ? { ...clone(defaults), ...saved } : clone(defaults);
+        } catch (error) { return clone(defaults); }
+      }
+      let state = loadState();
+
+      function toast(message) {
+        uiToast.textContent = message; uiToast.classList.add('show');
+        clearTimeout(window.hardenedToastTimer);
+        window.hardenedToastTimer = setTimeout(() => uiToast.classList.remove('show'),2200);
+      }
+      function text(id,value) { const el = document.getElementById(id); if (el) el.textContent = value; }
+      function error(message = '') { text('toolbarError',message); }
+      function saveStatus(kind,message) { const el = document.getElementById('saveState'); el.className = `save-state ${kind || ''}`.trim(); el.textContent = message; }
+      function editableSnapshot() { return JSON.stringify({ nodes: state.nodes, decisions: state.decisions, selected: state.selected, zoom: state.zoom }); }
+      function restoreSnapshot(raw) { const data = JSON.parse(raw); Object.assign(state,data); render(); scheduleSave(); }
+      function pushHistory() { history.push(editableSnapshot()); if (history.length > maxHistory) history.shift(); future = []; updateHistory(); }
+      function updateHistory() { document.getElementById('undoBtn').disabled = !history.length; document.getElementById('redoBtn').disabled = !future.length; }
+      function stopOriginal(event) { event.preventDefault(); event.stopImmediatePropagation(); }
+
+      function save(announce = false) {
+        clearTimeout(saveTimer); saveStatus('saving','Saving');
+        try {
+          state.savedAt = new Date().toISOString(); localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
+          saveStatus(navigator.onLine ? '' : 'offline',navigator.onLine ? 'Saved now' : 'Saved locally');
+          if (announce) toast('Draft saved locally');
+        } catch (cause) { saveStatus('error','Save failed'); error('Storage is unavailable. Keep this tab open and retry.'); }
+      }
+      function scheduleSave() { saveStatus('saving','Saving'); clearTimeout(saveTimer); saveTimer = setTimeout(() => save(false),700); }
+
+      function icon(service) {
+        return ({ 'API Gateway':['API','compute'], 'ECS Fargate':['ECS','compute'], 'Lambda':['L','compute'], 'OpenSearch':['OS','data'], 'Amazon S3':['S3','data'], 'DynamoDB':['DB','data'], 'Amazon Bedrock':['AI','ai'], 'Amazon SQS':['Q','queue'] })[service] || ['SYS','compute'];
+      }
+      function nodeNameForService(service) {
+        return ({ 'ECS Fargate':'ECS retrieval service', 'Amazon SQS':'SQS ingestion queue' })[service] || service;
+      }
+      function newNode(service) {
+        const [mark,type] = icon(service); const index = state.nodes.length;
+        return { name: service, className: 'node', style: `left:${6 + index % 4 * 23}%;top:${18 + Math.floor(index / 4) * 40}%`, html: `<div class="node-top"><div class="node-title-wrap"><div class="node-icon ${type}">${mark}</div><div class="node-title"></div></div><button class="node-menu" type="button"></button></div><div class="node-desc">New component awaiting a connection and configuration.</div><div class="node-metric">Unconnected</div><div class="node-risk">Needs connection</div>` };
+      }
+      function findNode(name) { return [...uiCanvas.querySelectorAll('.node')].find(node => node.dataset.node === name); }
+
+      function renderNodes() {
+        uiCanvas.querySelectorAll('.node').forEach(node => node.remove());
+        state.nodes.forEach(data => {
+          const node = document.createElement('article');
+          node.className = data.className; node.dataset.node = data.name; node.innerHTML = data.html;
+          if (data.style) node.setAttribute('style',data.style);
+          const title = node.querySelector('.node-title'); if (title && !title.textContent.trim()) title.textContent = data.name;
+          node.tabIndex = 0; node.setAttribute('role','group'); node.setAttribute('aria-label',`${data.name} architecture component`);
+          const menu = node.querySelector('.node-menu');
+          if (menu) { menu.textContent = 'Remove'; menu.setAttribute('aria-label',`Remove ${data.name}`); menu.title = `Remove ${data.name}`; }
+          node.classList.toggle('selected',data.name === state.selected);
+          node.classList.toggle('warning',(state.stress && ['ECS retrieval service','OpenSearch','Amazon Bedrock'].includes(data.name)) || node.querySelector('.node-metric')?.textContent === 'Unconnected');
+          reviewPanel.insertAdjacentElement('beforebegin',node);
+        });
+        uiCanvas.style.setProperty('--canvas-scale',state.zoom / 100); text('zoomValue',`${state.zoom}%`);
+        document.querySelectorAll('.component-item').forEach(item => item.disabled = state.nodes.some(node => node.name === nodeNameForService(item.dataset.service)));
+        renderDecision();
+      }
+
+      function renderDecision() {
+        const selected = state.nodes.find(node => node.name === state.selected) || state.nodes[0];
+        if (!selected) { text('toolbarError','Add a component to continue.'); document.getElementById('editDecision').disabled = true; return; }
+        state.selected = selected.name; document.getElementById('editDecision').disabled = state.step === 4;
+        uiWorkspace.querySelector('.decision-label').textContent = `Decision record - ${selected.name}`;
+        uiWorkspace.querySelector('.decision-question').textContent = `Explain the role and trade-offs of ${selected.name} in this architecture.`;
+        uiWorkspace.querySelector('.decision-answer').textContent = state.decisions[selected.name] || 'No reasoning recorded yet. Add a requirement, trade-off, and revisit condition.';
+      }
+
+      function applyStress() {
+        document.getElementById('stressBanner').classList.toggle('show',state.stress && state.step === 3);
+        const metrics = { 'ECS retrieval service':'P95: 2.2 s - CPU 91%', OpenSearch:'P95: 2.4 s - CPU 94%', 'Amazon Bedrock':'P95: 4.1 s - throttle 17%' };
+        if (state.stress) Object.entries(metrics).forEach(([name,value]) => { const node = findNode(name); if (node) node.querySelector('.node-metric').textContent = value; });
+      }
+
+      function changedFromBase() {
+        return state.revisionBase && JSON.stringify({ nodes: state.nodes, decisions: state.decisions }) !== JSON.stringify(state.revisionBase);
+      }
+      function updateReview() {
+        const score = Math.min(94,72 + state.revisionCount * 12 + Math.min(8,Object.keys(state.decisions).length * 2));
+        text('reviewScore',`${score}/100`);
+        text('reviewSummary',state.revisionCount ? 'Your revision addresses the stress event and is ready for reflection.' : 'Your initial design was evaluated against the mission requirements and stress response.');
+        text('reviewStrength',state.nodes.some(node => node.name.includes('SQS')) ? 'Durable buffering separates bursty work from latency-sensitive requests.' : 'The request path is clearly separated from document storage.');
+        text('reviewRisk',state.mitigation || 'The response to downstream throttling needs clearer evidence and validation.');
+        text('reviewRevision',state.revisionCount ? 'Explain what you would validate in production before completing the mission.' : 'Change at least one component or decision, then explain why.');
+        text('reviewChange',state.revisionCount ? `Revision ${state.revisionCount} submitted. The design now contains ${state.nodes.length} components and ${Object.keys(state.decisions).length} recorded decisions.` : 'No revision submitted yet. Return to the architecture and address the biggest risk.');
+      }
+      function renderStage() {
+        uiSteps.forEach((step,index) => {
+          step.classList.toggle('done',index < state.step); step.classList.toggle('active',index === state.step);
+          step.disabled = index !== state.step;
+          if (index === state.step) step.setAttribute('aria-current','step'); else step.removeAttribute('aria-current');
+        });
+        reviewPanel.hidden = state.step !== 4;
+        document.getElementById('stressBtn').disabled = state.step === 4;
+        uiWorkspace.querySelector('.component-panel').hidden = state.step === 4;
+        text('stageToolLabel',['Requirements summary','Capacity estimate','Architecture','Stress response','Review and revision'][state.step]);
+        const next = document.getElementById('continueBtn');
+        next.textContent = state.step === 2 ? (state.revising ? 'Submit revision' : 'Continue to stress test') : state.step === 3 ? 'Submit response for review' : state.revisionCount ? 'Complete mission' : 'Revise architecture';
+        document.getElementById('editDecision').hidden = state.step === 4;
+        if (state.step === 4) updateReview();
+      }
+      function render() { renderNodes(); applyStress(); renderStage(); updateHistory(); }
+
+      function runStress(event) {
+        if (event) stopOriginal(event);
+        if (state.nodes.length < 4) { error('Add at least four components before running the stress event.'); return; }
+        if (!Object.values(state.decisions).some(value => value.length >= 30)) { error('Record at least one complete decision before the stress event.'); return; }
+        state.stress = true; state.maxStep = Math.max(state.maxStep,3); state.step = 3; error(''); render();
+        uiWorkspace.classList.add('ai-open');
+        if (!document.getElementById('hardenedStressMessage')) {
+          const message = document.createElement('div'); message.className = 'ai-message'; message.id = 'hardenedStressMessage';
+          message.innerHTML = '<div class="message-label">Stress event</div><div class="message-text">Traffic increased 20x. Which bottleneck would you address first, and what evidence supports that choice?</div><div class="message-context">OpenSearch CPU: 94% - Bedrock throttling: 17% - End-to-end P95: 8.4 s</div>';
+          uiAiBody.appendChild(message); message.scrollIntoView({ behavior:'smooth', block:'end' });
+        }
+        scheduleSave();
+      }
+
+      document.getElementById('undoBtn').addEventListener('click',event => { stopOriginal(event); if (!history.length) return; future.push(editableSnapshot()); restoreSnapshot(history.pop()); updateHistory(); toast('Architecture change undone'); },true);
+      document.getElementById('redoBtn').addEventListener('click',event => { stopOriginal(event); if (!future.length) return; history.push(editableSnapshot()); restoreSnapshot(future.pop()); updateHistory(); toast('Architecture change restored'); },true);
+      document.getElementById('saveBtn').addEventListener('click',event => { stopOriginal(event); save(true); },true);
+      document.getElementById('stressBtn').addEventListener('click',runStress,true);
+      componentsToggle.addEventListener('click',() => {
+        const collapsed = uiWorkspace.classList.toggle('components-collapsed');
+        componentsToggle.setAttribute('aria-expanded',String(!collapsed));
+        if (!collapsed) setTimeout(() => document.getElementById('componentSearch').focus(),190);
+      });
+      document.getElementById('zoomOut').addEventListener('click',event => { stopOriginal(event); state.zoom = Math.max(70,state.zoom - 10); render(); scheduleSave(); },true);
+      document.getElementById('zoomIn').addEventListener('click',event => { stopOriginal(event); state.zoom = Math.min(130,state.zoom + 10); render(); scheduleSave(); },true);
+
+      document.getElementById('editDecision').addEventListener('click',event => {
+        stopOriginal(event); if (!state.selected) return;
+        text('decisionNodeName',state.selected); document.getElementById('decisionInput').value = state.decisions[state.selected] || ''; text('decisionError','');
+        document.getElementById('decisionDialog').showModal(); document.getElementById('decisionInput').focus();
+      },true);
+      document.getElementById('decisionForm').addEventListener('submit',event => {
+        if (event.submitter?.value === 'cancel') return;
+        const input = document.getElementById('decisionInput'); const value = input.value.trim();
+        if (value.length < 30) { event.preventDefault(); text('decisionError','Add at least 30 characters covering the requirement and trade-off.'); input.focus(); return; }
+        pushHistory(); state.decisions[state.selected] = value; renderDecision(); scheduleSave(); toast('Decision reasoning saved');
+      });
+
+      uiCanvas.addEventListener('click',event => {
+        const node = event.target.closest('.node'); if (!node) return; stopOriginal(event);
+        if (event.target.closest('.node-menu')) {
+          if (state.nodes.length <= 3) { error('Keep at least three components in the architecture.'); return; }
+          if (!confirm(`Remove ${node.dataset.node} from the architecture?`)) return;
+          pushHistory(); state.nodes = state.nodes.filter(item => item.name !== node.dataset.node); delete state.decisions[node.dataset.node]; state.selected = state.nodes[0]?.name || '';
+          render(); scheduleSave(); toast(`${node.dataset.node} removed`); return;
+        }
+        state.selected = node.dataset.node; renderNodes(); findNode(state.selected)?.focus();
+      },true);
+      uiCanvas.addEventListener('keydown',event => { const node = event.target.closest('.node'); if (node && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); state.selected = node.dataset.node; renderNodes(); findNode(state.selected)?.focus(); } });
+
+      document.querySelectorAll('.component-item').forEach(item => item.addEventListener('click',event => {
+        stopOriginal(event); const service = item.dataset.service;
+        const existingName = nodeNameForService(service);
+        if (state.nodes.some(node => node.name === existingName)) { state.selected = existingName; renderNodes(); toast(`${service} is already in the architecture`); return; }
+        if (currentMode === 'Production' && !state.hypothesis) { error('Record an evidence-backed hypothesis before changing the production architecture.'); uiWorkspace.classList.add('ai-open'); return; }
+        pushHistory(); state.nodes.push(newNode(service)); state.selected = service; render(); scheduleSave(); toast(`${service} added. Connect and explain it before submission.`);
+      },true));
+      document.getElementById('componentSearch').addEventListener('input',() => {
+        const visible = [...document.querySelectorAll('.component-item')].some(item => item.style.display !== 'none');
+        document.getElementById('componentEmpty').hidden = visible;
+      });
+
+      document.getElementById('sendAi').addEventListener('click',event => {
+        stopOriginal(event); const input = document.getElementById('aiInput'); const value = input.value.trim();
+        if (!value) { error('Write a response before sending.'); input.focus(); return; }
+        if (value.length > 1200) { error('Keep the response under 1,200 characters.'); input.focus(); return; }
+        error(''); const message = document.createElement('div'); message.className = 'ai-message user-message'; message.innerHTML = '<div class="message-label">Your answer</div><div class="message-text"></div>'; message.querySelector('.message-text').textContent = value; uiAiBody.appendChild(message); input.value = ''; message.scrollIntoView({ behavior:'smooth', block:'end' });
+        if (state.step === 3) state.mitigation = value; if (currentMode === 'Production' && state.step === 2) state.hypothesis = value; scheduleSave();
+        const send = document.getElementById('sendAi'); send.disabled = true;
+        clearTimeout(responseTimer); responseTimer = setTimeout(() => { const reply = document.createElement('div'); reply.className = 'ai-message'; reply.innerHTML = '<div class="message-label">Follow-up</div><div class="message-text">How would you validate that this change did not reduce retrieval quality?</div>'; uiAiBody.appendChild(reply); reply.scrollIntoView({ behavior:'smooth', block:'end' }); send.disabled = false; },350);
+      },true);
+
+      document.getElementById('continueBtn').addEventListener('click',event => {
+        stopOriginal(event); error('');
+        if (state.step === 2 && state.revising) {
+          if (!changedFromBase()) { error('Change a component or decision before submitting the revision.'); return; }
+          state.revisionCount += 1; state.revising = false; state.step = 4; render(); scheduleSave(); toast('Revision submitted for comparison'); return;
+        }
+        if (state.step === 2) { runStress(); return; }
+        if (state.step === 3) {
+          if (state.mitigation.length < 20) { error('Explain your mitigation and evidence in the AI panel before review.'); uiWorkspace.classList.add('ai-open'); return; }
+          state.revisionBase = clone({ nodes: state.nodes, decisions: state.decisions }); state.maxStep = 4; state.step = 4; render(); scheduleSave(); toast('Initial review ready'); return;
+        }
+        if (state.step === 4 && !state.revisionCount) { state.revising = true; state.step = 2; render(); scheduleSave(); toast('Revision workspace opened'); return; }
+        state.completed = true; save(); toast('Mission completed. Revision evidence saved.');
+      },true);
+
+      uiSteps.forEach(step => step.addEventListener('click',event => { stopOriginal(event); error('Complete the current stage using the primary action below the workspace.'); },true));
+      document.addEventListener('click',event => {
+        if (event.target.closest('[data-open-workspace]')) setTimeout(() => uiWorkspace.classList.remove('ai-open'));
+      },true);
+      window.addEventListener('online',() => { saveStatus('','Online - saved'); save(); });
+      window.addEventListener('offline',() => saveStatus('offline','Offline - local only'));
+      document.addEventListener('visibilitychange',() => { if (document.visibilityState === 'hidden') save(); });
+      window.addEventListener('beforeunload',() => { clearTimeout(responseTimer); save(); });
+
+      render();
+      if (state.savedAt) saveStatus(navigator.onLine ? '' : 'offline',navigator.onLine ? 'Recovered' : 'Recovered locally');
+    })();
+  </script>
+</body>
+</html>

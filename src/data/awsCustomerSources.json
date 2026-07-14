@@ -1,0 +1,402 @@
+﻿[
+    {
+        "Title":  "How KTern.AI built agentic AI for SAP on Amazon Bedrock AgentCore",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-ktern-ai-built-agentic-ai-for-sap-on-amazon-bedrock-agentcore/"
+    },
+    {
+        "Title":  "How Inscribe uses Amazon Bedrock to stop document fraud in seconds",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-inscribe-uses-amazon-bedrock-to-stop-document-fraud-in-seconds/"
+    },
+    {
+        "Title":  "How Loka Built a Natural, Low-Latency Voice Agent with Amazon Nova 2 Sonic",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-loka-built-a-natural-low-latency-voice-agent-with-amazon-nova-2-sonic/"
+    },
+    {
+        "Title":  "How Baz improved its AI Agent Code Review accuracy using Amazon Bedrock AgentCore",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-baz-improved-its-ai-agent-code-review-accuracy-using-amazon-bedrock-agentcore/"
+    },
+    {
+        "Title":  "Aderant transforms cloud operations with Amazon Quick",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/aderant-transforms-cloud-operations-with-amazon-quick/"
+    },
+    {
+        "Title":  "How Miro uses Amazon Bedrock to boost software bug routing accuracy and improve time-to-resolution from days to hours",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-miro-uses-amazon-bedrock-to-boost-software-bug-routing-accuracy-and-improve-time-to-resolution-from-days-to-hours/"
+    },
+    {
+        "Title":  "Halliburton enhances seismic workflow creation with Amazon Bedrock and Generative AI",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/halliburton-enhances-seismic-workflow-creation-with-amazon-bedrock-and-generative-ai/"
+    },
+    {
+        "Title":  "How Hapag-Lloyd uses Amazon Bedrock to transform customer feedback into actionable insights",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-hapag-lloyd-uses-amazon-bedrock-to-transform-customer-feedback-into-actionable-insights/"
+    },
+    {
+        "Title":  "Sun Finance automates ID extraction and fraud detection with generative AI on AWS",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/sun-finance-automates-id-extraction-and-fraud-detection-with-generative-ai-on-aws/"
+    },
+    {
+        "Title":  "How Popsa used Amazon Nova to inspire customers with personalised title suggestions",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-popsa-used-amazon-nova-to-inspire-customers-with-personalised-title-suggestions/"
+    },
+    {
+        "Title":  "Rocket Close transforms mortgage document processing with Amazon Bedrock and Amazon Textract",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/rocket-close-transforms-mortgage-document-processing-with-amazon-bedrock-and-amazon-textract/"
+    },
+    {
+        "Title":  "How Lendi revamped the refinance journey for its customers using agentic AI in 16 weeks using Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-lendi-revamped-the-refinance-journey-for-its-customers-using-agentic-ai-in-12-weeks-using-amazon-bedrock/"
+    },
+    {
+        "Title":  "How Tines enhances security analysis with Amazon Quick Suite",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-tines-enhances-security-analysis-with-amazon-quick-suite/"
+    },
+    {
+        "Title":  "Swann provides Generative AI to millions of IoT Devices using Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/swann-provides-generative-ai-to-millions-of-iot-devices-using-amazon-bedrock/"
+    },
+    {
+        "Title":  "How LinqAlpha assesses investment theses using Devil’s Advocate on Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-linqalpha-assesses-investment-theses-using-devils-advocate-on-amazon-bedrock/"
+    },
+    {
+        "Title":  "Iberdrola enhances IT operations using Amazon Bedrock AgentCore",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/iberdrola-enhances-it-operations-using-amazon-bedrock-agentcore/"
+    },
+    {
+        "Title":  "New Relic transforms productivity with generative AI on AWS",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/new-relic-transforms-productivity-with-generative-ai-on-aws/"
+    },
+    {
+        "Title":  "How Associa transforms document classification with the GenAI IDP Accelerator and Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-associa-transforms-document-classification-with-the-genai-idp-accelerator-and-amazon-bedrock/"
+    },
+    {
+        "Title":  "How Clarus Care uses Amazon Bedrock to deliver conversational contact center interactions",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-clarus-care-uses-amazon-bedrock-to-deliver-conversational-contact-center-interactions/"
+    },
+    {
+        "Title":  "How Totogi automated change request processing with Totogi BSS Magic and Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-totogi-automated-change-request-processing-with-totogi-bss-magic-and-amazon-bedrock/"
+    },
+    {
+        "Title":  "How PDI built an enterprise-grade RAG system for AI applications with AWS",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-pdi-built-an-enterprise-grade-rag-system-for-ai-applications-with-aws/"
+    },
+    {
+        "Title":  "How CLICKFORCE accelerates data-driven advertising with Amazon Bedrock Agents",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-clickforce-accelerates-data-driven-advertising-with-amazon-bedrock-agents/"
+    },
+    {
+        "Title":  "How Thomson Reuters built an Agentic Platform Engineering Hub with Amazon Bedrock AgentCore",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-thomson-reuters-built-an-agentic-platform-engineering-hub-with-amazon-bedrock-agentcore/"
+    },
+    {
+        "Title":  "How bunq handles 97% of support with Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-bunq-handles-97-of-support-with-amazon-bedrock/"
+    },
+    {
+        "Title":  "How Palo Alto Networks enhanced device security infra log analysis with Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-palo-alto-networks-enhanced-device-security-infra-log-analysis-with-amazon-bedrock/"
+    },
+    {
+        "Title":  "How AutoScout24 built a Bot Factory to standardize AI agent development with Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-autoscout24-built-a-bot-factory-to-standardize-ai-agent-development-with-amazon-bedrock/"
+    },
+    {
+        "Title":  "How Beekeeper by LumApps optimized user personalization with Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-beekeeper-optimized-user-personalization-with-amazon-bedrock/"
+    },
+    {
+        "Title":  "How dLocal automated compliance reviews using Amazon Quick Automate",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-dlocal-automated-compliance-reviews-using-amazon-quick-automate/"
+    },
+    {
+        "Title":  "How Tata Power CoE built a scalable AI-powered solar panel inspection solution with Amazon SageMaker AI and Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-tata-power-coe-built-a-scalable-ai-powered-solar-panel-inspection-solution-with-amazon-sagemaker-ai-and-amazon-bedrock/"
+    },
+    {
+        "Title":  "How Harmonic Security improved their data-leakage detection system with low-latency fine-tuned models using Amazon SageMaker, Amazon Bedrock, and Amazon Nova Pro",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-harmonic-security-improved-their-data-leakage-detection-system-with-low-latency-fine-tuned-models-using-amazon-sagemaker-amazon-bedrock-and-amazon-nova-pro/"
+    },
+    {
+        "Title":  "How Swisscom builds enterprise agentic AI for customer support and sales using Amazon Bedrock AgentCore",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-swisscom-builds-enterprise-agentic-ai-for-customer-support-and-sales-using-amazon-bedrock-agentcore/"
+    },
+    {
+        "Title":  "How Myriad Genetics achieved fast, accurate, and cost-efficient document processing using the AWS open-source Generative AI Intelligent Document Processing Accelerator",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-myriad-genetics-achieved-fast-accurate-and-cost-efficient-document-processing-using-the-aws-open-source-generative-ai-intelligent-document-processing-accelerator/"
+    },
+    {
+        "Title":  "How CBRE powers unified property management search and digital assistant using Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-cbre-powers-unified-property-management-search-and-digital-assistant-using-amazon-bedrock/"
+    },
+    {
+        "Title":  "How Condé Nast accelerated contract processing and rights analysis with Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-conde-nast-accelerated-contract-processing-and-rights-analysis-with-amazon-bedrock/"
+    },
+    {
+        "Title":  "University of California Los Angeles delivers an immersive theater experience with AWS generative AI services",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/university-of-california-los-angeles-delivers-an-immersive-theater-experience-with-aws-generative-ai-services/"
+    },
+    {
+        "Title":  "How Wipro PARI accelerates PLC code generation using Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-wipro-pari-accelerates-plc-code-generation-using-amazon-bedrock/"
+    },
+    {
+        "Title":  "How Care Access achieved 86% data processing cost reductions and 66% faster data processing with Amazon Bedrock prompt caching",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-care-access-achieved-86-data-processing-cost-reductions-and-66-faster-data-processing-with-amazon-bedrock-prompt-caching/"
+    },
+    {
+        "Title":  "How Clario automates clinical research analysis using generative AI on AWS",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-clario-automates-clinical-research-analysis-using-generative-ai-on-aws/"
+    },
+    {
+        "Title":  "Clario streamlines clinical trial software configurations using Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/clario-streamlines-clinical-trial-software-configurations-using-amazon-bedrock/"
+    },
+    {
+        "Title":  "How TP ICAP transformed CRM data into real-time insights with Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-tp-icap-transformed-crm-data-into-real-time-insights-with-amazon-bedrock/"
+    },
+    {
+        "Title":  "Kitsa transforms clinical trial site selection with Amazon Quick Automate",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/kitsa-transforms-clinical-trial-site-selection-with-amazon-quick-automate/"
+    },
+    {
+        "Title":  "Vxceed builds the perfect sales pitch for sales teams at scale using Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/vxceed-builds-the-perfect-sales-pitch-for-sales-teams-at-scale-using-amazon-bedrock/"
+    },
+    {
+        "Title":  "Rox accelerates sales productivity with AI agents powered by Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/rox-accelerates-sales-productivity-with-ai-agents-powered-by-amazon-bedrock/"
+    },
+    {
+        "Title":  "How PropHero built an intelligent property investment advisor with continuous evaluation using Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-prophero-built-an-intelligent-property-investment-advisor-with-continuous-evaluation-using-amazon-bedrock/"
+    },
+    {
+        "Title":  "How msg enhanced HR workforce transformation with Amazon Bedrock and msg.ProfileMap",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-msg-enhanced-hr-workforce-transformation-with-amazon-bedrock-and-msg-profilemap/"
+    },
+    {
+        "Title":  "How Skello uses Amazon Bedrock to query data in a multi-tenant environment while keeping logical boundaries",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-skello-uses-amazon-bedrock-to-query-data-in-a-multi-tenant-environment-while-keeping-logical-boundaries/"
+    },
+    {
+        "Title":  "Oldcastle accelerates document processing with Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/oldcastle-accelerates-document-processing-with-amazon-bedrock/"
+    },
+    {
+        "Title":  "How London Stock Exchange Group is detecting market abuse with their AI-powered Surveillance Guide on Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-london-stock-exchange-group-is-detecting-market-abuse-with-their-ai-powered-surveillance-guide-on-amazon-bedrock/"
+    },
+    {
+        "Title":  "Skai uses Amazon Bedrock Agents to significantly improve customer insights by revolutionized data access and analysis",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/skai-uses-amazon-bedrock-agents-to-significantly-improve-customer-insights-by-revolutionized-data-access-and-analysis/"
+    },
+    {
+        "Title":  "How Infosys Topaz leverages Amazon Bedrock to transform technical help desk operations",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-infosys-topaz-leverages-amazon-bedrock-to-transform-technical-help-desk-operations/"
+    },
+    {
+        "Title":  "How Handmade.com modernizes product image and description handling with Amazon Bedrock and Amazon OpenSearch Service",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-handmade-com-modernizes-product-image-and-description-handling-with-amazon-bedrock-and-amazon-opensearch-service/"
+    },
+    {
+        "Title":  "How Nippon India Mutual Fund improved the accuracy of AI assistant responses using advanced RAG methods on Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-nippon-india-mutual-fund-improved-the-accuracy-of-ai-assistant-responses-using-advanced-rag-methods-on-amazon-bedrock/"
+    },
+    {
+        "Title":  "How PerformLine uses prompt engineering on Amazon Bedrock to detect compliance violations ",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-performline-uses-prompt-engineering-on-amazon-bedrock-to-detect-compliance-violations/"
+    },
+    {
+        "Title":  "Kyruus builds a generative AI provider matching solution on AWS",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/kyruus-builds-a-generative-ai-provider-matching-solution-on-aws/"
+    },
+    {
+        "Title":  "Accenture scales video analysis with Amazon Nova and Amazon Bedrock Agents",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/accenture-scales-video-analysis-with-amazon-nova-and-amazon-bedrock-agents/"
+    },
+    {
+        "Title":  "How PayU built a secure enterprise AI assistant using Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-payu-built-a-secure-enterprise-ai-assistant-using-amazon-bedrock/"
+    },
+    {
+        "Title":  "How Rocket streamlines the home buying experience with Amazon Bedrock Agents",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-rocket-streamlines-the-home-buying-experience-with-amazon-bedrock-agents/"
+    },
+    {
+        "Title":  "How INRIX accelerates transportation planning with Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-inrix-accelerates-transportation-planning-with-amazon-bedrock/"
+    },
+    {
+        "Title":  "NewDay builds A Generative AI based Customer service Agent Assist with over 90% accuracy",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/newday-builds-a-generative-ai-based-customer-service-agent-assist-with-over-90-accuracy/"
+    },
+    {
+        "Title":  "How Apollo Tyres is unlocking machine insights using agentic AI-powered Manufacturing Reasoner",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-apollo-tyres-is-unlocking-machine-insights-using-agentic-ai-powered-manufacturing-reasoner/"
+    },
+    {
+        "Title":  "How Netsertive built a scalable AI assistant to extract meaningful insights from real-time data using Amazon Bedrock and Amazon Nova",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-netsertive-built-a-scalable-ai-assistant-to-extract-meaningful-insights-from-real-time-data-using-amazon-bedrock-and-amazon-nova/"
+    },
+    {
+        "Title":  "How VideoAmp uses Amazon Bedrock to power their media analytics interface",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-videoamp-uses-amazon-bedrock-to-power-their-media-analytics-interface/"
+    },
+    {
+        "Title":  "Adobe enhances developer productivity using Amazon Bedrock Knowledge Bases",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/adobe-enhances-developer-productivity-using-amazon-bedrock-knowledge-bases/"
+    },
+    {
+        "Title":  "How Gardenia Technologies helps customers create ESG disclosure reports 75% faster using agentic generative AI on Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-gardenia-technologies-helps-customers-create-esg-disclosure-reports-75-faster-using-agentic-generative-ai-on-amazon-bedrock/"
+    },
+    {
+        "Title":  "How Kepler democratized AI access and enhanced client services with Amazon Q Business",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-kepler-democratized-ai-access-and-enhanced-client-services-with-amazon-q-business/"
+    },
+    {
+        "Title":  "Impel enhances automotive dealership customer experience with fine-tuned LLMs on Amazon SageMaker",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/impel-enhances-automotive-dealership-customer-experience-with-fine-tuned-llms-on-amazon-sagemaker/"
+    },
+    {
+        "Title":  "How ZURU improved the accuracy of floor plan generation by 109% using Amazon Bedrock and Amazon SageMaker",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-zuru-improved-the-accuracy-of-floor-plan-generation-by-109-using-amazon-bedrock-and-amazon-sagemaker/"
+    },
+    {
+        "Title":  "Principal Financial Group increases Voice Virtual Assistant performance using Genesys, Amazon Lex, and Amazon QuickSight",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/principal-financial-group-increases-voice-virtual-assistant-performance-using-genesys-amazon-lex-and-amazon-quicksight/"
+    },
+    {
+        "Title":  "HERE Technologies boosts developer productivity with new generative AI-powered coding assistant",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/here-technologies-boosts-developer-productivity-with-new-generative-ai-powered-coding-assistant/"
+    },
+    {
+        "Title":  "How Qualtrics built Socrates: An AI platform powered by Amazon SageMaker and Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-qualtrics-built-socrates-an-ai-platform-powered-by-amazon-sagemaker-and-amazon-bedrock/"
+    },
+    {
+        "Title":  "Vxceed secures transport operations with Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/vxceed-secures-transport-operations-with-amazon-bedrock/"
+    },
+    {
+        "Title":  "How Hexagon built an AI assistant using AWS generative AI services",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-hexagon-built-an-ai-assistant-using-aws-generative-ai-services/"
+    },
+    {
+        "Title":  "FloQast builds an AI-powered accounting transformation solution with Anthropic’s Claude 3 on Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/floqast-builds-an-ai-powered-accounting-transformation-solution-with-anthropics-claude-3-on-amazon-bedrock/"
+    },
+    {
+        "Title":  "How Infosys improved accessibility for Event Knowledge using Amazon Nova Pro, Amazon Bedrock and Amazon Elemental Media Services",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-infosys-improved-accessibility-for-event-knowledge-using-amazon-nova-pro-amazon-bedrock-and-amazon-elemental-media-services/"
+    },
+    {
+        "Title":  "Clario enhances the quality of the clinical trial documentation process with Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/clario-enhances-the-quality-of-the-clinical-trial-documentation-process-with-amazon-bedrock/"
+    },
+    {
+        "Title":  "How TransPerfect Improved Translation Quality and Efficiency Using Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-transperfect-improved-translation-quality-and-efficiency-using-amazon-bedrock/"
+    },
+    {
+        "Title":  "How GoDaddy built a category generation system at scale with batch inference for Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-godaddy-built-a-category-generation-system-at-scale-with-batch-inference-for-amazon-bedrock/"
+    },
+    {
+        "Title":  "How IDIADA optimized its intelligent chatbot with Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-idiada-optimized-its-intelligent-chatbot-with-amazon-bedrock/"
+    },
+    {
+        "Title":  "How Formula 1® uses generative AI to accelerate race-day issue resolution",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-formula-1-uses-generative-ai-to-accelerate-race-day-issue-resolution/"
+    },
+    {
+        "Title":  "How Untold Studios empowers artists with an AI assistant built on Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-untold-studios-empowers-artists-with-an-ai-assistant-built-on-amazon-bedrock/"
+    },
+    {
+        "Title":  "How Travelers Insurance classified emails with Amazon Bedrock and prompt engineering",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-travelers-insurance-classified-emails-with-amazon-bedrock-and-prompt-engineering/"
+    },
+    {
+        "Title":  "How Cato Networks uses Amazon Bedrock to transform free text search into structured GraphQL queries",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-cato-networks-uses-amazon-bedrock-to-transform-free-text-search-into-structured-graphql-queries/"
+    },
+    {
+        "Title":  "How Kyndryl integrated ServiceNow and Amazon Q Business",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-kyndryl-integrated-servicenow-and-amazon-q-business/"
+    },
+    {
+        "Title":  "How BQA streamlines education quality reporting using Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-bqa-streamlines-education-quality-reporting-using-amazon-bedrock/"
+    },
+    {
+        "Title":  "London Stock Exchange Group uses Amazon Q Business to enhance post-trade client services",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/london-stock-exchange-group-uses-amazon-q-business-to-enhance-post-trade-client-services/"
+    },
+    {
+        "Title":  "Parameta accelerates client email resolution with Amazon Bedrock Flows",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/parameta-accelerates-client-email-resolution-with-amazon-bedrock-flows/"
+    },
+    {
+        "Title":  "How Fastweb fine-tuned the Mistral model using Amazon SageMaker HyperPod as a first step to build an Italian large language model",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-fastweb-fine-tuned-the-mistral-model-using-amazon-sagemaker-hyperpod-as-a-first-step-to-build-an-italian-large-language-model/"
+    },
+    {
+        "Title":  "How TUI uses Amazon Bedrock to scale content creation and enhance hotel descriptions in under 10 seconds",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-tui-uses-amazon-bedrock-to-scale-content-creation-and-enhance-hotel-descriptions-in-under-10-seconds/"
+    },
+    {
+        "Title":  "How Clearwater Analytics is revolutionizing investment management with generative AI and Amazon SageMaker JumpStart",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-clearwater-analytics-is-revolutionizing-investment-management-with-generative-ai-and-amazon-sagemaker-jumpstart/"
+    },
+    {
+        "Title":  "How Tealium built a chatbot evaluation platform with Ragas and Auto-Instruct using AWS generative AI services",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-tealium-built-a-chatbot-evaluation-platform-with-ragas-and-auto-instruct-using-aws-generative-ai-services/"
+    },
+    {
+        "Title":  "EBSCOlearning scales assessment generation for their online learning content with generative AI",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/ebscolearning-scales-assessment-generation-for-their-online-learning-content-with-generative-ai/"
+    },
+    {
+        "Title":  "How 123RF saved over 90% of their translation costs by switching to Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-123rf-saved-over-90-of-their-translation-costs-by-switching-to-amazon-bedrock/"
+    },
+    {
+        "Title":  "DXC transforms data exploration for their oil and gas customers with LLM-powered tools",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/dxc-transforms-data-exploration-for-their-oil-and-gas-customers-with-llm-powered-tools/"
+    },
+    {
+        "Title":  "How MSD uses Amazon Bedrock to translate natural language into SQL for complex healthcare databases",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-merck-uses-amazon-bedrock-to-translate-natural-language-into-sql-for-complex-healthcare-databases/"
+    },
+    {
+        "Title":  "How InsuranceDekho transformed insurance agent interactions using Amazon Bedrock and generative AI",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-insurancedekho-transformed-insurance-agent-interactions-using-amazon-bedrock-and-generative-ai/"
+    },
+    {
+        "Title":  "How GoDaddy built Lighthouse, an interaction analytics solution to generate insights on support interactions using Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-godaddy-built-lighthouse-an-interaction-analytics-solution-to-generate-insights-on-support-interactions-using-amazon-bedrock/"
+    },
+    {
+        "Title":  "Principal Financial Group uses QnABot on AWS and Amazon Q Business to enhance workforce productivity with generative AI",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/principal-financial-group-uses-qnabot-on-aws-and-amazon-q-business-to-enhance-workforce-productivity-with-generative-ai/"
+    },
+    {
+        "Title":  "How Druva used Amazon Bedrock to address foundation model complexity when building Dru, Druva’s backup AI copilot",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-druva-used-amazon-bedrock-to-address-foundation-model-complexity-when-building-dru-druvas-backup-ai-copilot/"
+    },
+    {
+        "Title":  "How Planview built a scalable AI Assistant for portfolio and project management using Amazon Bedrock",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-planview-built-a-scalable-ai-assistant-for-portfolio-and-project-management-using-amazon-bedrock/"
+    },
+    {
+        "Title":  "How DPG Media uses Amazon Bedrock and Amazon Transcribe to enhance video metadata with AI-powered pipelines",
+        "Url":  "https://aws.amazon.com/blogs/machine-learning/how-dpg-media-uses-amazon-bedrock-and-amazon-transcribe-to-enhance-video-metadata-with-ai-powered-pipelines/"
+    }
+]

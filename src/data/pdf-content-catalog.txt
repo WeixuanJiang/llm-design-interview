@@ -1,0 +1,956 @@
+# PDF Content Catalog and Website Curriculum Map
+
+**Project:** AI System Design Gym  
+**Source:** `59-AI Engineer Interview.pdf`  
+**Source length:** 315 pages  
+**Catalog version:** 1.0  
+**Prepared:** 14 July 2026
+
+> This document maps the PDF into the website's **Home**, **Learn**, **Missions**, **Practice**, and **Progress** experiences across **Beginner**, **Interview**, and **Production** modes. It is a curriculum and content-authoring index, not a recommendation to copy the source verbatim.
+
+## 1. Rights and content-use note
+
+The PDF states that it is copyrighted and that reproduction or distribution requires permission, except for limited uses permitted by law. Before publishing lessons, code, figures, tables, sample answers, or company case-study material, confirm that the project has the necessary licence or permission.
+
+Safe implementation approach:
+
+- Use this catalog as a **topic map and source reference**.
+- Write original explanations, exercises, diagrams, questions, rubrics, and scenarios.
+- Do not copy long passages, sample answers, diagrams, code listings, or tables into the website without permission.
+- Attribute licensed source material and maintain a source-page field in the CMS.
+
+## 2. Recommended website content model
+
+| Website area | What belongs here from the PDF | Active-learning treatment |
+|---|---|---|
+| **Home** | Study plan, track summaries, featured chapters and missions | Diagnostic entry point, recommended next activity, resume progress |
+| **Learn** | Chapter overviews and `Core Concepts` sections | Predict-first questions, short explanations, parameter labs, concept checks |
+| **Missions** | End-to-end design questions, failure taxonomy, applied case studies | Requirements -> estimation -> architecture -> stress event -> revision |
+| **Practice** | `Tough Questions`, Top System Design Questions, mock interview and question index | Timed answers, AI follow-ups, whiteboard drills, estimation drills |
+| **Progress** | Study-plan milestones, difficulty tags, interview scoring dimensions and competency categories | Mastery graph, weak-skill recommendations, spaced repetition, revision history |
+
+### Content package generated from one source topic
+
+Each important topic should be transformed into a reusable package:
+
+1. **Concept lesson** - a short original explanation with one visual model.
+2. **Prediction prompt** - ask the learner to choose or explain before revealing content.
+3. **Micro-practice** - calculation, configuration, ordering, matching, or debugging task.
+4. **Interview drill** - an open question plus adaptive follow-ups.
+5. **Production stress event** - a latency, cost, quality, security, or reliability failure.
+6. **Revision task** - learner improves the answer or architecture after feedback.
+7. **Mastery signal** - store the competency and evidence used to update Progress.
+
+## 3. Mode transformation rules
+
+| Mode | How the same PDF material should be presented |
+|---|---|
+| **Beginner** | Guided steps, constrained choices, glossary, immediate feedback, worked calculations and partial architecture templates |
+| **Interview** | Blank or lightly scaffolded workspace, timer, requirement clarification, AI interviewer challenges, communication rubric and concise model after submission |
+| **Production** | Existing architecture, traces/logs/metrics, recent changes, incidents, incomplete evidence, cost/SLA constraints and remediation plan |
+
+A learner can be Beginner in one competency and Production-level in another. Mode should control assistance and scenario presentation, not permanently label the user.
+
+## 4. Recommended curriculum tracks
+
+| Track | Primary PDF sources | Main website destination |
+|---|---|---|
+| Retrieval Foundations | Chapters 1-3 | Learn, Practice, beginner design missions |
+| Evaluation and Reliability | Chapters 4-5, 10, 22 | Learn, quality labs, failure diagnosis |
+| Scale, Data and Operations | Chapters 6-8, 11-13, 21, 23 | Production missions and interview deep dives |
+| Agents and Orchestration | Chapters 9 and 18 | Learn, tool-routing labs, agent incidents |
+| Advanced Retrieval and Multimodal | Chapters 14-15 | Advanced Learn and document missions |
+| Model Adaptation and Training | Chapters 17 and 19 | Advanced Learn and interview practice |
+| ML Platform and Safety | Chapters 20 and 24 | Production architecture and governance missions |
+| Applied ML/AI System Design | Chapters 25-41 | Mission library |
+| Advanced Company-Style Cases | Chapters 42-49 | Advanced interview and production missions |
+
+## 5. Special source sections outside numbered chapters
+
+| PDF pages | Source section | Website placement | Recommendation |
+|---:|---|---|---|
+| 19 | Preface | Internal authoring notes / About | Use only to understand target level and scope; do not make it a learner lesson |
+| 20-21 | 4-Week Study Plan | Home + Progress | Convert into an adaptive onboarding plan; retain weekly themes but recommend activities based on competency gaps |
+| 76-77 | RAG Failure Taxonomy | Practice + Missions + Production | Make this the central RAG incident triage playbook with retrieval/context/generation/infrastructure branches |
+| 107-108 | Mock Interview Simulation Guide | Practice / Interview mode | Build the 45-minute interview flow, timer, phase prompts and five-dimension self/AI scoring |
+| 109-115 | All Questions Index | Practice search/filter metadata | Import question, chapter, category, difficulty and page metadata into the content catalog; do not expose as a static copied index |
+| 117 | Volume II Preface | Internal authoring notes | Use to set prerequisites and advanced-level positioning |
+| 153 | About the Case Studies | Mission authoring guide | Convert its repeated case-study structure into a mission template |
+| 296-297 | MANGOS case-study introduction | Advanced mission collection landing | Clearly label as public-information-inspired learning scenarios, not confidential interview content |
+
+## 6. Master chapter catalog
+
+| Ch. | Source pages | Chapter | Track | Website placement | Modes | Priority |
+|---:|---:|---|---|---|---|---|
+| 1 | 22-28 | RAG Fundamentals | Retrieval Foundations | Learn + Practice | Beginner, Interview | MVP |
+| 2 | 29-35 | Advanced Retrieval Design | Retrieval Foundations | Learn + Practice | Beginner, Interview, Production | MVP |
+| 3 | 36-41 | RAG Architecture (Production-Level) | Production RAG Architecture | Learn + Missions + Practice | Beginner, Interview, Production | MVP |
+| 4 | 42-46 | Evaluation & Metrics | Evaluation & Quality | Learn + Practice | Beginner, Interview, Production | MVP |
+| 5 | 47-50 | Hallucination & Reliability | Evaluation & Quality | Learn + Practice + Missions | Beginner, Interview, Production | MVP |
+| 6 | 51-55 | Performance & Scaling | Scale & Performance | Learn + Practice + Missions | Interview, Production; guided Beginner | MVP |
+| 7 | 56-58 | Data Pipeline & Ingestion | Data & Ingestion | Learn + Missions + Practice | Beginner, Interview, Production | MVP |
+| 8 | 59-63 | Security & Enterprise RAG | Security & Governance | Learn + Missions + Practice | Interview, Production; guided Beginner | MVP |
+| 9 | 64-71 | Agentic RAG | Agents & Orchestration | Learn + Missions + Practice | Beginner, Interview, Production | P1 |
+| 10 | 72-75 | Prompt Engineering for RAG | Prompt & Context Engineering | Learn + Practice | Beginner, Interview, Production | MVP |
+| 11 | 78-80 | Observability & Monitoring | Observability & Incidents | Learn + Missions + Practice | Interview, Production | MVP |
+| 12 | 81-84 | Deployment & LLMOps | LLMOps & Deployment | Learn + Missions + Practice | Interview, Production | MVP |
+| 13 | 85-90 | LLM Inference Optimization | LLM Serving | Learn + Practice + Missions | Interview, Production; guided Beginner | MVP |
+| 14 | 91-93 | GraphRAG & Knowledge-Graph Retrieval | Advanced Retrieval | Learn + Missions + Practice | Interview, Production | P1 |
+| 15 | 94-96 | Multimodal RAG | Multimodal AI | Learn + Missions + Practice | Beginner, Interview, Production | P1 |
+| 16 | 97-106 | 20 Top System Design Questions & Answers | Interview Preparation | Practice | Interview; optional Production review | MVP |
+| 17 | 118-122 | LLM Fine-Tuning for Production | Model Adaptation | Learn + Practice + Missions | Interview, Production | P1 |
+| 18 | 123-127 | Multi-Agent System Design | Agents & Orchestration | Learn + Practice + Missions | Interview, Production | P1 |
+| 19 | 128-131 | LLM Pre-Training Internals | Foundation Model Training | Learn + Practice | Interview, Production (advanced) | P2 |
+| 20 | 132-135 | ML Platform Design | ML Platform | Learn + Missions + Practice | Interview, Production | P2 |
+| 21 | 136-139 | Model Serving at Hyperscaler Scale | LLM Serving | Learn + Missions + Practice | Interview, Production (advanced) | P1 |
+| 22 | 140-143 | Evaluation Framework Design (Deep Dive) | Evaluation & Quality | Learn + Practice + Missions | Interview, Production | P1 |
+| 23 | 144-147 | Inference Cost Engineering | Cost Engineering | Learn + Missions + Practice | Interview, Production | P1 |
+| 24 | 148-151 | Safety, Guardrails, and Red-Teaming | Safety & Security | Learn + Missions + Practice | Beginner, Interview, Production | P1 |
+| 25 | 154-163 | Video Recommendation System | Applied AI System Design | Missions + Practice | Interview, Production | P2 |
+| 26 | 164-172 | Product Recommendation System | Applied AI System Design | Missions + Practice | Interview, Production | P2 |
+| 27 | 173-181 | Personalized News Feed Ranking | Applied AI System Design | Missions + Practice | Interview, Production | P2 |
+| 28 | 182-190 | Ads Ranking and Auction System | Applied AI System Design | Missions + Practice | Interview, Production | P2 |
+| 29 | 191-199 | Search Ranking System | Applied AI System Design | Missions + Practice | Interview, Production | P2 |
+| 30 | 200-207 | People You May Know (Friend Recommendation) | Applied AI System Design | Missions + Practice | Interview, Production | P2 |
+| 31 | 208-215 | Customer Support AI Chatbot | Applied AI System Design | Missions + Practice | Beginner (guided), Interview, Production | P1 |
+| 32 | 216-223 | AI Coding Copilot | Applied AI System Design | Missions + Practice | Beginner (guided), Interview, Production | P1 |
+| 33 | 224-231 | AI Agent for Calendar / Email / Workflow Automation | Applied AI System Design | Missions + Practice | Beginner (guided), Interview, Production | P1 |
+| 34 | 232-239 | Multimodal Content Moderation System | Applied AI System Design | Missions + Practice | Interview, Production | P2 |
+| 35 | 240-247 | Fraud Detection System | Applied AI System Design | Missions + Practice | Interview, Production | P2 |
+| 36 | 248-255 | Spam / Abuse / Bot Detection System | Applied AI System Design | Missions + Practice | Interview, Production | P2 |
+| 37 | 256-263 | Review Quality / Fake-Review Detection | Applied AI System Design | Missions + Practice | Interview, Production | P2 |
+| 38 | 264-271 | Autocomplete / Spell-check / Smart Reply | Applied AI System Design | Missions + Practice | Interview, Production | P2 |
+| 39 | 272-279 | Personalized Notification Ranking System | Applied AI System Design | Missions + Practice | Interview, Production | P2 |
+| 40 | 280-287 | Dynamic Pricing / ETA Prediction System | Applied AI System Design | Missions + Practice | Interview, Production | P2 |
+| 41 | 288-295 | Document AI Pipeline (Claims / Invoices / Contracts) | Applied AI System Design | Missions + Practice | Beginner (guided), Interview, Production | P1 |
+| 42 | 298-300 | Meta: Real-Time Computer Vision for Reels Ranking & Integrity | Advanced Company Case Studies | Missions + Practice | Interview, Production (advanced) | P3 |
+| 43 | 301-302 | NVIDIA: Distributed Training Stack for GPT-Scale Foundation Models | Advanced Company Case Studies | Missions + Practice | Interview, Production (advanced) | P3 |
+| 44 | 303-304 | Google: Streaming Speech Recognition at Scale | Advanced Company Case Studies | Missions + Practice | Interview, Production (advanced) | P3 |
+| 45 | 305-306 | Anthropic: Long-Context NLP Assistant with Safety Guardrails | Advanced Company Case Studies | Missions + Practice | Interview, Production (advanced) | P3 |
+| 46 | 307-308 | OpenAI: RLHF & Reward-Model Pipeline for LLM Alignment | Advanced Company Case Studies | Missions + Practice | Interview, Production (advanced) | P3 |
+| 47 | 309-310 | Google: Transformer-Based Neural Machine Translation | Advanced Company Case Studies | Missions + Practice | Interview, Production (advanced) | P3 |
+| 48 | 311-312 | SpaceX: Autonomous Booster Landing & Spacecraft Docking | Advanced Company Case Studies | Missions + Practice | Interview, Production (advanced) | P3 |
+| 49 | 313-314 | SpaceX: Starlink Constellation Swarm Coordination | Advanced Company Case Studies | Missions + Practice | Interview, Production (advanced) | P3 |
+
+### Priority meaning
+
+- **MVP:** required for the first coherent RAG/LLM system-design learning loop.
+- **P1:** next expansion; strongly aligned with modern AI engineering roles.
+- **P2:** broadens into ML platform and applied ML system design.
+- **P3:** advanced or company-style content after the core product is stable.
+
+## 7. Detailed Learn and Practice mapping - Chapters 1-24
+
+For Chapters 1-24, each `Core Concepts` subsection becomes a **Learn** unit. Each `Tough Questions` subsection becomes a **Practice** unit and may also seed a Mission or stress event.
+
+### Chapter 1: RAG Fundamentals (pages 22-28)
+
+- **Track:** Retrieval Foundations
+- **Primary website placement:** Learn + Practice
+- **Modes:** Beginner, Interview
+- **Priority:** MVP
+- **Competencies:** RAG selection, embeddings, chunking, vector databases, similarity
+- **Recommended active exercise:** Build a basic RAG pipeline, compare RAG vs fine-tuning vs long context, and tune chunk size.
+
+**Learn units**
+
+- `1.1.1` **RAG vs Fine-tuning vs Long-context LLMs** - PDF p. 22; route: `/learn/rag-fundamentals/rag-vs-fine-tuning-vs-long-context-llms`
+- `1.1.2` **When to Combine Fine-tuning with RAG** - PDF p. 23; route: `/learn/rag-fundamentals/when-to-combine-fine-tuning-with-rag`
+- `1.1.3` **Embeddings: Dense vs Sparse vs Hybrid** - PDF p. 24; route: `/learn/rag-fundamentals/embeddings-dense-vs-sparse-vs-hybrid`
+- `1.1.4` **Chunking Strategies** - PDF p. 24; route: `/learn/rag-fundamentals/chunking-strategies`
+- `1.1.5` **Vector Databases** - PDF p. 24; route: `/learn/rag-fundamentals/vector-databases`
+- `1.1.6` **Similarity Search: Cosine vs Dot Product** - PDF p. 24; route: `/learn/rag-fundamentals/similarity-search-cosine-vs-dot-product`
+- `1.1.7` **Long-Context LLMs: When They Replace RAG (and When They Do Not)** - PDF p. 25; route: `/learn/rag-fundamentals/long-context-llms-when-they-replace-rag-and-when-they-do-not`
+
+**Practice units**
+
+- `1.2.1` **Why use RAG instead of fine-tuning? When does RAG fail?** - PDF p. 26; timed interview drill; route: `/practice/rag-fundamentals/why-use-rag-instead-of-fine-tuning-when-does-rag-fail`
+- `1.2.2` **How do embedding models impact retrieval quality?** - PDF p. 26; timed interview drill; route: `/practice/rag-fundamentals/how-do-embedding-models-impact-retrieval-quality`
+- `1.2.3` **What happens if chunk size is too large or too small?** - PDF p. 27; timed interview drill; route: `/practice/rag-fundamentals/what-happens-if-chunk-size-is-too-large-or-too-small`
+- `1.2.4` **Explain cosine similarity vs inner product in high-dimensional space** - PDF p. 27; timed interview drill; route: `/practice/rag-fundamentals/explain-cosine-similarity-vs-inner-product-in-high-dimensional-space`
+- `1.2.5` **How do you handle domain-specific vocabulary?** - PDF p. 28; timed interview drill; route: `/practice/rag-fundamentals/how-do-you-handle-domain-specific-vocabulary`
+
+**Authoring note:** Keep the first lessons visual and comparative. The learner should choose between RAG, fine-tuning and long context before reading the decision framework.
+
+### Chapter 2: Advanced Retrieval Design (pages 29-35)
+
+- **Track:** Retrieval Foundations
+- **Primary website placement:** Learn + Practice
+- **Modes:** Beginner, Interview, Production
+- **Priority:** MVP
+- **Competencies:** hybrid search, query rewriting, reranking, multi-hop retrieval
+- **Recommended active exercise:** Run a hybrid retrieval lab with BM25, dense search, RRF, and reranking.
+
+**Learn units**
+
+- `2.1.1` **Hybrid Retrieval: BM25 + Vector Search** - PDF p. 29; route: `/learn/advanced-retrieval-design/hybrid-retrieval-bm25-vector-search`
+- `2.1.2` **Query Rewriting and Expansion** - PDF p. 30; route: `/learn/advanced-retrieval-design/query-rewriting-and-expansion`
+- `2.1.3` **Re-ranking Pipeline** - PDF p. 30; route: `/learn/advanced-retrieval-design/re-ranking-pipeline`
+- `2.1.4` **Multi-hop Retrieval** - PDF p. 30; route: `/learn/advanced-retrieval-design/multi-hop-retrieval`
+
+**Practice units**
+
+- `2.2.1` **Design a hybrid retrieval system end-to-end** - PDF p. 30; interview drill + mission seed; route: `/practice/advanced-retrieval-design/design-a-hybrid-retrieval-system-end-to-end`
+- `2.2.2` **Why is BM25 + vector better than vector alone?** - PDF p. 31; timed interview drill; route: `/practice/advanced-retrieval-design/why-is-bm25-vector-better-than-vector-alone`
+- `2.2.3` **How does re-ranking improve precision? Trade-offs?** - PDF p. 32; timed interview drill; route: `/practice/advanced-retrieval-design/how-does-re-ranking-improve-precision-trade-offs`
+- `2.2.4` **How would you handle ambiguous queries?** - PDF p. 32; timed interview drill; route: `/practice/advanced-retrieval-design/how-would-you-handle-ambiguous-queries`
+- `2.2.5` **How do you implement multi-hop reasoning retrieval?** - PDF p. 33; timed interview drill; route: `/practice/advanced-retrieval-design/how-do-you-implement-multi-hop-reasoning-retrieval`
+
+**Authoring note:** Use an interactive candidate list so learners can see sparse, dense, fused and reranked order change.
+
+### Chapter 3: RAG Architecture (Production-Level) (pages 36-41)
+
+- **Track:** Production RAG Architecture
+- **Primary website placement:** Learn + Missions + Practice
+- **Modes:** Beginner, Interview, Production
+- **Priority:** MVP
+- **Competencies:** end-to-end architecture, state, streaming, caching, failure isolation
+- **Recommended active exercise:** Design a production RAG request path and respond to latency and dependency failures.
+
+**Learn units**
+
+- `3.1.1` **End-to-End Pipeline** - PDF p. 36; route: `/learn/rag-architecture-production-level/end-to-end-pipeline`
+- `3.1.2` **Stateless vs Stateful RAG** - PDF p. 36; route: `/learn/rag-architecture-production-level/stateless-vs-stateful-rag`
+- `3.1.3` **Agentic RAG: Planner – Executor – Verifier** - PDF p. 36; route: `/learn/rag-architecture-production-level/agentic-rag-planner-executor-verifier`
+- `3.1.4` **Tool Calling** - PDF p. 36; route: `/learn/rag-architecture-production-level/tool-calling`
+- `3.1.5` **Streaming RAG Architecture** - PDF p. 37; route: `/learn/rag-architecture-production-level/streaming-rag-architecture`
+
+**Practice units**
+
+- `3.2.1` **Design a production RAG system for millions of users** - PDF p. 39; interview drill + mission seed; route: `/practice/rag-architecture-production-level/design-a-production-rag-system-for-millions-of-users`
+- `3.2.2` **How do you reduce latency in RAG?** - PDF p. 39; timed interview drill; route: `/practice/rag-architecture-production-level/how-do-you-reduce-latency-in-rag`
+- `3.2.3` **How do you cache results effectively?** - PDF p. 40; timed interview drill; route: `/practice/rag-architecture-production-level/how-do-you-cache-results-effectively`
+- `3.2.4` **How do you handle failures in retrieval or LLM?** - PDF p. 41; timed interview drill; route: `/practice/rag-architecture-production-level/how-do-you-handle-failures-in-retrieval-or-llm`
+- `3.2.5` **How would you design RAG for real-time vs batch use cases?** - PDF p. 41; interview drill + mission seed; route: `/practice/rag-architecture-production-level/how-would-you-design-rag-for-real-time-vs-batch-use-cases`
+
+**Authoring note:** Split ingestion and request paths. Streaming should be simulated as a sequence of retrieval, first-token and citation events.
+
+### Chapter 4: Evaluation & Metrics (pages 42-46)
+
+- **Track:** Evaluation & Quality
+- **Primary website placement:** Learn + Practice
+- **Modes:** Beginner, Interview, Production
+- **Priority:** MVP
+- **Competencies:** Recall/Precision/MRR/nDCG, faithfulness, golden sets, offline evaluation
+- **Recommended active exercise:** Diagnose whether a bad answer came from retrieval or generation using Recall@K and faithfulness.
+
+**Learn units**
+
+- `4.1.1` **Retrieval Metrics** - PDF p. 42; route: `/learn/evaluation-and-metrics/retrieval-metrics`
+- `4.1.2` **Generation Metrics (RAGAS)** - PDF p. 42; route: `/learn/evaluation-and-metrics/generation-metrics-ragas`
+- `4.1.3` **Evaluation Tools** - PDF p. 42; route: `/learn/evaluation-and-metrics/evaluation-tools`
+
+**Practice units**
+
+- `4.2.1` **How do you measure hallucination?** - PDF p. 43; timed interview drill; route: `/practice/evaluation-and-metrics/how-do-you-measure-hallucination`
+- `4.2.2` **What is faithfulness in RAG?** - PDF p. 44; timed interview drill; route: `/practice/evaluation-and-metrics/what-is-faithfulness-in-rag`
+- `4.2.3` **How do you evaluate retrieval vs generation separately?** - PDF p. 44; timed interview drill; route: `/practice/evaluation-and-metrics/how-do-you-evaluate-retrieval-vs-generation-separately`
+- `4.2.4` **How would you build an offline evaluation pipeline?** - PDF p. 45; timed interview drill; route: `/practice/evaluation-and-metrics/how-would-you-build-an-offline-evaluation-pipeline`
+- `4.2.5` **How do you create a golden dataset?** - PDF p. 46; timed interview drill; route: `/practice/evaluation-and-metrics/how-do-you-create-a-golden-dataset`
+
+**Authoring note:** Provide small labelled retrieval sets so users calculate Recall@K, Precision@K, MRR and nDCG rather than only read definitions.
+
+### Chapter 5: Hallucination & Reliability (pages 47-50)
+
+- **Track:** Evaluation & Quality
+- **Primary website placement:** Learn + Practice + Missions
+- **Modes:** Beginner, Interview, Production
+- **Priority:** MVP
+- **Competencies:** grounding, citation verification, confidence, refusal, contradictory evidence
+- **Recommended active exercise:** Create citation, confidence, verification, and refusal policies for a grounded assistant.
+
+**Learn units**
+
+- `5.1.1` **Grounded Generation** - PDF p. 47; route: `/learn/hallucination-and-reliability/grounded-generation`
+- `5.1.2` **Citation Enforcement** - PDF p. 47; route: `/learn/hallucination-and-reliability/citation-enforcement`
+- `5.1.3` **Confidence Scoring and Refusal** - PDF p. 47; route: `/learn/hallucination-and-reliability/confidence-scoring-and-refusal`
+
+**Practice units**
+
+- `5.2.1` **How do you reduce hallucination in RAG?** - PDF p. 48; timed interview drill; route: `/practice/hallucination-and-reliability/how-do-you-reduce-hallucination-in-rag`
+- `5.2.2` **What if retrieved documents are wrong?** - PDF p. 48; timed interview drill; route: `/practice/hallucination-and-reliability/what-if-retrieved-documents-are-wrong`
+- `5.2.3` **How do you enforce citations in generated answers?** - PDF p. 49; timed interview drill; route: `/practice/hallucination-and-reliability/how-do-you-enforce-citations-in-generated-answers`
+- `5.2.4` **How do you detect low-confidence answers?** - PDF p. 49; timed interview drill; route: `/practice/hallucination-and-reliability/how-do-you-detect-low-confidence-answers`
+- `5.2.5` **When should the system refuse to answer?** - PDF p. 50; timed interview drill; route: `/practice/hallucination-and-reliability/when-should-the-system-refuse-to-answer`
+
+**Authoring note:** Do not score refusal as failure when the evidence is insufficient. Include adversarial and contradictory-document cases.
+
+### Chapter 6: Performance & Scaling (pages 51-55)
+
+- **Track:** Scale & Performance
+- **Primary website placement:** Learn + Practice + Missions
+- **Modes:** Interview, Production; guided Beginner
+- **Priority:** MVP
+- **Competencies:** ANN, HNSW/IVF, sharding, quantization, TTFT, embedding cost
+- **Recommended active exercise:** Scale vector search to billions of embeddings and tune recall-latency-cost trade-offs.
+
+**Learn units**
+
+- `6.1.1` **Approximate Nearest Neighbor (ANN)** - PDF p. 51; route: `/learn/performance-and-scaling/approximate-nearest-neighbor-ann`
+- `6.1.2` **Indexing Strategies: HNSW and IVF** - PDF p. 51; route: `/learn/performance-and-scaling/indexing-strategies-hnsw-and-ivf`
+- `6.1.3` **GPU vs CPU Trade-offs** - PDF p. 51; route: `/learn/performance-and-scaling/gpu-vs-cpu-trade-offs`
+
+**Practice units**
+
+- `6.2.1` **How do you scale vector search to billions of documents?** - PDF p. 52; timed interview drill; route: `/practice/performance-and-scaling/how-do-you-scale-vector-search-to-billions-of-documents`
+- `6.2.2` **How do you optimize TTFT (time to first token)?** - PDF p. 52; timed interview drill; route: `/practice/performance-and-scaling/how-do-you-optimize-ttft-time-to-first-token`
+- `6.2.3` **What are the trade-offs between accuracy and latency in vector search?** - PDF p. 53; timed interview drill; route: `/practice/performance-and-scaling/what-are-the-trade-offs-between-accuracy-and-latency-in-vector-search`
+- `6.2.4` **How do you reduce embedding cost?** - PDF p. 54; timed interview drill; route: `/practice/performance-and-scaling/how-do-you-reduce-embedding-cost`
+- `6.2.5` **When should you use caching vs recomputation?** - PDF p. 54; timed interview drill; route: `/practice/performance-and-scaling/when-should-you-use-caching-vs-recomputation`
+
+**Authoring note:** Make calculations editable: dimensions, vector count, bytes, replicas, compression, QPS, latency and cost.
+
+### Chapter 7: Data Pipeline & Ingestion (pages 56-58)
+
+- **Track:** Data & Ingestion
+- **Primary website placement:** Learn + Missions + Practice
+- **Modes:** Beginner, Interview, Production
+- **Priority:** MVP
+- **Competencies:** parsing, CDC, idempotency, deduplication, freshness, embedding versions
+- **Recommended active exercise:** Design an idempotent, versioned ingestion pipeline with freshness and zero-downtime reindexing.
+
+**Learn units**
+
+- `7.1.1` **Document Parsing** - PDF p. 56; route: `/learn/data-pipeline-and-ingestion/document-parsing`
+- `7.1.2` **Incremental Updates** - PDF p. 56; route: `/learn/data-pipeline-and-ingestion/incremental-updates`
+- `7.1.3` **Data Freshness** - PDF p. 56; route: `/learn/data-pipeline-and-ingestion/data-freshness`
+
+**Practice units**
+
+- `7.2.1` **How do you handle real-time data updates?** - PDF p. 57; timed interview drill; route: `/practice/data-pipeline-and-ingestion/how-do-you-handle-real-time-data-updates`
+- `7.2.2` **How do you re-index without downtime?** - PDF p. 57; timed interview drill; route: `/practice/data-pipeline-and-ingestion/how-do-you-re-index-without-downtime`
+- `7.2.3` **How do you handle duplicate documents?** - PDF p. 58; timed interview drill; route: `/practice/data-pipeline-and-ingestion/how-do-you-handle-duplicate-documents`
+- `7.2.4` **How do you version embeddings?** - PDF p. 58; timed interview drill; route: `/practice/data-pipeline-and-ingestion/how-do-you-version-embeddings`
+
+**Authoring note:** Use an event timeline for create/update/delete and show hashes, versions, dual writes and index cutover.
+
+### Chapter 8: Security & Enterprise RAG (pages 59-63)
+
+- **Track:** Security & Governance
+- **Primary website placement:** Learn + Missions + Practice
+- **Modes:** Interview, Production; guided Beginner
+- **Priority:** MVP
+- **Competencies:** RBAC/ABAC, tenant isolation, PII, sensitive data, auditability
+- **Recommended active exercise:** Enforce tenant isolation, ABAC, PII controls, and durable audit logging.
+
+**Learn units**
+
+- `8.1.1` **Access Control Models** - PDF p. 59; route: `/learn/security-and-enterprise-rag/access-control-models`
+- `8.1.2` **Multi-tenant Isolation** - PDF p. 59; route: `/learn/security-and-enterprise-rag/multi-tenant-isolation`
+- `8.1.3` **PII Filtering** - PDF p. 59; route: `/learn/security-and-enterprise-rag/pii-filtering`
+
+**Practice units**
+
+- `8.2.1` **How do you prevent data leakage across users?** - PDF p. 60; timed interview drill; route: `/practice/security-and-enterprise-rag/how-do-you-prevent-data-leakage-across-users`
+- `8.2.2` **How do you implement row-level security in RAG?** - PDF p. 60; timed interview drill; route: `/practice/security-and-enterprise-rag/how-do-you-implement-row-level-security-in-rag`
+- `8.2.3` **How do you handle sensitive documents?** - PDF p. 61; timed interview drill; route: `/practice/security-and-enterprise-rag/how-do-you-handle-sensitive-documents`
+- `8.2.4` **How do you audit RAG outputs?** - PDF p. 61; timed interview drill; route: `/practice/security-and-enterprise-rag/how-do-you-audit-rag-outputs`
+
+**Authoring note:** Every security exercise must enforce identity server-side; include cross-tenant leakage tests and audit evidence.
+
+### Chapter 9: Agentic RAG (pages 64-71)
+
+- **Track:** Agents & Orchestration
+- **Primary website placement:** Learn + Missions + Practice
+- **Modes:** Beginner, Interview, Production
+- **Priority:** P1
+- **Competencies:** agent loops, tools, routing, termination, memory, agent security
+- **Recommended active exercise:** Choose simple vs agentic RAG, route tools, bound loops, and secure code/write actions.
+
+**Learn units**
+
+- `9.1.1` **Planner – Executor – Verifier** - PDF p. 64; route: `/learn/agentic-rag/planner-executor-verifier`
+- `9.1.2` **LangGraph and CrewAI** - PDF p. 64; route: `/learn/agentic-rag/langgraph-and-crewai`
+- `9.1.3` **Tool Calling in Agents** - PDF p. 64; route: `/learn/agentic-rag/tool-calling-in-agents`
+- `9.1.4` **Structured and Relational RAG: Text-to-SQL + Vector Hybrid** - PDF p. 66; route: `/learn/agentic-rag/structured-and-relational-rag-text-to-sql-vector-hybrid`
+
+**Practice units**
+
+- `9.2.1` **When do you use agentic RAG vs simple RAG?** - PDF p. 68; timed interview drill; route: `/practice/agentic-rag/when-do-you-use-agentic-rag-vs-simple-rag`
+- `9.2.2` **How do you avoid infinite loops in agents?** - PDF p. 68; timed interview drill; route: `/practice/agentic-rag/how-do-you-avoid-infinite-loops-in-agents`
+- `9.2.3` **How do you evaluate agent performance?** - PDF p. 69; timed interview drill; route: `/practice/agentic-rag/how-do-you-evaluate-agent-performance`
+- `9.2.4` **How do you orchestrate multiple tools?** - PDF p. 69; timed interview drill; route: `/practice/agentic-rag/how-do-you-orchestrate-multiple-tools`
+- `9.3.5` **How do you secure an agent with code-execution and write tools?** - PDF p. 71; timed interview drill; route: `/practice/agentic-rag/how-do-you-secure-an-agent-with-code-execution-and-write-tools`
+
+**Additional units**
+
+- `9.3.1` **Tool-Call Injection Attacks** - PDF p. 70; placement: Learn + Production security
+- `9.3.2` **Exfiltration via Code-Execution Tools** - PDF p. 70; placement: Learn + Production security
+- `9.3.3` **Agent Memory Leakage Across Sessions** - PDF p. 70; placement: Learn + Production security
+- `9.3.4` **Extending the Enterprise Security Model to Agents** - PDF p. 71; placement: Learn + Production security
+
+**Authoring note:** Force explicit budgets: max iterations, tokens, wall time and tool permissions. Treat prompt injection as a system-security issue.
+
+### Chapter 10: Prompt Engineering for RAG (pages 72-75)
+
+- **Track:** Prompt & Context Engineering
+- **Primary website placement:** Learn + Practice
+- **Modes:** Beginner, Interview, Production
+- **Priority:** MVP
+- **Competencies:** prompt assembly, token budgets, grounding, conflicts, determinism
+- **Recommended active exercise:** Assemble a bounded grounded prompt, handle conflicts, and enforce structured output.
+
+**Learn units**
+
+- `10.1.1` **Context Injection Patterns** - PDF p. 72; route: `/learn/prompt-engineering-for-rag/context-injection-patterns`
+- `10.1.2` **Structured Outputs** - PDF p. 72; route: `/learn/prompt-engineering-for-rag/structured-outputs`
+
+**Practice units**
+
+- `10.2.1` **How do you prevent context overflow?** - PDF p. 73; timed interview drill; route: `/practice/prompt-engineering-for-rag/how-do-you-prevent-context-overflow`
+- `10.2.2` **How do you structure prompts for grounding?** - PDF p. 74; timed interview drill; route: `/practice/prompt-engineering-for-rag/how-do-you-structure-prompts-for-grounding`
+- `10.2.3` **How do you handle conflicting documents?** - PDF p. 74; timed interview drill; route: `/practice/prompt-engineering-for-rag/how-do-you-handle-conflicting-documents`
+- `10.2.4` **How do you ensure deterministic outputs?** - PDF p. 75; timed interview drill; route: `/practice/prompt-engineering-for-rag/how-do-you-ensure-deterministic-outputs`
+
+**Authoring note:** Use a prompt builder with token budget, evidence order, source IDs and structured-output validation.
+
+### Chapter 11: Observability & Monitoring (pages 78-80)
+
+- **Track:** Observability & Incidents
+- **Primary website placement:** Learn + Missions + Practice
+- **Modes:** Interview, Production
+- **Priority:** MVP
+- **Competencies:** tracing, metrics, drift, debugging, feedback loops
+- **Recommended active exercise:** Investigate a bad answer from traces, metrics, retrieval evidence, and model versions.
+
+**Learn units**
+
+- `11.1.1` **What to Log** - PDF p. 78; route: `/learn/observability-and-monitoring/what-to-log`
+- `11.1.2` **Tracing Tools** - PDF p. 78; route: `/learn/observability-and-monitoring/tracing-tools`
+- `11.1.3` **Drift Detection** - PDF p. 78; route: `/learn/observability-and-monitoring/drift-detection`
+
+**Practice units**
+
+- `11.2.1` **What logs are critical in a RAG system?** - PDF p. 78; timed interview drill; route: `/practice/observability-and-monitoring/what-logs-are-critical-in-a-rag-system`
+- `11.2.2` **How do you debug bad answers?** - PDF p. 79; timed interview drill; route: `/practice/observability-and-monitoring/how-do-you-debug-bad-answers`
+- `11.2.3` **How do you monitor hallucination in production?** - PDF p. 79; timed interview drill; route: `/practice/observability-and-monitoring/how-do-you-monitor-hallucination-in-production`
+- `11.2.4` **How do you implement user feedback loops?** - PDF p. 80; timed interview drill; route: `/practice/observability-and-monitoring/how-do-you-implement-user-feedback-loops`
+
+**Authoring note:** The learner should inspect traces rather than receive the root cause. End every incident by adding a regression test.
+
+### Chapter 12: Deployment & LLMOps (pages 81-84)
+
+- **Track:** LLMOps & Deployment
+- **Primary website placement:** Learn + Missions + Practice
+- **Modes:** Interview, Production
+- **Priority:** MVP
+- **Competencies:** CI/CD, versioning, canary, rollback, Kubernetes, multi-region
+- **Recommended active exercise:** Build quality gates, canary releases, rollback, and multi-region deployment.
+
+**Learn units**
+
+- `12.1.1` **CI/CD for RAG** - PDF p. 81; route: `/learn/deployment-and-llmops/ci-cd-for-rag`
+- `12.1.2` **Model Versioning** - PDF p. 81; route: `/learn/deployment-and-llmops/model-versioning`
+- `12.1.3` **A/B Testing and Canary Deployment** - PDF p. 81; route: `/learn/deployment-and-llmops/a-b-testing-and-canary-deployment`
+
+**Practice units**
+
+- `12.2.1` **How do you deploy RAG at scale?** - PDF p. 82; timed interview drill; route: `/practice/deployment-and-llmops/how-do-you-deploy-rag-at-scale`
+- `12.2.2` **How do you roll back a bad model?** - PDF p. 82; timed interview drill; route: `/practice/deployment-and-llmops/how-do-you-roll-back-a-bad-model`
+- `12.2.3` **How do you test RAG systems before release?** - PDF p. 83; timed interview drill; route: `/practice/deployment-and-llmops/how-do-you-test-rag-systems-before-release`
+- `12.2.4` **How do you handle multi-region deployment?** - PDF p. 83; timed interview drill; route: `/practice/deployment-and-llmops/how-do-you-handle-multi-region-deployment`
+
+**Authoring note:** Represent releases as versioned bundles: embedder, index, chunker, prompt, generator and evaluation set.
+
+### Chapter 13: LLM Inference Optimization (pages 85-90)
+
+- **Track:** LLM Serving
+- **Primary website placement:** Learn + Practice + Missions
+- **Modes:** Interview, Production; guided Beginner
+- **Priority:** MVP
+- **Competencies:** prefill/decode, KV cache, paged attention, batching, GPU autoscaling
+- **Recommended active exercise:** Estimate KV-cache memory and tune batching, paged attention, GPU memory, and autoscaling.
+
+**Learn units**
+
+- `13.1.1` **Prefill vs Decode Phase** - PDF p. 85; route: `/learn/llm-inference-optimization/prefill-vs-decode-phase`
+- `13.1.2` **KV Cache** - PDF p. 85; route: `/learn/llm-inference-optimization/kv-cache`
+- `13.1.3` **Paged Attention (vLLM)** - PDF p. 86; route: `/learn/llm-inference-optimization/paged-attention-vllm`
+- `13.1.4` **Continuous Batching** - PDF p. 86; route: `/learn/llm-inference-optimization/continuous-batching`
+
+**Practice units**
+
+- `13.2.1` **How would you optimize prompt token recomputation across requests?** - PDF p. 86; timed interview drill; route: `/practice/llm-inference-optimization/how-would-you-optimize-prompt-token-recomputation-across-requests`
+- `13.2.2` **What is KV Cache and why is it critical for LLM serving?** - PDF p. 87; timed interview drill; route: `/practice/llm-inference-optimization/what-is-kv-cache-and-why-is-it-critical-for-llm-serving`
+- `13.2.3` **How does paged attention work?** - PDF p. 87; timed interview drill; route: `/practice/llm-inference-optimization/how-does-paged-attention-work`
+- `13.2.4` **What techniques optimize GPU memory usage for LLM serving?** - PDF p. 88; timed interview drill; route: `/practice/llm-inference-optimization/what-techniques-optimize-gpu-memory-usage-for-llm-serving`
+- `13.2.5` **How do continuous batching and dynamic batching improve throughput?** - PDF p. 88; timed interview drill; route: `/practice/llm-inference-optimization/how-do-continuous-batching-and-dynamic-batching-improve-throughput`
+- `13.2.6` **How do you design a scalable LLM inference service on Kubernetes?** - PDF p. 89; interview drill + mission seed; route: `/practice/llm-inference-optimization/how-do-you-design-a-scalable-llm-inference-service-on-kubernetes`
+
+**Authoring note:** Add a KV-cache calculator and queue-depth autoscaling exercise.
+
+### Chapter 14: GraphRAG & Knowledge-Graph Retrieval (pages 91-93)
+
+- **Track:** Advanced Retrieval
+- **Primary website placement:** Learn + Missions + Practice
+- **Modes:** Interview, Production
+- **Priority:** P1
+- **Competencies:** entity retrieval, knowledge graphs, global/local search, routing
+- **Recommended active exercise:** Route global vs local GraphRAG and justify when graph complexity is warranted.
+
+**Learn units**
+
+- `14.1.1` **Entity-Centric vs Chunk-Based Retrieval** - PDF p. 91; route: `/learn/graphrag-and-knowledge-graph-retrieval/entity-centric-vs-chunk-based-retrieval`
+- `14.1.2` **Microsoft GraphRAG Architecture** - PDF p. 91; route: `/learn/graphrag-and-knowledge-graph-retrieval/microsoft-graphrag-architecture`
+- `14.1.3` **When Graph Traversal Beats Iterative Linear Multi-hop** - PDF p. 92; route: `/learn/graphrag-and-knowledge-graph-retrieval/when-graph-traversal-beats-iterative-linear-multi-hop`
+
+**Practice units**
+
+- `14.2.1` **When would you choose GraphRAG over standard hybrid retrieval?** - PDF p. 92; timed interview drill; route: `/practice/graphrag-and-knowledge-graph-retrieval/when-would-you-choose-graphrag-over-standard-hybrid-retrieval`
+- `14.2.2` **Explain Microsoft GraphRAG’s global vs local search** - PDF p. 93; timed interview drill; route: `/practice/graphrag-and-knowledge-graph-retrieval/explain-microsoft-graphrags-global-vs-local-search`
+
+**Authoring note:** Start from hybrid retrieval and ask the learner to justify the extra graph construction and freshness cost.
+
+### Chapter 15: Multimodal RAG (pages 94-96)
+
+- **Track:** Multimodal AI
+- **Primary website placement:** Learn + Missions + Practice
+- **Modes:** Beginner, Interview, Production
+- **Priority:** P1
+- **Competencies:** visual retrieval, OCR limits, ColPali/CLIP, multimodal evaluation
+- **Recommended active exercise:** Design retrieval over charts, tables, slides, and scanned PDFs using text and vision paths.
+
+**Learn units**
+
+- `15.1.1` **Why Text-Only RAG Fails on Visual Documents** - PDF p. 94; route: `/learn/multimodal-rag/why-text-only-rag-fails-on-visual-documents`
+- `15.1.2` **Vision-Language Retrieval Approaches** - PDF p. 94; route: `/learn/multimodal-rag/vision-language-retrieval-approaches`
+
+**Practice units**
+
+- `15.2.1` **Design a RAG system over PDFs full of charts and tables** - PDF p. 95; interview drill + mission seed; route: `/practice/multimodal-rag/design-a-rag-system-over-pdfs-full-of-charts-and-tables`
+- `15.2.2` **ColPali vs CLIP vs OCR—how do you choose the retriever?** - PDF p. 96; timed interview drill; route: `/practice/multimodal-rag/colpali-vs-clip-vs-ocr-how-do-you-choose-the-retriever`
+
+**Authoring note:** Show the same document page through OCR text, visual retrieval and table extraction to make information loss visible.
+
+### Chapter 16: 20 Top System Design Questions & Answers (pages 97-106)
+
+- **Track:** Interview Preparation
+- **Primary website placement:** Practice
+- **Modes:** Interview; optional Production review
+- **Priority:** MVP
+- **Competencies:** interview communication, concise design answers, end-to-end drills
+- **Recommended active exercise:** Use the question bank for timed answers, whiteboard drills, and AI interviewer follow-ups.
+
+**Practice units**
+
+- `16.0.1` **How do you build a robust RAG system end to end?** - PDF p. 97; timed interview drill; route: `/practice/20-top-system-design-questions-and-answers/how-do-you-build-a-robust-rag-system-end-to-end`
+- `16.0.2` **What folder structure would you use for a production RAG system?** - PDF p. 98; timed interview drill; route: `/practice/20-top-system-design-questions-and-answers/what-folder-structure-would-you-use-for-a-production-rag-system`
+- `16.0.3` **How do you choose the right RAG framework?** - PDF p. 99; timed interview drill; route: `/practice/20-top-system-design-questions-and-answers/how-do-you-choose-the-right-rag-framework`
+- `16.0.4` **How do you design the ingestion and indexing pipeline?** - PDF p. 100; interview drill + mission seed; route: `/practice/20-top-system-design-questions-and-answers/how-do-you-design-the-ingestion-and-indexing-pipeline`
+- `16.0.5` **How do you structure the generation layer for grounded answers?** - PDF p. 100; timed interview drill; route: `/practice/20-top-system-design-questions-and-answers/how-do-you-structure-the-generation-layer-for-grounded-answers`
+- `16.0.6` **How do you integrate RAG with cloud infrastructure?** - PDF p. 101; timed interview drill; route: `/practice/20-top-system-design-questions-and-answers/how-do-you-integrate-rag-with-cloud-infrastructure`
+- `16.0.7` **How do you design memory for conversational RAG?** - PDF p. 102; interview drill + mission seed; route: `/practice/20-top-system-design-questions-and-answers/how-do-you-design-memory-for-conversational-rag`
+- `16.0.8` **How do you manage context windows effectively?** - PDF p. 102; timed interview drill; route: `/practice/20-top-system-design-questions-and-answers/how-do-you-manage-context-windows-effectively`
+- `16.0.9` **How do you reduce token cost in a large-scale RAG system?** - PDF p. 103; timed interview drill; route: `/practice/20-top-system-design-questions-and-answers/how-do-you-reduce-token-cost-in-a-large-scale-rag-system`
+- `16.0.10` **How do you choose the right models across the RAG stack?** - PDF p. 104; timed interview drill; route: `/practice/20-top-system-design-questions-and-answers/how-do-you-choose-the-right-models-across-the-rag-stack`
+- `16.0.11` **What does a strong end-to-end API contract look like for RAG?** - PDF p. 104; timed interview drill; route: `/practice/20-top-system-design-questions-and-answers/what-does-a-strong-end-to-end-api-contract-look-like-for-rag`
+- `16.0.12` **How do you test a robust RAG system end to end?** - PDF p. 105; timed interview drill; route: `/practice/20-top-system-design-questions-and-answers/how-do-you-test-a-robust-rag-system-end-to-end`
+- `16.0.13` **Give me the concise interview answer for a production-grade RAG system** - PDF p. 106; timed interview drill; route: `/practice/20-top-system-design-questions-and-answers/give-me-the-concise-interview-answer-for-a-production-grade-rag-system`
+
+**Authoring note:** Do not expose sample answers until the learner submits. Use the senior/staff differentiators as rubric criteria, rewritten in original language.
+
+### Chapter 17: LLM Fine-Tuning for Production (pages 118-122)
+
+- **Track:** Model Adaptation
+- **Primary website placement:** Learn + Practice + Missions
+- **Modes:** Interview, Production
+- **Priority:** P1
+- **Competencies:** SFT, LoRA/QLoRA, RLHF/DPO, data quality, multi-LoRA serving
+- **Recommended active exercise:** Choose LoRA, QLoRA, full fine-tuning, DPO, or RLHF and design safe rollout.
+
+**Learn units**
+
+- `17.1.1` **The Adaptation Stack: SFT, Reward Modeling, RLHF, DPO** - PDF p. 118; route: `/learn/llm-fine-tuning-for-production/the-adaptation-stack-sft-reward-modeling-rlhf-dpo`
+- `17.1.2` **Parameter-Efficient Fine-Tuning: LoRA and QLoRA** - PDF p. 118; route: `/learn/llm-fine-tuning-for-production/parameter-efficient-fine-tuning-lora-and-qlora`
+- `17.1.3` **Data: The Real Driver of Fine-Tuning Quality** - PDF p. 119; route: `/learn/llm-fine-tuning-for-production/data-the-real-driver-of-fine-tuning-quality`
+- `17.1.4` **Serving Fine-Tuned Models: Multi-LoRA** - PDF p. 119; route: `/learn/llm-fine-tuning-for-production/serving-fine-tuned-models-multi-lora`
+
+**Practice units**
+
+- `17.2.1` **When do you choose LoRA vs QLoRA vs full fine-tuning?** - PDF p. 120; timed interview drill; route: `/practice/llm-fine-tuning-for-production/when-do-you-choose-lora-vs-qlora-vs-full-fine-tuning`
+- `17.2.2` **Compare RLHF and DPO. When would you still use PPO-based RLHF?** - PDF p. 120; timed interview drill; route: `/practice/llm-fine-tuning-for-production/compare-rlhf-and-dpo-when-would-you-still-use-ppo-based-rlhf`
+- `17.2.3` **How do you build a fine-tuning dataset that actually improves the model?** - PDF p. 121; timed interview drill; route: `/practice/llm-fine-tuning-for-production/how-do-you-build-a-fine-tuning-dataset-that-actually-improves-the-model`
+- `17.2.4` **Design serving for hundreds of fine-tuned variants** - PDF p. 121; interview drill + mission seed; route: `/practice/llm-fine-tuning-for-production/design-serving-for-hundreds-of-fine-tuned-variants`
+- `17.2.5` **How do you evaluate and safely roll out a fine-tuned model?** - PDF p. 122; timed interview drill; route: `/practice/llm-fine-tuning-for-production/how-do-you-evaluate-and-safely-roll-out-a-fine-tuned-model`
+
+**Authoring note:** Tie the training method to serving topology and rollback. Include data contamination and catastrophic-forgetting checks.
+
+### Chapter 18: Multi-Agent System Design (pages 123-127)
+
+- **Track:** Agents & Orchestration
+- **Primary website placement:** Learn + Practice + Missions
+- **Modes:** Interview, Production
+- **Priority:** P1
+- **Competencies:** multi-agent topologies, typed communication, shared state, budgets
+- **Recommended active exercise:** Design an orchestrator-worker system with typed messages, budgets, and coordination metrics.
+
+**Learn units**
+
+- `18.1.1` **Orchestration Topologies** - PDF p. 123; route: `/learn/multi-agent-system-design/orchestration-topologies`
+- `18.1.2` **Communication Protocols and Shared Memory** - PDF p. 123; route: `/learn/multi-agent-system-design/communication-protocols-and-shared-memory`
+- `18.1.3` **Conflict Resolution and Termination** - PDF p. 124; route: `/learn/multi-agent-system-design/conflict-resolution-and-termination`
+- `18.1.4` **Cost and Latency Control** - PDF p. 124; route: `/learn/multi-agent-system-design/cost-and-latency-control`
+
+**Practice units**
+
+- `18.2.1` **When is multi-agent worth it over a single tool-using agent?** - PDF p. 124; timed interview drill; route: `/practice/multi-agent-system-design/when-is-multi-agent-worth-it-over-a-single-tool-using-agent`
+- `18.2.2` **Design a hierarchical orchestrator–worker system** - PDF p. 124; interview drill + mission seed; route: `/practice/multi-agent-system-design/design-a-hierarchical-orchestrator-worker-system`
+- `18.2.3` **How do you stop multi-agent cost and loops from exploding?** - PDF p. 125; timed interview drill; route: `/practice/multi-agent-system-design/how-do-you-stop-multi-agent-cost-and-loops-from-exploding`
+- `18.2.4` **How do agents share state without corrupting each other?** - PDF p. 126; timed interview drill; route: `/practice/multi-agent-system-design/how-do-agents-share-state-without-corrupting-each-other`
+- `18.2.5` **How do you evaluate a multi-agent system end to end?** - PDF p. 126; timed interview drill; route: `/practice/multi-agent-system-design/how-do-you-evaluate-a-multi-agent-system-end-to-end`
+
+**Authoring note:** Treat multi-agent as a distributed system: typed messages, trace tree, partial failures and per-agent cost.
+
+### Chapter 19: LLM Pre-Training Internals (pages 128-131)
+
+- **Track:** Foundation Model Training
+- **Primary website placement:** Learn + Practice
+- **Modes:** Interview, Production (advanced)
+- **Priority:** P2
+- **Competencies:** data curation, tokenization, scaling laws, distributed training, stability
+- **Recommended active exercise:** Reason about data curation, tokenization, scaling laws, 3D parallelism, and training stability.
+
+**Learn units**
+
+- `19.1.1` **Data Curation at Scale** - PDF p. 128; route: `/learn/llm-pre-training-internals/data-curation-at-scale`
+- `19.1.2` **Tokenization** - PDF p. 128; route: `/learn/llm-pre-training-internals/tokenization`
+- `19.1.3` **Scaling Laws** - PDF p. 128; route: `/learn/llm-pre-training-internals/scaling-laws`
+- `19.1.4` **Distributed Training: Parallelism Strategies** - PDF p. 128; route: `/learn/llm-pre-training-internals/distributed-training-parallelism-strategies`
+- `19.1.5` **Training Stability** - PDF p. 129; route: `/learn/llm-pre-training-internals/training-stability`
+
+**Practice units**
+
+- `19.2.1` **How do scaling laws change how you spend a compute budget?** - PDF p. 129; timed interview drill; route: `/practice/llm-pre-training-internals/how-do-scaling-laws-change-how-you-spend-a-compute-budget`
+- `19.2.2` **Explain 3D parallelism and how you’d combine the axes** - PDF p. 130; timed interview drill; route: `/practice/llm-pre-training-internals/explain-3d-parallelism-and-how-youd-combine-the-axes`
+- `19.2.3` **How do you keep a months-long training run stable?** - PDF p. 130; timed interview drill; route: `/practice/llm-pre-training-internals/how-do-you-keep-a-months-long-training-run-stable`
+- `19.2.4` **Why does tokenizer choice matter, and how would you decide?** - PDF p. 131; timed interview drill; route: `/practice/llm-pre-training-internals/why-does-tokenizer-choice-matter-and-how-would-you-decide`
+
+**Authoring note:** Use estimation exercises for compute, tokens, parallelism and checkpoint trade-offs; keep this advanced.
+
+### Chapter 20: ML Platform Design (pages 132-135)
+
+- **Track:** ML Platform
+- **Primary website placement:** Learn + Missions + Practice
+- **Modes:** Interview, Production
+- **Priority:** P2
+- **Competencies:** feature stores, experiment tracking, registry, platform governance
+- **Recommended active exercise:** Design a self-service ML platform with feature stores, lineage, registry, serving, and governance.
+
+**Learn units**
+
+- `20.1.1` **Feature and Embedding Stores** - PDF p. 132; route: `/learn/ml-platform-design/feature-and-embedding-stores`
+- `20.1.2` **Experiment Tracking and Reproducibility** - PDF p. 132; route: `/learn/ml-platform-design/experiment-tracking-and-reproducibility`
+- `20.1.3` **Model Registry and Deployment** - PDF p. 132; route: `/learn/ml-platform-design/model-registry-and-deployment`
+- `20.1.4` **Training and Serving Infrastructure** - PDF p. 132; route: `/learn/ml-platform-design/training-and-serving-infrastructure`
+- `20.1.5` **Monitoring and Governance** - PDF p. 132; route: `/learn/ml-platform-design/monitoring-and-governance`
+
+**Practice units**
+
+- `20.2.1` **What is train/serve skew and how does a platform prevent it?** - PDF p. 133; timed interview drill; route: `/practice/ml-platform-design/what-is-train-serve-skew-and-how-does-a-platform-prevent-it`
+- `20.2.2` **Design an ML platform for many teams** - PDF p. 133; interview drill + mission seed; route: `/practice/ml-platform-design/design-an-ml-platform-for-many-teams`
+- `20.2.3` **What belongs in a model registry and why?** - PDF p. 134; timed interview drill; route: `/practice/ml-platform-design/what-belongs-in-a-model-registry-and-why`
+- `20.2.4` **How do you monitor models in production on a platform?** - PDF p. 134; timed interview drill; route: `/practice/ml-platform-design/how-do-you-monitor-models-in-production-on-a-platform`
+
+**Authoring note:** Frame the platform as a product for internal engineers, with adoption and time-to-production as success metrics.
+
+### Chapter 21: Model Serving at Hyperscaler Scale (pages 136-139)
+
+- **Track:** LLM Serving
+- **Primary website placement:** Learn + Missions + Practice
+- **Modes:** Interview, Production (advanced)
+- **Priority:** P1
+- **Competencies:** prefill/decode disaggregation, GPU scheduling, speculative decoding, fleet capacity
+- **Recommended active exercise:** Design hyperscale prefill/decode separation, GPU scheduling, routing, and capacity planning.
+
+**Learn units**
+
+- `21.1.1` **Prefill/Decode Disaggregation** - PDF p. 136; route: `/learn/model-serving-at-hyperscaler-scale/prefill-decode-disaggregation`
+- `21.1.2` **Multi-Tenant GPU Scheduling** - PDF p. 136; route: `/learn/model-serving-at-hyperscaler-scale/multi-tenant-gpu-scheduling`
+- `21.1.3` **Speculative Decoding** - PDF p. 136; route: `/learn/model-serving-at-hyperscaler-scale/speculative-decoding`
+- `21.1.4` **Capacity Planning and Global Routing** - PDF p. 136; route: `/learn/model-serving-at-hyperscaler-scale/capacity-planning-and-global-routing`
+
+**Practice units**
+
+- `21.2.1` **Why disaggregate prefill and decode?** - PDF p. 137; timed interview drill; route: `/practice/model-serving-at-hyperscaler-scale/why-disaggregate-prefill-and-decode`
+- `21.2.2` **How does speculative decoding speed up inference without changing output?** - PDF p. 137; timed interview drill; route: `/practice/model-serving-at-hyperscaler-scale/how-does-speculative-decoding-speed-up-inference-without-changing-output`
+- `21.2.3` **Design multi-tenant GPU scheduling for a serving fleet** - PDF p. 138; interview drill + mission seed; route: `/practice/model-serving-at-hyperscaler-scale/design-multi-tenant-gpu-scheduling-for-a-serving-fleet`
+- `21.2.4` **How do you do capacity planning for an LLM serving fleet?** - PDF p. 139; timed interview drill; route: `/practice/model-serving-at-hyperscaler-scale/how-do-you-do-capacity-planning-for-an-llm-serving-fleet`
+
+**Authoring note:** Use fleet-level dashboards and separate prefill/decode queues. Ask for capacity headroom and regional routing.
+
+### Chapter 22: Evaluation Framework Design (Deep Dive) (pages 140-143)
+
+- **Track:** Evaluation & Quality
+- **Primary website placement:** Learn + Practice + Missions
+- **Modes:** Interview, Production
+- **Priority:** P1
+- **Competencies:** LLM-as-judge, human review, benchmarks, online experimentation
+- **Recommended active exercise:** Build trustworthy LLM-as-judge, human review, benchmark governance, and online experiments.
+
+**Learn units**
+
+- `22.1.1` **LLM-as-Judge: Making It Trustworthy** - PDF p. 140; route: `/learn/evaluation-framework-design-deep-dive/llm-as-judge-making-it-trustworthy`
+- `22.1.2` **Human-in-the-Loop Pipelines** - PDF p. 140; route: `/learn/evaluation-framework-design-deep-dive/human-in-the-loop-pipelines`
+- `22.1.3` **Benchmark Design and Contamination** - PDF p. 140; route: `/learn/evaluation-framework-design-deep-dive/benchmark-design-and-contamination`
+- `22.1.4` **Online Evaluation and Statistical Rigor** - PDF p. 140; route: `/learn/evaluation-framework-design-deep-dive/online-evaluation-and-statistical-rigor`
+
+**Practice units**
+
+- `22.2.1` **How do you make an LLM-as-judge trustworthy?** - PDF p. 141; timed interview drill; route: `/practice/evaluation-framework-design-deep-dive/how-do-you-make-an-llm-as-judge-trustworthy`
+- `22.2.2` **How do you run a statistically sound A/B test for an LLM change?** - PDF p. 141; timed interview drill; route: `/practice/evaluation-framework-design-deep-dive/how-do-you-run-a-statistically-sound-a-b-test-for-an-llm-change`
+- `22.2.3` **Design a human-in-the-loop evaluation pipeline** - PDF p. 142; interview drill + mission seed; route: `/practice/evaluation-framework-design-deep-dive/design-a-human-in-the-loop-evaluation-pipeline`
+- `22.2.4` **How do you stop benchmarks from lying to you over time?** - PDF p. 142; timed interview drill; route: `/practice/evaluation-framework-design-deep-dive/how-do-you-stop-benchmarks-from-lying-to-you-over-time`
+
+**Authoring note:** Include judge calibration, human disagreement, confidence intervals and benchmark contamination.
+
+### Chapter 23: Inference Cost Engineering (pages 144-147)
+
+- **Track:** Cost Engineering
+- **Primary website placement:** Learn + Missions + Practice
+- **Modes:** Interview, Production
+- **Priority:** P1
+- **Competencies:** token economics, quantization, batching cost, model routing
+- **Recommended active exercise:** Model token economics and optimize quantization, batching, and model routing under a quality SLA.
+
+**Learn units**
+
+- `23.1.1` **The Unit Economics of a Token** - PDF p. 144; route: `/learn/inference-cost-engineering/the-unit-economics-of-a-token`
+- `23.1.2` **Quantization Trade-offs** - PDF p. 144; route: `/learn/inference-cost-engineering/quantization-trade-offs`
+- `23.1.3` **Batching Economics** - PDF p. 145; route: `/learn/inference-cost-engineering/batching-economics`
+- `23.1.4` **Model Routing and the Quality/Cost Frontier** - PDF p. 145; route: `/learn/inference-cost-engineering/model-routing-and-the-quality-cost-frontier`
+
+**Practice units**
+
+- `23.2.1` **How do you model and reduce cost per token?** - PDF p. 145; timed interview drill; route: `/practice/inference-cost-engineering/how-do-you-model-and-reduce-cost-per-token`
+- `23.2.2` **When do you quantize, and how do you choose the level?** - PDF p. 146; timed interview drill; route: `/practice/inference-cost-engineering/when-do-you-quantize-and-how-do-you-choose-the-level`
+- `23.2.3` **How does batch size drive cost, and what’s the catch?** - PDF p. 146; timed interview drill; route: `/practice/inference-cost-engineering/how-does-batch-size-drive-cost-and-whats-the-catch`
+- `23.2.4` **Design a cost-optimized serving setup under a quality SLA** - PDF p. 147; interview drill + mission seed; route: `/practice/inference-cost-engineering/design-a-cost-optimized-serving-setup-under-a-quality-sla`
+
+**Authoring note:** Every cost-saving action must have a quality or reliability guard.
+
+### Chapter 24: Safety, Guardrails, and Red-Teaming (pages 148-151)
+
+- **Track:** Safety & Security
+- **Primary website placement:** Learn + Missions + Practice
+- **Modes:** Beginner, Interview, Production
+- **Priority:** P1
+- **Competencies:** guardrails, injection defense, red teaming, safety/helpfulness trade-offs
+- **Recommended active exercise:** Design guardrails, prompt-injection defenses, red-team programs, and over-refusal controls.
+
+**Learn units**
+
+- `24.1.1` **The Guardrail Architecture** - PDF p. 148; route: `/learn/safety-guardrails-and-red-teaming/the-guardrail-architecture`
+- `24.1.2` **Prompt Injection and Jailbreaks** - PDF p. 148; route: `/learn/safety-guardrails-and-red-teaming/prompt-injection-and-jailbreaks`
+- `24.1.3` **Red-Teaming** - PDF p. 148; route: `/learn/safety-guardrails-and-red-teaming/red-teaming`
+- `24.1.4` **Content-Safety Operations and the Safety/Helpfulness Trade-off** - PDF p. 149; route: `/learn/safety-guardrails-and-red-teaming/content-safety-operations-and-the-safety-helpfulness-trade-off`
+
+**Practice units**
+
+- `24.2.1` **Design a guardrail architecture for an LLM product** - PDF p. 149; interview drill + mission seed; route: `/practice/safety-guardrails-and-red-teaming/design-a-guardrail-architecture-for-an-llm-product`
+- `24.2.2` **How do you defend against prompt injection in a RAG/agent system?** - PDF p. 149; timed interview drill; route: `/practice/safety-guardrails-and-red-teaming/how-do-you-defend-against-prompt-injection-in-a-rag-agent-system`
+- `24.2.3` **How do you run a red-teaming program?** - PDF p. 150; timed interview drill; route: `/practice/safety-guardrails-and-red-teaming/how-do-you-run-a-red-teaming-program`
+- `24.2.4` **How do you balance safety against over-refusal?** - PDF p. 151; timed interview drill; route: `/practice/safety-guardrails-and-red-teaming/how-do-you-balance-safety-against-over-refusal`
+
+**Authoring note:** Include both attack and defence activities, with red-team findings feeding launch gates and regression tests.
+
+## 8. Case-study mission template - Chapters 25-41
+
+The general case studies share a consistent structure. Do not turn each subsection into a passive article. Map the source structure directly into the mission state machine:
+
+| PDF section pattern | Mission stage | Beginner experience | Interview experience | Production experience |
+|---|---|---|---|---|
+| Problem Understanding | Brief | Highlight objective and stakeholders | Learner restates problem | Learner receives incident/business impact |
+| Clarifying Questions | Requirements | Guided checklist | Open AI interviewer | Missing/ambiguous evidence must be investigated |
+| Requirements | Requirements | Classify functional/non-functional | State scope and SLA | Reconcile competing SLOs and policy constraints |
+| Scale and Capacity Assumptions | Estimation | Editable worksheet | Timed back-of-envelope math | Validate estimates against metrics and cost |
+| ML Problem Framing | Design | Match task to objective/labels | Defend framing | Diagnose objective or label mismatch |
+| High-Level Architecture | Architecture | Structured component builder | Blank canvas | Modify an existing architecture |
+| Data / Feature Engineering | Deep dive | Guided data choices | Interview follow-ups | Drift, leakage, freshness or quality incident |
+| Model / Training | Deep dive | Compare model choices | Defend trade-offs | Rollout, rollback, retraining and reproducibility |
+| Online Serving Design | Architecture / Stress | Latency path visualisation | Capacity and SLA challenge | Tail-latency, outage or scaling incident |
+| Evaluation | Quality gate | Choose metrics | State offline/online gates | Diagnose metric-product mismatch |
+| Cold Start / Exploration | Stress event | Scenario choice | Follow-up question | New entity/user/supply incident |
+| Safety / Privacy / Abuse | Stress event | Identify risk | Security follow-up | Live abuse, leakage or compliance incident |
+| Monitoring / Observability | Evidence | Select signals | Explain dashboards | Inspect logs, traces and alerts |
+| Failure Modes and Mitigations | Stress event | Multiple-choice diagnosis | Open failure analysis | Incident commander workflow |
+| Trade-Offs | Review | Compare two options | Defend one decision | Write an ADR and rollout plan |
+| System Evolution | Revision | Improve a first design | Scale/change requirement | Migration with backwards compatibility |
+| Interview Summary | Review | Key takeaways | 2-minute summary | Post-incident/design review |
+
+## 9. General applied mission catalog - Chapters 25-41
+
+| Ch. | Pages | Mission | Suggested website scenario | Primary modes | Priority |
+|---:|---:|---|---|---|---|
+| 25 | 154-163 | Video Recommendation System | Design and evolve a multi-stage video recommendation system; stress with cold start, diversity and latency. | Interview, Production | P2 |
+| 26 | 164-172 | Product Recommendation System | Design product retrieval/ranking; stress with sparse feedback, inventory changes and marketplace objectives. | Interview, Production | P2 |
+| 27 | 173-181 | Personalized News Feed Ranking | Design a personalised news feed; stress with freshness, feedback loops, safety and echo-chamber controls. | Interview, Production | P2 |
+| 28 | 182-190 | Ads Ranking and Auction System | Design ads ranking and auction; stress with calibration, budget pacing, latency and policy constraints. | Interview, Production | P2 |
+| 29 | 191-199 | Search Ranking System | Design search ranking; stress with query intent, relevance, freshness and abuse. | Interview, Production | P2 |
+| 30 | 200-207 | People You May Know (Friend Recommendation) | Design friend recommendation; stress with graph scale, privacy, spam and new-user cold start. | Interview, Production | P2 |
+| 31 | 208-215 | Customer Support AI Chatbot | Design a customer-support RAG chatbot; stress with stale knowledge, escalation, hallucination and cost. | Beginner (guided), Interview, Production | P1 |
+| 32 | 216-223 | AI Coding Copilot | Design an AI coding copilot; stress with repository context, latency, privacy, evaluation and unsafe code. | Beginner (guided), Interview, Production | P1 |
+| 33 | 224-231 | AI Agent for Calendar / Email / Workflow Automation | Design a calendar/email/workflow agent; stress with tool permissions, confirmation, retries and prompt injection. | Beginner (guided), Interview, Production | P1 |
+| 34 | 232-239 | Multimodal Content Moderation System | Design multimodal moderation; stress with policy drift, class imbalance, latency and appeals. | Interview, Production | P2 |
+| 35 | 240-247 | Fraud Detection System | Design fraud detection; stress with delayed labels, adversarial adaptation, false positives and real-time serving. | Interview, Production | P2 |
+| 36 | 248-255 | Spam / Abuse / Bot Detection System | Design spam/abuse/bot detection; stress with attacker evolution, graph signals and rate limits. | Interview, Production | P2 |
+| 37 | 256-263 | Review Quality / Fake-Review Detection | Design fake-review detection; stress with coordinated attacks, reviewer history and explainability. | Interview, Production | P2 |
+| 38 | 264-271 | Autocomplete / Spell-check / Smart Reply | Design autocomplete/spell-check/smart reply; stress with ultra-low latency, personalization and privacy. | Interview, Production | P2 |
+| 39 | 272-279 | Personalized Notification Ranking System | Design notification ranking; stress with fatigue, timing, channel choice and long-term engagement. | Interview, Production | P2 |
+| 40 | 280-287 | Dynamic Pricing / ETA Prediction System | Design dynamic pricing or ETA prediction; stress with demand spikes, uncertainty, fairness and feedback loops. | Interview, Production | P2 |
+| 41 | 288-295 | Document AI Pipeline (Claims / Invoices / Contracts) | Design a document AI pipeline; stress with OCR/layout failures, human review, schema evolution and auditability. | Beginner (guided), Interview, Production | P1 |
+
+### Recommended first applied missions
+
+1. **Customer Support AI Chatbot (Ch. 31)** - closest to the platform's core RAG curriculum.
+2. **AI Coding Copilot (Ch. 32)** - combines retrieval, context engineering, evaluation and latency.
+3. **Workflow Automation Agent (Ch. 33)** - natural progression from agentic RAG and security.
+4. **Document AI Pipeline (Ch. 41)** - connects multimodal RAG, ingestion, human review and compliance.
+
+## 10. Advanced company-style mission catalog - Chapters 42-49
+
+| Ch. | Pages | Case | Recommended use | Priority |
+|---:|---:|---|---|---|
+| 42 | 298-300 | Meta: Real-Time Computer Vision for Reels Ranking & Integrity | Advanced multimodal ranking/integrity mission with shared embeddings and real-time signal production. | P3 |
+| 43 | 301-302 | NVIDIA: Distributed Training Stack for GPT-Scale Foundation Models | Distributed foundation-model training mission focused on parallelism, memory, stability and fault tolerance. | P3 |
+| 44 | 303-304 | Google: Streaming Speech Recognition at Scale | Streaming speech-recognition mission focused on real-time serving, on-device/server split and evaluation. | P3 |
+| 45 | 305-306 | Anthropic: Long-Context NLP Assistant with Safety Guardrails | Long-context assistant mission focused on retrieval decisions, context engineering and safety guardrails. | P3 |
+| 46 | 307-308 | OpenAI: RLHF & Reward-Model Pipeline for LLM Alignment | Alignment pipeline mission focused on SFT, reward modelling, PPO/RLHF vs DPO and evaluation. | P3 |
+| 47 | 309-310 | Google: Transformer-Based Neural Machine Translation | Neural machine-translation mission focused on multilingual architecture, tokenisation, serving and evaluation. | P3 |
+| 48 | 311-312 | SpaceX: Autonomous Booster Landing & Spacecraft Docking | Safety-critical autonomous-systems mission focused on perception, state estimation, control and real-time evaluation. | P3 |
+| 49 | 313-314 | SpaceX: Starlink Constellation Swarm Coordination | Large-scale coordination mission focused on distributed control, safety, scale and evaluation. | P3 |
+
+> Product label recommendation: **Company-style public case study**. Avoid language implying that these are leaked or official company interview questions.
+
+## 11. Home page content mapping
+
+The Home page should not expose the PDF's table of contents. It should present learner-oriented entry points:
+
+- **Continue learning:** resume the current chapter-derived activity.
+- **Recommended next:** selected from weak competencies and prerequisites.
+- **Three pathways:** Foundations, Interview Prep, Production Incidents.
+- **Featured mission:** rotate among Ch. 31, 32, 33 and 41 in the first release.
+- **Study plan:** adapt pages 20-21 into a dynamic 4-week plan.
+- **Skill snapshot:** retrieval, evaluation, serving, security, agents, data/LLMOps and communication.
+
+## 12. Progress page content mapping
+
+Progress is generated from learner activity rather than copied from the PDF. Use the PDF's categories and difficulty labels as metadata.
+
+Recommended competency groups:
+
+- Retrieval and RAG foundations
+- Evaluation and reliability
+- Data ingestion and freshness
+- Performance and vector scaling
+- LLM inference and serving
+- Agents and orchestration
+- Security, safety and governance
+- LLMOps, observability and deployment
+- ML platform and training
+- Estimation and cost engineering
+- System-design communication
+
+Evidence that updates mastery:
+
+- Correct concept checks
+- Quality of requirement clarification
+- Estimation accuracy and assumptions
+- Architecture rule satisfaction
+- Decision-record quality
+- Interview rubric scores
+- Incident diagnosis accuracy
+- Successful revision after feedback
+- Spaced-repetition retention
+
+## 13. MVP content slice
+
+A focused MVP should not attempt to publish all 315 pages. Recommended first release:
+
+### Learn
+
+- Chapters 1-8: core RAG, retrieval, evaluation, reliability, scaling, ingestion and security
+- Chapters 10-13: prompting, observability, deployment and inference
+
+### Practice
+
+- Selected high-value questions from Chapters 1-13
+- Chapter 16 question bank
+- Mock interview flow from pages 107-108
+
+### Missions
+
+1. **Enterprise RAG design** - Ch. 3, 7, 8, 11 and 12
+2. **Ingest 10 million document chunks** - Ch. 6 and 7
+3. **Scale vector search to 2 billion embeddings** - Ch. 6, 13, 21 and 23
+4. **Diagnose slow and inaccurate RAG** - Ch. 4, 5, failure taxonomy and Ch. 11
+
+### Progress
+
+- Seven initial competencies: retrieval, evaluation, architecture, scale, reliability, security and communication
+
+## 14. Content-authoring backlog by phase
+
+| Phase | Source scope | Deliverable |
+|---|---|---|
+| MVP-A | Ch. 1-5 | 20-30 concept lessons, metric labs and interview drills |
+| MVP-B | Ch. 6-8, 11-13 | Scaling, ingestion, security, observability and serving labs |
+| MVP-C | Failure taxonomy, Ch. 16, mock guide | Practice engine, timed interview and scoring rubric |
+| MVP-D | Combined sources | Four end-to-end missions with Beginner/Interview/Production variants |
+| P1 | Ch. 9-10, 14-15, 17-18, 21-24 | Agents, advanced retrieval, fine-tuning, hyperscale serving, cost and safety |
+| P1 Missions | Ch. 31-33, 41 | Four applied AI missions |
+| P2 | Ch. 19-20 and Ch. 25-30, 34-40 | Foundation training, ML platform and broader ML system-design library |
+| P3 | Ch. 42-49 | Advanced company-style case studies |
+
+## 15. Suggested CMS metadata
+
+Every authored item should include:
+
+```yaml
+id: rag-hybrid-retrieval-rrf
+title: Hybrid retrieval with BM25 and dense search
+source:
+  document: 59-AI Engineer Interview.pdf
+  section: 2.1.1
+  pages: [29, 30]
+track: retrieval-foundations
+surface: learn
+modes: [beginner, interview, production]
+difficulty: intermediate
+competencies: [hybrid-retrieval, reranking, tradeoff-reasoning]
+prerequisites: [dense-embeddings, sparse-search]
+activity_types: [prediction, lab, interview-drill]
+estimated_minutes: 18
+copyright_status: rewrite-required
+review_status: draft
+```
+
+## 16. Content quality checklist
+
+Before publishing a PDF-derived activity:
+
+- The explanation is original and shorter than a passive chapter.
+- The learner must act before seeing the solution.
+- The activity maps to at least one competency.
+- Beginner, Interview and Production behavior is defined where applicable.
+- Numeric claims and service-specific facts are independently verified and dated.
+- Multiple valid solutions are recognised.
+- The rubric evaluates reasoning and trade-offs, not keyword matching.
+- Failure and rollback behavior are included for production topics.
+- Source section and page metadata are stored.
+- Copyright/licensing review is complete.
+
+## 17. Recommended catalog navigation
+
+Use this hierarchy in the product and content admin:
+
+```text
+Track
+  -> Module (PDF chapter)
+      -> Concept lesson (Core Concepts subsection)
+      -> Practice drill (Tough Question)
+      -> Mission (combined chapters or case study)
+      -> Stress event
+      -> Review / spaced repetition
+```
+
+Do not force the learner to follow the PDF page order. Use prerequisites and competency gaps to recommend the next activity, while preserving chapter/page references for authors and reviewers.
