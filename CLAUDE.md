@@ -38,3 +38,13 @@ There is no lint script configured; rely on `npm run build` (tsc) for type check
 - `docs/implementation-status.md` — what's matched/implemented vs. intentionally deviated from the accepted design (e.g., AI coach is currently deterministic/stage-grounded, not a real model call).
 - `docs/DESIGN.md`, `docs/spec.md`, `docs/PRD.md` — deeper design/spec detail if working on UI or mission mechanics.
 - `.impeccable/` — design audit/critique history for the UI (frontend-design skill artifacts).
+
+<!-- OPENWIKI:START -->
+
+## OpenWiki
+
+This repository uses OpenWiki for recurring code documentation. Start with `openwiki/quickstart.md`, then follow its links to architecture, workflows, domain concepts, operations, integrations, testing guidance, and source maps.
+
+The scheduled OpenWiki GitHub Actions workflow refreshes the repository wiki. Do not hand-edit generated OpenWiki pages unless explicitly asked; prefer updating source code/docs and letting OpenWiki regenerate.
+
+<!-- OPENWIKI:END -->
