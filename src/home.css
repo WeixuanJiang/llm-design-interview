@@ -1,0 +1,338 @@
+/* Today page (home) styles — Wave 2 Blueprint learning loop.
+   全部取值来自 tokens.css 的 var(--token)，双主题自动适配；
+   禁止硬编码颜色，字号不小于 var(--text-xs) = 12px。
+   零件复用：.card / .eyebrow-label / .num / .button（components.css、styles.css）。 */
+
+.home-page {
+  max-width: 1180px;
+  display: grid;
+  gap: var(--space-10);
+  align-content: start;
+}
+
+/* ── 首访 hero：产品定位 + 内容规模 + 3 步上手 + 主 CTA ─────────── */
+.home-hero {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: start;
+  padding: var(--space-10) var(--space-8);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+.home-hero h1 {
+  margin: 0;
+  max-width: 22ch;
+  font-size: var(--text-5xl);
+  font-weight: var(--weight-bold);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  text-wrap: balance;
+}
+.home-hero-loop {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  color: var(--primary-dark);
+}
+.home-hero-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+.home-hero-fact strong {
+  margin-right: var(--space-1);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  color: var(--text);
+}
+.home-hero-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  width: 100%;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.home-hero-steps li {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: start;
+  padding-top: var(--space-3);
+  border-top: 2px solid var(--primary);
+}
+.home-step-index {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--subtle);
+}
+.home-hero-steps strong {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text);
+}
+.home-hero-steps small {
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: var(--muted);
+}
+.home-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+/* ── 回访：单一主导 next-action 卡 ─────────────────────────────── */
+.home-action-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  border-color: var(--primary-border);
+}
+.home-action-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+.home-action-icon svg { width: 24px; height: 24px; }
+.home-action-body {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: grid;
+  gap: var(--space-1);
+}
+.home-action-body h1 {
+  margin: 0;
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  line-height: 1.2;
+  color: var(--text);
+  text-wrap: balance;
+}
+.home-action-body p {
+  margin: 0;
+  max-width: 72ch;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--muted);
+}
+.home-cta {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  font-size: var(--text-sm);
+}
+
+/* ── 本周快照磁贴 ──────────────────────────────────────────────── */
+.home-snapshot-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+.home-tile {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: start;
+  padding: var(--space-4);
+}
+.home-tile-value {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+}
+.home-tile-value .num {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  line-height: 1.1;
+  color: var(--text);
+}
+.home-tile-value small.num {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--subtle);
+}
+.home-tile-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--muted);
+}
+
+/* ── 分区通用头 ────────────────────────────────────────────────── */
+.home-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border);
+}
+.home-section-header h2 {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--text);
+}
+
+/* ── 学习路径预览（4 阶段卡） ──────────────────────────────────── */
+.home-stage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+.home-stage-card {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: start;
+  padding: var(--space-4);
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.home-stage-card:hover { border-color: var(--primary-border); }
+.home-stage-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: var(--space-2);
+}
+.home-stage-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+.home-stage-icon svg { width: 18px; height: 18px; }
+.home-stage-count {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--subtle);
+}
+.home-stage-card strong {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text);
+}
+.home-stage-card small {
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: var(--muted);
+}
+.home-stage-modules {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--primary-dark);
+}
+
+/* ── 精选实战（3 条客户案例） ──────────────────────────────────── */
+.home-mission-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+.home-mission-card {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: start;
+  padding: var(--space-4);
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.home-mission-card:hover { border-color: var(--primary-border); }
+.home-mission-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  width: 100%;
+  margin-bottom: var(--space-2);
+}
+.home-mission-archetype {
+  flex: 0 0 auto;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--primary-dark);
+  background: var(--primary-soft);
+}
+.home-mission-card strong {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: 1.4;
+  color: var(--text);
+}
+.home-mission-card small {
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+/* ── 动效：区块入场 + 可点击卡片 hover/press 反馈 ────────────────
+   只动 transform / opacity，时长缓动全部 token 化；
+   --duration-slow 由 tokens.css 提供（此处带 320ms 回退）。 */
+@keyframes home-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.home-hero,
+.home-action-card,
+.home-snapshot,
+.home-path-preview,
+.home-featured { animation: home-enter var(--duration-slow, 320ms) var(--ease-standard); }
+
+/* .card 基线只过渡 box-shadow（components.css 在本文件之后加载），
+   这里用更高优先级补齐 border-color / transform 的 hover 反馈。 */
+.card.home-stage-card,
+.card.home-mission-card {
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+.card.home-stage-card:hover,
+.card.home-mission-card:hover { transform: translateY(-2px); }
+.card.home-stage-card:active,
+.card.home-mission-card:active { transform: translateY(0); }
+
+/* ── 响应式（与 styles.css / shell.css 断点一致） ──────────────── */
+@media (max-width: 1024px) {
+  .home-snapshot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .home-stage-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .home-mission-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* 触控目标 ≥44px：分区头部 text 按钮基线仅 36px */
+  .home-section-header .button.text { min-height: 44px; }
+}
+
+@media (max-width: 720px) {
+  .home-page { gap: var(--space-8); }
+  .home-hero { padding: var(--space-6) var(--space-5); }
+  .home-hero h1 { font-size: var(--text-4xl); }
+  .home-hero-steps { grid-template-columns: 1fr; }
+  .home-action-card { flex-direction: column; align-items: stretch; }
+  /* 首访与回访 CTA 全宽，便于拇指触达 */
+  .home-cta { width: 100%; }
+  /* 快照磁贴小屏 2 列，避免 5 张全宽卡的长滚动 */
+  .home-snapshot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .home-stage-grid,
+  .home-mission-grid { grid-template-columns: 1fr; }
+}

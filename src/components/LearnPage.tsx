@@ -1,16 +1,33 @@
 import { Check, ChevronLeft, ChevronRight, CircleCheck } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getLessonKnowledgeChecks, learningModules, lessonCourseContent, type LearningLesson } from "../data/learningContent";
 
 interface LearnPageProps {
   completedModules: string[];
   completedLessons: string[];
   onComplete: (moduleId: string, lessonId: string, moduleLessonIds: string[]) => void;
+  focusModuleId?: string | null;
+  focusLessonId?: string | null;
+  onFocusHandled?: () => void;
 }
 
-export function LearnPage({ completedModules, completedLessons, onComplete }: LearnPageProps) {
-  const [activeId, setActiveId] = useState(() => learningModules.find((module) => !completedModules.includes(module.id))?.id ?? learningModules[0].id);
-  const [lessonIndex, setLessonIndex] = useState(0);
+// Locates a lesson inside the module list so deep links can jump straight to it.
+function findLessonLocation(lessonId: string): { moduleId: string; lessonIndex: number } | null {
+  for (const module of learningModules) {
+    const lessonIndex = module.lessons.findIndex((lesson) => lesson.id === lessonId);
+    if (lessonIndex >= 0) return { moduleId: module.id, lessonIndex };
+  }
+  return null;
+}
+
+export function LearnPage({ completedModules, completedLessons, onComplete, focusModuleId = null, focusLessonId = null, onFocusHandled }: LearnPageProps) {
+  const [activeId, setActiveId] = useState(() => {
+    const lessonLocation = focusLessonId ? findLessonLocation(focusLessonId) : null;
+    if (lessonLocation) return lessonLocation.moduleId;
+    if (focusModuleId && learningModules.some((module) => module.id === focusModuleId)) return focusModuleId;
+    return learningModules.find((module) => !completedModules.includes(module.id))?.id ?? learningModules[0].id;
+  });
+  const [lessonIndex, setLessonIndex] = useState(() => (focusLessonId ? findLessonLocation(focusLessonId)?.lessonIndex ?? 0 : 0));
   const [questionIndex, setQuestionIndex] = useState(0);
   const [choice, setChoice] = useState<number | null>(null);
   const [checked, setChecked] = useState(false);
@@ -48,6 +65,28 @@ export function LearnPage({ completedModules, completedLessons, onComplete }: Le
     resetActivity();
     if (window.scrollY > 0) window.scrollTo({ top: 0, behavior: "smooth" });
   };
+  const focusLesson = (moduleId: string, index: number) => {
+    setActiveId(moduleId);
+    setLessonIndex(index);
+    resetActivity();
+    if (window.scrollY > 0) window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // Deep-link support: a new focusLessonId jumps straight to that lesson (winning over
+  // focusModuleId); a new focusModuleId selects that module's first lesson. Either way the
+  // parent is then asked to clear the focus so later visits fall back to the default
+  // resume behavior.
+  useEffect(() => {
+    if (focusLessonId) {
+      const location = findLessonLocation(focusLessonId);
+      if (location) focusLesson(location.moduleId, location.lessonIndex);
+      onFocusHandled?.();
+      return;
+    }
+    if (!focusModuleId) return;
+    if (learningModules.some((module) => module.id === focusModuleId)) selectModule(focusModuleId);
+    onFocusHandled?.();
+  }, [focusModuleId, focusLessonId, onFocusHandled]);
 
   return (
     <div className="product-page page-content learn-page">

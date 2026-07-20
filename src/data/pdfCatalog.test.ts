@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { learningModules, lessonCourseContent } from "./learningContent";
 import { catalogCoverage, catalogMissions, catalogPracticeUnits } from "./pdfCatalog";
 
-describe("PDF catalog integration", () => {
+describe("Catalog integration", () => {
   it("represents every cataloged Learn chapter and substantial lesson content", () => {
     expect(learningModules).toHaveLength(23);
     expect(catalogCoverage.learnChapters).toBeGreaterThanOrEqual(23);
@@ -22,7 +22,32 @@ describe("PDF catalog integration", () => {
 
   it("represents the cataloged interview-practice inventory", () => {
     expect(catalogCoverage.practiceUnits).toBeGreaterThanOrEqual(80);
-    expect(catalogPracticeUnits.some((unit) => unit.chapter === 16)).toBe(true);
+    for (let chapter = 1; chapter <= 24; chapter += 1) {
+      expect(catalogPracticeUnits.some((unit) => unit.chapter === chapter), `chapter ${chapter}`).toBe(true);
+    }
+  });
+
+  it("ships a concrete drill with exactly one correct option per practice unit", () => {
+    const correctPositions = new Set<number>();
+    const questions = new Set<string>();
+    const ids = new Set<string>();
+    for (const unit of catalogPracticeUnits) {
+      expect(unit.title.trim().length, unit.id).toBeGreaterThan(0);
+      expect(unit.question.trim().length, unit.id).toBeGreaterThan(20);
+      expect(unit.question, unit.id).not.toMatch(/\bTODO\b|\bTBD\b|placeholder|lorem ipsum|\$\{|\[object|undefined|NaN/);
+      expect(unit.options, unit.id).toHaveLength(3);
+      expect(unit.options.filter((option) => option.correct), unit.id).toHaveLength(1);
+      for (const option of unit.options) {
+        expect(option.text.trim().length, unit.id).toBeGreaterThan(0);
+        expect(option.feedback.trim().length, unit.id).toBeGreaterThan(0);
+      }
+      correctPositions.add(unit.options.findIndex((option) => option.correct));
+      questions.add(unit.question);
+      ids.add(unit.id);
+    }
+    expect(questions.size).toBe(catalogPracticeUnits.length);
+    expect(ids.size).toBe(catalogPracticeUnits.length);
+    expect(correctPositions.size).toBeGreaterThan(1);
   });
 
   it("represents every applied and company-style mission", () => {

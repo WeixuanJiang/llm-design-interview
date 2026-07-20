@@ -1,0 +1,226 @@
+/* Path page — four-stage learning path, collapsible chapter cards with lesson
+   and drill mastery meters, and the inline drill player.
+   All values come from tokens.css (no hardcoded colors; nothing below
+   var(--text-xs) = 12px). Class names carry path-/drill- prefixes and compose
+   the Wave 1 parts library (.card, .card-body, .list-row, .eyebrow-label,
+   .page-header, .num) plus global .button / .inline-feedback. */
+
+/* ── Header overview: x/23 modules, drills reviewed, accuracy ───────────── */
+.path-overview { display: flex; align-items: stretch; gap: var(--space-3); margin: 0; }
+.path-overview-stat {
+  display: grid;
+  gap: var(--space-1);
+  align-content: start;
+  min-width: 96px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.path-overview-stat dd { margin: 0; color: var(--text); font-size: var(--text-2xl); font-weight: var(--weight-bold); line-height: 1.2; }
+.path-overview-stat dt { color: var(--muted); font-size: var(--text-xs); }
+
+/* ── Stages ─────────────────────────────────────────────────────────────── */
+.path-stage { margin-bottom: var(--space-8); }
+.path-stage-heading { margin-bottom: var(--space-4); }
+.path-stage-heading h2 { margin: var(--space-1) 0; font-size: var(--text-2xl); font-weight: var(--weight-bold); line-height: 1.25; color: var(--text); }
+.path-stage-heading p { margin: 0; max-width: 72ch; color: var(--muted); font-size: var(--text-sm); line-height: 1.5; }
+.path-stage-modules { display: grid; gap: var(--space-3); }
+
+/* ── Chapter card: full-width toggle header + collapsible body ──────────── */
+.path-module-toggle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 220px) 24px;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  text-align: left;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+.path-module-toggle:hover { background: var(--surface-hover); }
+.path-module-toggle:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+.path-module-heading { display: grid; gap: var(--space-1); min-width: 0; }
+.path-module-title-row { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.path-module-title { font-size: var(--text-lg); font-weight: var(--weight-semibold); line-height: 1.3; color: var(--text); }
+.path-module-meta { color: var(--muted); font-size: var(--text-xs); }
+.path-module-chevron { color: var(--muted); transition: transform var(--duration-fast) var(--ease-standard); }
+.path-module-toggle[aria-expanded="true"] .path-module-chevron { transform: rotate(180deg); }
+
+/* ── Mastery meters: one for lessons, one for drills ────────────────────── */
+.path-module-progress { display: grid; gap: var(--space-2); align-content: center; }
+.path-meter { display: grid; gap: var(--space-1); }
+.path-meter-label { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); color: var(--muted); font-size: var(--text-xs); }
+.path-meter-track { display: block; height: 6px; overflow: hidden; border-radius: var(--radius-full); background: var(--surface-soft); }
+.path-meter-fill { display: block; height: 100%; border-radius: inherit; transition: width var(--duration-base) var(--ease-standard); }
+.path-meter-fill--lessons { background: var(--primary); }
+.path-meter-fill--drills { background: var(--green); }
+
+/* ── Outcome badges: module completion + drill Answered/Missed ──────────── */
+.path-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 20px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.path-badge svg { width: 14px; height: 14px; }
+.path-badge--complete { color: var(--primary-dark); background: var(--primary-soft); }
+.path-badge--answered { color: var(--green); background: var(--green-soft); }
+.path-badge--missed { color: var(--amber); background: var(--amber-soft); }
+
+/* ── Expanded body: Lessons and Drills groups side by side ──────────────── */
+.path-module-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: var(--space-6);
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  border-top: 1px solid var(--border);
+}
+.path-module-body > section { display: grid; gap: var(--space-2); align-content: start; }
+.path-list { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+.path-empty { margin: 0; padding: var(--space-2); color: var(--muted); font-size: var(--text-xs); line-height: 1.5; }
+
+/* Rows compose the parts-library .list-row; these rules only make it behave
+   like a full-width button and lay out row content. */
+button.list-row.path-lesson-row,
+button.list-row.path-drill-row { width: 100%; border: 0; font-size: var(--text-sm); text-align: left; }
+.path-row-check {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  color: var(--green);
+}
+.path-row-check svg { width: 12px; height: 12px; }
+.path-row-check--done { border-color: var(--success-border); background: var(--green-soft); }
+.path-row-text { flex: 1 1 auto; min-width: 0; line-height: 1.4; }
+.path-drill-id { color: var(--muted); font-size: var(--text-xs); }
+
+/* Inline drill player docked under its row. */
+.path-drill-player {
+  margin: var(--space-1) 0 var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--canvas);
+}
+
+/* ── Special training + Ready to apply ──────────────────────────────────── */
+.path-special { margin-top: var(--space-2); }
+.path-section-heading { margin-bottom: var(--space-4); }
+.path-section-heading h2 { margin: var(--space-1) 0 0; font-size: var(--text-2xl); font-weight: var(--weight-bold); line-height: 1.25; color: var(--text); }
+.path-special-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: var(--space-4); }
+.path-special-card .card-body { display: grid; gap: var(--space-3); justify-items: start; align-content: start; }
+.path-special-icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--radius-full); color: var(--primary-dark); background: var(--primary-soft); }
+.path-special-icon svg { width: 20px; height: 20px; }
+.path-special-card h3 { margin: 0; font-size: var(--text-lg); font-weight: var(--weight-semibold); line-height: 1.3; color: var(--text); }
+.path-special-card p { margin: 0; color: var(--muted); font-size: var(--text-sm); line-height: 1.5; }
+
+.path-apply { margin-top: var(--space-4); }
+.path-apply .card-body { display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
+.path-apply-text { flex: 1 1 320px; }
+.path-apply-text h2 { margin: 0 0 var(--space-1); font-size: var(--text-xl); font-weight: var(--weight-semibold); line-height: 1.3; color: var(--text); }
+.path-apply-text p { margin: 0; max-width: 64ch; color: var(--muted); font-size: var(--text-sm); line-height: 1.5; }
+.path-apply .button { flex: 0 0 auto; }
+
+/* ── DrillPlayer (drill- prefix) ────────────────────────────────────────── */
+.drill-player { display: grid; gap: var(--space-3); }
+.drill-question { margin: 0; color: var(--text); font-size: var(--text-base); font-weight: var(--weight-semibold); line-height: 1.5; }
+.drill-options { display: grid; gap: var(--space-2); }
+.drill-option {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 44px;
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-strong);
+  background: var(--surface);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  text-align: left;
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+.drill-option:hover:not(:disabled) { border-color: var(--primary-border); background: var(--surface-hover); }
+/* Post-submit the options stay disabled but must keep full contrast so the
+   correct/incorrect highlighting remains readable. */
+.drill-option:disabled { cursor: default; opacity: 1; }
+.drill-option-letter {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  border-radius: var(--radius-full);
+  color: var(--muted);
+  background: var(--surface-soft);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+}
+.drill-option-text { flex: 1 1 auto; min-width: 0; }
+.drill-option--selected { color: var(--primary-dark); border-color: var(--primary); background: var(--primary-soft); }
+.drill-option--selected .drill-option-letter { color: white; background: var(--primary); }
+.drill-option--correct { border-color: var(--success-border); background: var(--green-soft); }
+.drill-option--correct .drill-option-letter { color: var(--green); background: var(--surface); }
+.drill-option--incorrect { border-color: var(--danger-border); background: var(--red-soft); }
+.drill-option--incorrect .drill-option-letter { color: var(--red); background: var(--surface); }
+.drill-player .inline-feedback { margin-top: 0; } /* grid gap already owns the spacing */
+.drill-actions { display: flex; justify-content: flex-end; gap: var(--space-2); }
+
+/* ── 动效：展开区块 / 内联面板入场（仅 transform + opacity） ──────────────
+   --duration-slow 由 tokens.css 提供（此处带 320ms 回退）。 */
+@keyframes path-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.path-module-body { animation: path-enter var(--duration-slow, 320ms) var(--ease-standard); }
+.path-drill-player { animation: path-enter var(--duration-base) var(--ease-standard); }
+
+/* 状态色过渡补齐：勾选圆点与选项字母 chip */
+.path-row-check {
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+.drill-option-letter {
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+
+/* ── Tablet：触控目标 ≥44px（.button 基线 38px） ────────────────────────── */
+@media (max-width: 1024px) {
+  .path-apply .button,
+  .path-special-card .button,
+  .drill-actions .button { min-height: 44px; }
+}
+
+/* ── Small screens ──────────────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .path-module-toggle { grid-template-columns: minmax(0, 1fr) 24px; }
+  .path-module-progress { grid-column: 1 / -1; grid-row: 2; }
+  .path-overview { flex-wrap: wrap; }
+  /* 概览统计小屏等宽拉伸，换行后两端不留空 */
+  .path-overview-stat { flex: 1 1 96px; }
+  /* CTA / 提交按钮全宽，便于拇指触达 */
+  .path-apply .button,
+  .path-special-card .button,
+  .drill-actions .button { width: 100%; }
+}

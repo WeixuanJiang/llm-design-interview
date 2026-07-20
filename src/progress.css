@@ -1,0 +1,127 @@
+/* Progress page — honesty pass. Prefixed progress-; complements (never redefines) styles.css globals. */
+
+/* Semantic <dl> summary — mirrors the retired .progress-stats layout with token-based metrics. */
+.progress-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; border-block: 1px solid var(--border); background: var(--surface); }
+.progress-summary > div { display: grid; gap: var(--space-2); align-content: start; min-height: 120px; padding: var(--space-5); border-right: 1px solid var(--border); }
+.progress-summary > div:last-child { border-right: 0; }
+.progress-summary dt { color: var(--muted); font-size: var(--text-xs); font-weight: var(--weight-bold); }
+.progress-summary dd { margin: 0; }
+.progress-summary-value { font-size: var(--text-3xl); font-weight: var(--weight-bold); line-height: 1.2; overflow-wrap: anywhere; }
+.progress-summary-note { color: var(--muted); font-size: var(--text-xs); }
+
+/* Guided empty state — shown instead of fabricated scores when no evidence exists. */
+.progress-empty { display: grid; justify-items: center; gap: var(--space-3); margin-top: var(--space-8); padding: var(--space-12) var(--space-6); border: 1px dashed var(--border-strong); border-radius: var(--radius-lg); background: var(--surface); text-align: center; }
+.progress-empty-icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: var(--radius-full); color: var(--primary-dark); background: var(--primary-soft); }
+.progress-empty-icon svg { width: 22px; height: 22px; }
+.progress-empty h2 { margin: 0; font-size: var(--text-2xl); }
+.progress-empty p { margin: 0; max-width: 560px; color: var(--text-strong); font-size: var(--text-sm); line-height: 1.6; }
+.progress-empty p.progress-empty-facts { color: var(--muted); font-size: var(--text-xs); }
+.progress-empty-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-3); margin-top: var(--space-2); }
+
+/* Two-column body — mirrors the retired .progress-layout grid. */
+.progress-panels { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: var(--space-5); margin-top: var(--space-6); }
+
+/* Competency panel — mirrors .competency-panel; bars only render values backed by evidence. */
+.progress-competency-panel, .progress-activity { border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); }
+.progress-competency-panel > header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--border); }
+.progress-competency-panel h2 { margin-bottom: var(--space-1); font-size: var(--text-lg); }
+.progress-competency-panel header p { margin: 0; color: var(--muted); font-size: var(--text-xs); }
+.progress-competency-list { padding: var(--space-2) var(--space-5) var(--space-4); }
+.progress-competency-row { display: grid; grid-template-columns: 135px minmax(90px, 1fr) 28px 66px; align-items: center; gap: var(--space-3); min-height: 42px; border-bottom: 1px solid var(--border); font-size: var(--text-xs); }
+.progress-competency-row:last-child { border-bottom: 0; }
+.progress-competency-row > strong { text-align: right; }
+.progress-competency-row > small { color: var(--muted); text-align: right; font-size: var(--text-xs); }
+.progress-competency-na { color: var(--subtle); font-weight: var(--weight-regular); }
+.progress-competency-track { height: 8px; border-radius: var(--radius-full); background: var(--surface-soft); overflow: hidden; }
+.progress-competency-track > i { display: block; height: 100%; border-radius: var(--radius-full); background: var(--primary); transition: width var(--duration-base) var(--ease-standard); }
+.progress-competency-track-empty { background: transparent; border: 1px dashed var(--border-strong); }
+.progress-evidence { display: flex; align-items: center; gap: var(--space-2); margin: 0 var(--space-5) var(--space-4); padding: var(--space-3); border-radius: var(--radius-md); color: var(--blue); background: var(--blue-soft); font-size: var(--text-xs); }
+.progress-evidence svg { flex: 0 0 auto; width: 16px; height: 16px; }
+
+/* Recommendation card — mirrors .recommendation with token-only colors. */
+.progress-recommendation { padding: var(--space-5); border-radius: var(--radius-md); color: var(--recommendation-text); background: var(--recommendation-bg); }
+.progress-recommendation > svg { width: 24px; height: 24px; }
+.progress-recommendation h3 { margin: var(--space-4) 0 var(--space-2); font-size: var(--text-md); }
+.progress-recommendation p { margin: 0; color: var(--recommendation-text); font-size: var(--text-xs); line-height: 1.55; }
+.progress-recommendation .button.primary { margin-top: var(--space-2); color: var(--primary-dark); border-color: var(--surface); background: var(--surface); }
+.progress-recommendation .button.primary:hover { background: var(--primary-soft); }
+
+/* Activity panel — mirrors .activity-panel. */
+.progress-activity { margin-top: var(--space-4); padding: var(--space-4); }
+.progress-activity h3 { font-size: var(--text-sm); }
+.progress-activity > div { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; align-items: center; gap: var(--space-2); padding: var(--space-3) 0; border-bottom: 1px solid var(--border); }
+.progress-activity > div:last-child { border-bottom: 0; }
+.progress-activity > div > svg { padding: var(--space-2); width: 30px; height: 30px; border-radius: var(--radius-md); color: var(--primary-dark); background: var(--primary-soft); }
+.progress-activity span { display: grid; gap: var(--space-1); }
+.progress-activity strong { font-size: var(--text-xs); }
+.progress-activity small { color: var(--muted); font-size: var(--text-xs); }
+.progress-activity b { font-size: var(--text-xs); }
+
+@media (max-width: 1024px) {
+  .progress-panels { grid-template-columns: minmax(0, 1fr) 290px; }
+}
+
+@media (max-width: 720px) {
+  .progress-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .progress-summary > div:nth-child(2) { border-right: 0; }
+  .progress-summary > div:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+  .progress-panels { grid-template-columns: 1fr; }
+  .progress-competency-row { grid-template-columns: 110px minmax(70px, 1fr) 26px; }
+  .progress-competency-row > small { display: none; }
+  .progress-empty { padding: var(--space-8) var(--space-4); }
+}
+
+
+/* Blueprint journey — evidence-gated milestone rail across the Learn → Practise → Build → Stress → Revise loop. */
+.progress-journey { margin-top: var(--space-6); padding: var(--space-5); border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); animation: progress-journey-in var(--duration-slow) var(--ease-standard); }
+@keyframes progress-journey-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.progress-journey > header { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
+.progress-journey-eyebrow { color: var(--primary); font-size: var(--text-xs); font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: 0.05em; }
+.progress-journey h2 { margin: var(--space-1) 0; font-size: var(--text-lg); }
+.progress-journey > header p { margin: 0; max-width: 620px; color: var(--muted); font-size: var(--text-xs); line-height: 1.6; }
+.progress-journey-count { flex: 0 0 auto; padding: var(--space-1) var(--space-3); border-radius: var(--radius-full); color: var(--primary-dark); background: var(--primary-soft); font-size: var(--text-xs); font-weight: var(--weight-semibold); white-space: nowrap; }
+.progress-journey-guide { display: flex; align-items: center; gap: var(--space-2); margin: var(--space-4) 0 0; padding: var(--space-3); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); color: var(--text-strong); background: var(--surface-soft); font-size: var(--text-xs); line-height: 1.5; }
+.progress-journey-guide svg { flex: 0 0 auto; width: 16px; height: 16px; color: var(--primary-dark); }
+
+/* Desktop rail — five phase columns; each top segment lights up as its milestones complete. */
+.progress-journey-track { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-5); margin: var(--space-5) 0 0; padding: 0; list-style: none; }
+.progress-journey-phase { position: relative; min-width: 0; padding-top: var(--space-4); border-top: 2px solid var(--border); }
+.progress-journey-phase.is-done, .progress-journey-phase.is-active { border-top-color: var(--primary); }
+.progress-journey-node { position: absolute; top: -7px; left: 0; width: 12px; height: 12px; border: 2px solid var(--border-strong); border-radius: var(--radius-full); background: var(--surface); }
+.progress-journey-phase.is-done .progress-journey-node { border-color: var(--primary); background: var(--primary); }
+.progress-journey-phase.is-active .progress-journey-node { border-color: var(--primary); background: var(--primary-soft); }
+.progress-journey-phase-head { display: flex; align-items: center; gap: var(--space-2); }
+.progress-journey-phase-head svg { width: 16px; height: 16px; color: var(--primary-dark); }
+.progress-journey-phase.is-upcoming .progress-journey-phase-head svg { color: var(--subtle); }
+.progress-journey-phase-name { font-size: var(--text-xs); font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: 0.05em; }
+.progress-journey-phase.is-upcoming .progress-journey-phase-name { color: var(--muted); }
+.progress-journey-phase-count { margin-left: auto; color: var(--muted); font-size: var(--text-xs); }
+
+.progress-journey-steps { display: grid; gap: var(--space-2); margin: var(--space-3) 0 0; padding: 0; list-style: none; }
+.progress-journey-step { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: var(--space-2); align-items: start; padding: var(--space-2); border-radius: var(--radius-md); }
+.progress-journey-step.is-next { outline: 1px solid var(--primary-border); background: var(--primary-soft); }
+.progress-journey-step-dot { position: relative; width: 10px; height: 10px; margin-top: 3px; border: 2px dashed var(--border-strong); border-radius: var(--radius-full); background: var(--surface); }
+.progress-journey-step.is-done .progress-journey-step-dot { border-style: solid; border-color: var(--primary); background: var(--primary); }
+.progress-journey-step.is-done .progress-journey-step-dot::after { content: ""; position: absolute; left: 2px; top: 2px; width: 4px; height: 2px; border-bottom: 2px solid var(--surface); border-left: 2px solid var(--surface); transform: rotate(-45deg); }
+.progress-journey-step.is-next .progress-journey-step-dot { border-style: solid; border-color: var(--primary); background: var(--surface); }
+.progress-journey-step.is-next .progress-journey-step-dot::after { content: ""; position: absolute; inset: -2px; border: 2px solid var(--primary); border-radius: var(--radius-full); animation: progress-journey-pulse 1.8s var(--ease-standard) infinite; }
+@keyframes progress-journey-pulse { 0% { opacity: 0.9; transform: scale(1); } 70%, 100% { opacity: 0; transform: scale(2.1); } }
+.progress-journey-step strong { display: block; font-size: var(--text-xs); line-height: 1.4; }
+.progress-journey-step.is-upcoming strong { color: var(--muted); }
+.progress-journey-step small { display: block; margin-top: var(--space-1); color: var(--muted); font-size: var(--text-xs); line-height: 1.5; overflow-wrap: anywhere; }
+.progress-journey-step .button { margin-top: var(--space-2); }
+.progress-journey-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Mobile rail — the horizontal track folds into a vertical timeline with a left spine. */
+@media (max-width: 720px) {
+  .progress-journey { padding: var(--space-4); }
+  .progress-journey-track { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+  .progress-journey-phase { padding-top: 0; padding-left: var(--space-4); border-top: 0; border-left: 2px solid var(--border); }
+  .progress-journey-phase.is-done, .progress-journey-phase.is-active { border-left-color: var(--primary); }
+  .progress-journey-node { top: 3px; left: -7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-journey { animation: none; }
+  .progress-journey-step.is-next .progress-journey-step-dot::after { animation: none; }
+}

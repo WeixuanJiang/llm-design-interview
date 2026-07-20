@@ -1,37 +1,133 @@
-import type { AttemptState, ValidationResult } from "./types";
+import type { AttemptState, MissionStage, ValidationResult } from "./types";
+
+export interface StageCheck {
+  id: string;
+  label: string;
+  passed: boolean;
+}
+
+interface InternalCheck extends StageCheck {
+  error: string;
+}
 
 export function calculatePeakQps(state: AttemptState): number {
   const { users, queriesPerUserPerDay, workingHours, peakFactor } = state.estimation;
   return Math.round((users * queriesPerUserPerDay * peakFactor) / Math.max(1, workingHours * 3600));
 }
 
+function requirementChecks(state: AttemptState): InternalCheck[] {
+  return [
+    {
+      id: "confirm-requirements",
+      label: "Confirm all three mission requirements",
+      passed: state.confirmedRequirements.length >= 3,
+      error: "Confirm all three mission requirements.",
+    },
+    {
+      id: "requirement-summary",
+      label: "Summarise the requirements in at least 60 characters",
+      passed: state.requirementSummary.trim().length >= 60,
+      error: "Summarise the requirements in at least 60 characters.",
+    },
+  ];
+}
+
+function estimationChecks(state: AttemptState): InternalCheck[] {
+  return [
+    {
+      id: "peak-qps",
+      label: "Peak QPS must be greater than zero",
+      passed: calculatePeakQps(state) >= 1,
+      error: "Peak QPS must be greater than zero.",
+    },
+    {
+      id: "document-chunks",
+      label: "Document volume must reflect the enterprise scenario (at least 1M chunks)",
+      passed: state.estimation.documentChunks >= 1_000_000,
+      error: "Document volume must reflect the enterprise scenario.",
+    },
+  ];
+}
+
+function architectureChecks(state: AttemptState): InternalCheck[] {
+  const categories = new Set(state.nodes.map((node) => node.data.category));
+  return [
+    {
+      id: "compute-component",
+      label: "Add a compute component to orchestrate retrieval",
+      passed: categories.has("compute"),
+      error: "Add a compute component to orchestrate retrieval.",
+    },
+    {
+      id: "data-component",
+      label: "Add a retrieval data store",
+      passed: categories.has("data"),
+      error: "Add a retrieval data store.",
+    },
+    {
+      id: "ai-component",
+      label: "Add a model-serving component",
+      passed: categories.has("ai"),
+      error: "Add a model-serving component.",
+    },
+    {
+      id: "connections",
+      label: "Connect the main request and ingestion paths",
+      passed: state.edges.length >= Math.max(3, state.nodes.length - 2),
+      error: "Connect the main request and ingestion paths.",
+    },
+    {
+      id: "decision",
+      label: "Record at least one decision with a requirement and trade-off",
+      passed: Object.values(state.decisions).some((value) => value.trim().length >= 30),
+      error: "Record at least one decision with a requirement and trade-off.",
+    },
+  ];
+}
+
+function mitigationChecks(state: AttemptState): InternalCheck[] {
+  return [
+    {
+      id: "mitigation",
+      label: "Explain the mitigation, evidence, and validation plan in at least 40 characters",
+      passed: state.mitigation.trim().length >= 40,
+      error: "Explain the mitigation, evidence, and validation plan in at least 40 characters.",
+    },
+  ];
+}
+
+/**
+ * Exposes the per-stage gate rules as readable, live-updating checklist items so the
+ * UI can guide the learner before submission instead of only reporting errors after it.
+ * Returns an empty array for stages without a gate (review).
+ */
+export function getStageChecks(stage: MissionStage, attempt: AttemptState): StageCheck[] {
+  const checks =
+    stage === "requirements" ? requirementChecks(attempt)
+    : stage === "estimation" ? estimationChecks(attempt)
+    : stage === "architecture" ? architectureChecks(attempt)
+    : stage === "stress" ? mitigationChecks(attempt)
+    : [];
+  return checks.map(({ id, label, passed }) => ({ id, label, passed }));
+}
+
 export function validateRequirements(state: AttemptState): ValidationResult {
-  const errors: string[] = [];
-  if (state.confirmedRequirements.length < 3) errors.push("Confirm all three mission requirements.");
-  if (state.requirementSummary.trim().length < 60) errors.push("Summarise the requirements in at least 60 characters.");
+  const errors = requirementChecks(state).filter((check) => !check.passed).map((check) => check.error);
   return { valid: errors.length === 0, errors };
 }
 
 export function validateEstimation(state: AttemptState): ValidationResult {
-  const errors: string[] = [];
-  if (calculatePeakQps(state) < 1) errors.push("Peak QPS must be greater than zero.");
-  if (state.estimation.documentChunks < 1_000_000) errors.push("Document volume must reflect the enterprise scenario.");
+  const errors = estimationChecks(state).filter((check) => !check.passed).map((check) => check.error);
   return { valid: errors.length === 0, errors };
 }
 
 export function validateArchitecture(state: AttemptState): ValidationResult {
-  const errors: string[] = [];
-  const categories = new Set(state.nodes.map((node) => node.data.category));
-  if (!categories.has("compute")) errors.push("Add a compute component to orchestrate retrieval.");
-  if (!categories.has("data")) errors.push("Add a retrieval data store.");
-  if (!categories.has("ai")) errors.push("Add a model-serving component.");
-  if (state.edges.length < Math.max(3, state.nodes.length - 2)) errors.push("Connect the main request and ingestion paths.");
-  if (!Object.values(state.decisions).some((value) => value.trim().length >= 30)) errors.push("Record at least one decision with a requirement and trade-off.");
+  const errors = architectureChecks(state).filter((check) => !check.passed).map((check) => check.error);
   return { valid: errors.length === 0, errors };
 }
 
 export function validateMitigation(state: AttemptState): ValidationResult {
-  const errors = state.mitigation.trim().length >= 40 ? [] : ["Explain the mitigation, evidence, and validation plan in at least 40 characters."];
+  const errors = mitigationChecks(state).filter((check) => !check.passed).map((check) => check.error);
   return { valid: errors.length === 0, errors };
 }
 

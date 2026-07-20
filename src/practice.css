@@ -1,0 +1,123 @@
+/* Practice page (Training) — result badges and answer highlighting for the
+   RAG failure lab. All values come from tokens.css; no hardcoded colors/sizes.
+   Question-bank drill styles moved to the Path page along with the drills. */
+
+/* Outcome badges shown on failure-lab symptom rows. */
+.practice-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  justify-self: start;
+  min-height: 20px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  line-height: 1.3;
+}
+.practice-badge.practice-badge--correct { color: var(--green); background: var(--green-soft); }
+.practice-badge.practice-badge--missed { color: var(--amber); background: var(--amber-soft); }
+
+/* Post-submit option highlighting: the correct answer is always marked, and a
+   wrongly chosen option is marked as incorrect. Applied next to .practice-option. */
+.practice-option.practice-option--correct { border-color: var(--success-border); background: var(--green-soft); }
+.practice-option.practice-option--incorrect { border-color: var(--danger-border); background: var(--red-soft); }
+.practice-option.practice-option--correct > span { color: var(--green); background: var(--green-soft); }
+.practice-option.practice-option--incorrect > span { color: var(--red); background: var(--red-soft); }
+
+/* ── 动效：面板入场 + 状态色过渡（仅 transform / opacity，时长缓动 token 化）
+   styles.css 在最终包内位于本文件之后，凡覆写其规则一律加 .practice-page
+   作用域提升优先级。 ─────────────────────────────────────────────────── */
+@keyframes practice-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.practice-page .special-practice-layout,
+.practice-page .mock-interview { animation: practice-enter var(--duration-base) var(--ease-standard); }
+
+/* ── Failure lab：单栏居中布局（随机场景制，无侧栏） ─────────────────────── */
+.practice-page .failure-lab { display: grid; justify-content: center; animation: practice-enter var(--duration-base) var(--ease-standard); }
+.practice-page .failure-lab .special-practice-main { max-width: 720px; }
+/* 信号面板标题行：分支名 + 掌握/错过徽章同行排列 */
+.practice-page .failure-signals h3 { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); }
+.practice-page .practice-modes button,
+.practice-page .mock-interview aside button {
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+.practice-page .practice-option {
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+.practice-page .practice-option > span {
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+
+/* ── Tablet：触控目标 ≥44px（tab 基线 36px，选项按钮无下限） ────────────── */
+@media (max-width: 1024px) {
+  .practice-page .practice-modes button,
+  .practice-page .practice-submit .button,
+  .practice-page .mock-interview main footer .button { min-height: 44px; }
+}
+
+/* ── Small screens ──────────────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  /* 模式 tab 横向滚动，窄屏不挤压 */
+  .practice-page .practice-modes { overflow-x: auto; }
+  .practice-page .practice-modes button { flex: 0 0 auto; }
+  /* 主操作全宽，便于拇指触达 */
+  .practice-page .practice-submit .button { width: 100%; }
+  .practice-page .mock-interview main footer { flex-wrap: wrap; }
+  /* 笔记输入框在手机上减少空白 */
+  .practice-page .mock-interview textarea { min-height: 180px; }
+}
+
+/* ── Mock interview：抽题卡 + 倒计时 + 自评量表 + 结果面板 ────────────────── */
+/* 抽题卡：题面上下文（章节/页码）+ 题目正文 + 重抽按钮 */
+.practice-page .mock-question { display: grid; gap: var(--space-2); justify-items: start; margin-bottom: var(--space-6); padding: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface-soft); }
+.practice-page .mock-question h2 { margin: 0; font-size: var(--text-2xl); }
+.practice-page .mock-question p { margin: 0; color: var(--text-strong); font-size: var(--text-sm); line-height: 1.6; }
+
+/* 倒计时行：大号等宽计时 + 当前阶段目标 + 暂停/重置 */
+.practice-page .mock-timer { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3); margin-bottom: var(--space-6); }
+.practice-page .mock-countdown { font-family: var(--font-mono); font-size: var(--text-3xl); font-weight: var(--weight-bold); color: var(--text); }
+.practice-page .mock-countdown.time-up { color: var(--red); }
+.practice-page .mock-timer-phase { margin-right: auto; color: var(--muted); font-size: var(--text-xs); }
+
+/* 时间耗尽横幅：按钮与文字同行排列 */
+.practice-page .mock-time-up { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3); }
+
+/* 侧栏：计时器推导出的“应在阶段”以左侧主色条标示（可与查看中阶段叠加） */
+.practice-page .mock-interview aside button.on-clock { color: var(--text-strong); background: var(--surface-soft); box-shadow: inset 2px 0 0 var(--primary); }
+.practice-page .mock-interview aside button.on-clock.active { color: var(--primary-dark); background: var(--primary-soft); }
+
+/* 自评量表：每个维度一行 1-5 分段按钮，选中态复用主色 */
+.practice-page .mock-rubric { display: grid; gap: var(--space-4); margin-top: var(--space-6); }
+.practice-page .mock-rubric-row { display: grid; gap: var(--space-2); }
+.practice-page .mock-rubric-row > span { color: var(--text-strong); font-size: var(--text-xs); font-weight: var(--weight-bold); }
+.practice-page .mock-score { display: flex; gap: var(--space-1); }
+.practice-page .mock-score button { min-width: 40px; min-height: 36px; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--muted); background: var(--surface); font-size: var(--text-sm); font-weight: var(--weight-bold); }
+.practice-page .mock-score button[aria-pressed="true"] { color: var(--primary-dark); background: var(--primary-soft); border-color: var(--primary-border); }
+
+/* 结果面板：两个最低分维度 + 针对性建议 */
+.practice-page .mock-result { display: grid; gap: var(--space-3); margin-top: var(--space-6); }
+.practice-page .mock-result-row { display: grid; gap: var(--space-2); padding: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface-soft); }
+.practice-page .mock-result-row strong { display: flex; align-items: center; gap: var(--space-2); color: var(--text-strong); font-size: var(--text-sm); }
+.practice-page .mock-result-row p { margin: 0; color: var(--muted); font-size: var(--text-sm); line-height: 1.6; }
+
+/* ── Review missed：错题队列，与其他模式一致的单列居中布局 ──────────────── */
+.practice-page .review-missed { display: grid; gap: var(--space-6); max-width: 720px; margin: 0 auto; animation: practice-enter var(--duration-base) var(--ease-standard); }
+.practice-page .review-missed-header > span { color: var(--primary); font-size: var(--text-xs); font-weight: var(--weight-bold); }
+.practice-page .review-missed-header > h2 { margin: var(--space-2) 0 var(--space-3); font-size: var(--text-4xl); }
+.practice-page .review-missed-header > p { color: var(--text-strong); font-size: var(--text-md); line-height: 1.7; }
+.practice-page .review-missed > .inline-feedback { margin-top: 0; }
+
+/* ── Tablet：量表按钮触控目标 ≥44px ─────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .practice-page .mock-score button { min-height: 44px; }
+}

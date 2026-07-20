@@ -1,0 +1,498 @@
+/* Missions catalogue — Wave 3 card-grid rebuild.
+   全部取值来自 tokens.css 的 var(--token)，双主题自动适配；
+   禁止硬编码颜色，字号不小于 var(--text-xs) = 12px。
+   零件复用：.card / .eyebrow-label / .page-header / .num / .icon-button /
+   .empty-state / .transition-fade（components.css）与 .button（styles.css）。 */
+
+.mission-page {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  gap: var(--space-6);
+  align-content: start;
+}
+
+/* ── 模式选择器 ───────────────────────────────────────────────── */
+.mission-modes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  padding: var(--space-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-soft);
+}
+.mission-mode {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: start;
+  min-height: 68px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  text-align: left;
+  color: var(--text);
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+.mission-mode strong { font-size: var(--text-sm); font-weight: var(--weight-semibold); }
+.mission-mode span { color: var(--muted); font-size: var(--text-xs); line-height: 1.4; }
+.mission-mode:hover { background: var(--surface-hover); }
+.mission-mode.selected {
+  border-color: var(--primary-border);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── 筛选区 ───────────────────────────────────────────────────── */
+.mission-filters {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+}
+.mission-filters-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-4);
+}
+.mission-field { display: grid; gap: var(--space-2); min-width: 180px; }
+.mission-field--search { flex: 1 1 280px; }
+.mission-field select {
+  width: 100%;
+  min-height: 40px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  background: var(--surface);
+  font-size: var(--text-sm);
+}
+.mission-field select:focus-visible {
+  border-color: var(--primary);
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 1px;
+}
+.mission-search-box {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding: 0 var(--space-2) 0 var(--space-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.mission-search-box:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--focus-ring);
+}
+.mission-search-box > svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  color: var(--muted);
+}
+.mission-search-box input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 38px;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  color: var(--text);
+  background: transparent;
+  font-size: var(--text-sm);
+}
+.mission-search-box input::placeholder { color: var(--subtle); }
+.mission-search-clear { width: 32px; height: 32px; flex: 0 0 auto; border: 0; }
+.mission-search-clear svg { width: 15px; height: 15px; }
+
+/* '已有笔记' 状态开关 */
+.mission-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  cursor: pointer;
+  color: var(--text-strong);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+}
+.mission-toggle input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  border: 0;
+}
+.mission-toggle-track {
+  position: relative;
+  flex: 0 0 auto;
+  width: 36px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  background: var(--border-strong);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+.mission-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+.mission-toggle input:checked + .mission-toggle-track { background: var(--primary); }
+.mission-toggle input:checked + .mission-toggle-track .mission-toggle-thumb { transform: translateX(16px); }
+.mission-toggle input:focus-visible + .mission-toggle-track {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* archetype chips + 结果计数 */
+.mission-filters-secondary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-4);
+}
+.mission-archetypes { display: grid; gap: var(--space-2); min-width: 0; }
+.mission-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.mission-chip {
+  min-height: 32px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  color: var(--text-strong);
+  background: var(--surface);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+.mission-chip:hover { background: var(--surface-hover); }
+.mission-chip.active {
+  color: var(--primary-dark);
+  border-color: var(--primary-border);
+  background: var(--primary-soft);
+}
+.mission-count {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+
+/* ── 卡片网格 ─────────────────────────────────────────────────── */
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: var(--space-4);
+  align-items: stretch;
+}
+.mission-empty { grid-column: 1 / -1; }
+.mission-empty .empty-state-icon svg { width: 22px; height: 22px; }
+
+.mission-card {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  min-width: 0;
+  padding: var(--space-4);
+  text-align: left;
+  color: var(--text-strong);
+  font: inherit;
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard);
+}
+.mission-card:hover { border-color: var(--border-strong); }
+.mission-card.selected {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--focus-ring), var(--shadow-md);
+}
+.mission-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.mission-card-customer {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mission-card-title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: var(--text);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  line-height: 1.4;
+}
+.mission-card-snippet {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  color: var(--muted);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+.mission-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: auto;
+}
+.mission-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-full);
+  color: var(--text-strong);
+  background: var(--surface-soft);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+}
+.mission-tag--archetype { color: var(--primary-dark); background: var(--primary-soft); }
+.mission-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex: 0 0 auto;
+  min-height: 22px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-full);
+  color: var(--amber);
+  background: var(--amber-soft);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+}
+.mission-badge svg { width: 12px; height: 12px; }
+
+/* 搜索匹配高亮 */
+.mission-page mark {
+  padding: 0 2px;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  background: var(--amber-soft);
+}
+
+/* ── 任务简报（选中卡片下方展开，横跨整行） ────────────────────── */
+.mission-brief {
+  grid-column: 1 / -1;
+  display: grid;
+  align-content: start;
+  min-width: 0;
+}
+.mission-brief-header { padding: var(--space-6) var(--space-6) var(--space-5); }
+.mission-brief-eyebrow { color: var(--primary); }
+.mission-brief-header h2 {
+  margin: var(--space-2) 0;
+  font-size: var(--text-3xl);
+  line-height: 1.25;
+  color: var(--text);
+}
+.mission-brief-header p {
+  margin: 0;
+  max-width: 72ch;
+  color: var(--text-strong);
+  font-size: var(--text-base);
+  line-height: 1.65;
+}
+
+/* 阶段步进 */
+.mission-stage-nav {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-1);
+  margin: 0 var(--space-6);
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--border);
+}
+.mission-stage-nav button {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+  padding: var(--space-2) var(--space-1);
+  border: 0;
+  border-radius: var(--radius-md);
+  color: var(--muted);
+  background: transparent;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+.mission-stage-nav button:hover { color: var(--text-strong); background: var(--surface-hover); }
+.mission-stage-nav button.active { color: var(--primary-dark); background: var(--primary-soft); }
+.mission-stage-nav button.done { color: var(--green); }
+.mission-stage-nav button > span {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-full);
+  font-weight: var(--weight-bold);
+}
+.mission-stage-nav svg { width: 14px; height: 14px; }
+
+.mission-brief-stage { padding: 0 var(--space-6); }
+
+/* 简报内容（Use case / Requirements / Stress / Review） */
+.mission-dossier > h3, .mission-dossier-section > h3 {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-2xl);
+  color: var(--text);
+}
+.mission-dossier > p, .mission-dossier-section > p {
+  max-width: 72ch;
+  color: var(--text-strong);
+  font-size: var(--text-base);
+  line-height: 1.75;
+}
+.mission-dossier > section, .mission-dossier-section > section {
+  padding: var(--space-5) 0;
+  border-top: 1px solid var(--border);
+}
+.mission-dossier h3, .mission-dossier-section h4 { margin: 0 0 var(--space-3); font-size: var(--text-base); }
+.mission-dossier ul, .mission-dossier-section ol {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding-left: var(--space-6);
+}
+.mission-dossier li, .mission-dossier-section li {
+  color: var(--text-strong);
+  font-size: var(--text-xs);
+  line-height: 1.6;
+}
+
+/* 设计笔记（自动保存指示） */
+.mission-notes {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0 var(--space-6);
+  padding: var(--space-5) 0 0;
+  border-top: 1px solid var(--border);
+}
+.mission-notes label {
+  display: grid;
+  gap: var(--space-2);
+  color: var(--text-strong);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+}
+.mission-notes textarea {
+  min-height: 160px;
+  padding: var(--space-4);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+.mission-notes textarea:focus-visible { border-color: var(--primary); }
+.mission-save {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  justify-self: end;
+  color: var(--muted);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+}
+.mission-save svg { width: 14px; height: 14px; }
+.mission-save.saved { color: var(--green); }
+
+/* 常驻底部 prev/next 条（所有阶段，含 Build lab） */
+.mission-brief-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  background: var(--surface);
+}
+.mission-brief-progress {
+  color: var(--muted);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* 恢复存档横幅 */
+.mission-resume {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin: 0 var(--space-6) var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--muted);
+  background: var(--surface-soft);
+  font-size: var(--text-xs);
+}
+.mission-resume > div { display: flex; flex: 0 0 auto; gap: var(--space-2); }
+
+/* ── 移动端：卡片单列，简报紧随选中卡片；筛选区纵向堆叠 ────────── */
+@media (max-width: 720px) {
+  .mission-modes { grid-template-columns: 1fr; }
+  .mission-mode { min-height: 0; }
+  .mission-filters { padding: var(--space-4); }
+  .mission-filters-main { align-items: stretch; flex-direction: column; }
+  .mission-field { min-width: 0; }
+  .mission-field select { min-height: 44px; }
+  .mission-search-box { min-height: 44px; }
+  .mission-search-clear { width: 44px; height: 44px; }
+  .mission-toggle { align-self: flex-start; min-height: 44px; }
+  .mission-chip { min-height: 44px; }
+  .mission-filters-secondary { align-items: flex-start; flex-direction: column; }
+  .mission-brief-header { padding: var(--space-5) var(--space-4) var(--space-4); }
+  .mission-brief-header h2 { font-size: var(--text-2xl); }
+  .mission-stage-nav { display: flex; margin: 0 var(--space-4); overflow-x: auto; scrollbar-width: thin; }
+  .mission-stage-nav button { flex: 0 0 auto; min-width: 88px; min-height: 56px; }
+  .mission-brief-stage { padding: 0 var(--space-4); }
+  .mission-notes { margin: 0 var(--space-4); }
+  .mission-dossier > p, .mission-dossier-section > p { font-size: var(--text-sm); line-height: 1.7; }
+  .mission-brief-footer { flex-wrap: wrap; padding: var(--space-3) var(--space-4); }
+  .mission-brief-progress { order: -1; width: 100%; text-align: center; }
+  .mission-resume {
+    align-items: stretch;
+    flex-direction: column;
+    margin: 0 var(--space-4) var(--space-4);
+  }
+}
